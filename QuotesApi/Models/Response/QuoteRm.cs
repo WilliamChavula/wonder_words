@@ -1,6 +1,18 @@
+using System.Text.Json.Serialization;
+
 namespace QuotesApi.Models.Response;
 
 public class QuoteRm
 {
+    [JsonPropertyName("body")] public string? Body { get; set; }
+
+    [JsonPropertyName("author")] public string? Author { get; set; }
+
+    [JsonPropertyName("user_details")] public QuoteUserInfoRm? UserInfo { get; set; }
+
+    [JsonPropertyName("favorites_count")] public int FavoritesCount { get; set; }
     
+    [JsonPropertyName("upvotes_count")] public int UpVotesCount { get; set; }
+    
+    [JsonPropertyName("downvotes_count")] public int DownVOtesCount { get; set; }
 }
