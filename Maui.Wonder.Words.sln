@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maui.Wonder.Words", "Maui.Wonder.Words\Maui.Wonder.Words.csproj", "{8FBA269A-EFF4-4CA5-9771-6543699B5D3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModels", "DomainModels\DomainModels.csproj", "{18D5B672-BA0E-4036-B79B-9385B12DED64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotesApi", "QuotesApi\QuotesApi.csproj", "{FF58CD25-50CE-474C-9FCB-966709198882}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalStorage", "LocalStorage\LocalStorage.csproj", "{299F9938-DC59-42F4-9114-13038BDF2A24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuoteRepository", "QuoteRepository\QuoteRepository.csproj", "{A8F51654-C548-496A-AE9F-BA9CE4ABCF5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRepository", "UserRepository\UserRepository.csproj", "{262411A8-4FF4-4785-99E1-05A43C854427}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8FBA269A-EFF4-4CA5-9771-6543699B5D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FBA269A-EFF4-4CA5-9771-6543699B5D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FBA269A-EFF4-4CA5-9771-6543699B5D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FBA269A-EFF4-4CA5-9771-6543699B5D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18D5B672-BA0E-4036-B79B-9385B12DED64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18D5B672-BA0E-4036-B79B-9385B12DED64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18D5B672-BA0E-4036-B79B-9385B12DED64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18D5B672-BA0E-4036-B79B-9385B12DED64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF58CD25-50CE-474C-9FCB-966709198882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF58CD25-50CE-474C-9FCB-966709198882}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF58CD25-50CE-474C-9FCB-966709198882}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF58CD25-50CE-474C-9FCB-966709198882}.Release|Any CPU.Build.0 = Release|Any CPU
+		{299F9938-DC59-42F4-9114-13038BDF2A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{299F9938-DC59-42F4-9114-13038BDF2A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{299F9938-DC59-42F4-9114-13038BDF2A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{299F9938-DC59-42F4-9114-13038BDF2A24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8F51654-C548-496A-AE9F-BA9CE4ABCF5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8F51654-C548-496A-AE9F-BA9CE4ABCF5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8F51654-C548-496A-AE9F-BA9CE4ABCF5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8F51654-C548-496A-AE9F-BA9CE4ABCF5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{262411A8-4FF4-4785-99E1-05A43C854427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{262411A8-4FF4-4785-99E1-05A43C854427}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{262411A8-4FF4-4785-99E1-05A43C854427}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{262411A8-4FF4-4785-99E1-05A43C854427}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
