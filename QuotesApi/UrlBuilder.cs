@@ -4,7 +4,7 @@ public class UrlBuilder(string baseUrl = "https://favqs.com/api")
 {
     private string BaseUrl { get; } = baseUrl;
 
-    string BuildGetQuoteListPageUrl(int page, string? tag, string? favoredByUsername, string searchTerm = "")
+    public string BuildGetQuoteListPageUrl(int page, string? tag, string? favoredByUsername, string searchTerm = "")
     {
         var condition = (string.IsNullOrEmpty(tag) && string.IsNullOrEmpty(searchTerm)) ||
                         (string.IsNullOrEmpty(searchTerm) && string.IsNullOrEmpty(favoredByUsername)) ||
@@ -20,47 +20,47 @@ public class UrlBuilder(string baseUrl = "https://favqs.com/api")
         return $"{BaseUrl}/quotes/?page={page}{tagQueryStringPart}{searchQueryStringPart}{favoriteQueryStringPart}";
     }
     
-    string buildGetQuoteUrl(int id) {
+    public string BuildGetQuoteUrl(int id) {
         return $"{BaseUrl}/quotes/{id}";
     }
 
-    string buildFavoriteQuoteUrl(int id) {
+    public string BuildFavoriteQuoteUrl(int id) {
         return $"{BaseUrl}/quotes/{id}/fav";
     }
 
-    string buildUnfavoriteQuoteUrl(int id) {
+    public string BuildUnfavoriteQuoteUrl(int id) {
         return $"{BaseUrl}/quotes/{id}/unfav";
     }
 
-    string buildUpvoteQuoteUrl(int id) {
+    public string BuildUpvoteQuoteUrl(int id) {
         return $"{BaseUrl}/quotes/{id}/upvote";
     }
 
-    string buildDownvoteQuoteUrl(int id) {
+    public string BuildDownvoteQuoteUrl(int id) {
         return $"{BaseUrl}/quotes/{id}/downvote";
     }
 
-    string buildUnvoteQuoteUrl(int id) {
+    public string BuildUnvoteQuoteUrl(int id) {
         return $"{BaseUrl}/quotes/{id}/clearvote";
     }
 
-    string buildSignInUrl() {
+    public string BuildSignInUrl() {
         return $"{BaseUrl}/session";
     }
 
-    string buildSignOutUrl() {
+    public string BuildSignOutUrl() {
         return $"{BaseUrl}/session";
     }
 
-    string buildSignUpUrl() {
+    public string BuildSignUpUrl() {
         return $"{BaseUrl}/users";
     }
 
-    string buildUpdateProfileUrl(string username) {
+    public string BuildUpdateProfileUrl(string username) {
         return $"{BaseUrl}/users/{username}";
     }
 
-    string buildRequestPasswordResetEmailUrl() {
+    public string BuildRequestPasswordResetEmailUrl() {
         return $"{BaseUrl}/users/forgot_password";
     }
 }

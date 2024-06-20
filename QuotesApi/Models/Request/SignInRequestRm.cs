@@ -6,6 +6,4 @@ namespace QuotesApi.Models.Request;
 public class SignInRequestRm
 {
     [JsonPropertyName("user")] public required UserCredentialsRm Credentials { get; set; }
-
-    string ToJson() => JsonSerializer.Serialize(this);
 }
