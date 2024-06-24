@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalStorage", "LocalStorag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuoteRepository", "QuoteRepository\QuoteRepository.csproj", "{A8F51654-C548-496A-AE9F-BA9CE4ABCF5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRepository", "UserRepository\UserRepository.csproj", "{262411A8-4FF4-4785-99E1-05A43C854427}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRepository", "UserRepository\UserRepository.csproj", "{26651886-E760-47A5-A644-81EDB5B98415}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,9 +38,9 @@ Global
 		{A8F51654-C548-496A-AE9F-BA9CE4ABCF5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8F51654-C548-496A-AE9F-BA9CE4ABCF5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8F51654-C548-496A-AE9F-BA9CE4ABCF5E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{262411A8-4FF4-4785-99E1-05A43C854427}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{262411A8-4FF4-4785-99E1-05A43C854427}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{262411A8-4FF4-4785-99E1-05A43C854427}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{262411A8-4FF4-4785-99E1-05A43C854427}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26651886-E760-47A5-A644-81EDB5B98415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26651886-E760-47A5-A644-81EDB5B98415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26651886-E760-47A5-A644-81EDB5B98415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26651886-E760-47A5-A644-81EDB5B98415}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
