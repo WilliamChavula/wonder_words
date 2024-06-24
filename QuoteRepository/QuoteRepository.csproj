@@ -6,4 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DomainModels\DomainModels.csproj" />
+      <ProjectReference Include="..\LocalStorage\LocalStorage.csproj" />
+      <ProjectReference Include="..\QuotesApi\QuotesApi.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -16,5 +16,5 @@ public class QuoteRm
 
     [JsonPropertyName("upvotes_count")] public int UpVotesCount { get; set; }
 
-    [JsonPropertyName("downvotes_count")] public int DownVOtesCount { get; set; }
+    [JsonPropertyName("downvotes_count")] public int DownVotesCount { get; set; }
 }
