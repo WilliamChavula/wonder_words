@@ -4,7 +4,7 @@ namespace LocalStorage.Models;
 
 public partial class DarkModePreferenceCm : IRealmObject
 {
-    public int ThemeMode { get; set; }
+    private int ThemeMode { get; set; }
 
     public ThemeModePreference ModePreference
     {

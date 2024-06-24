@@ -1,6 +1,6 @@
 ﻿namespace DomainModels;
 
-enum DarkModePreference
+public enum DarkModePreference
 {
     Light,
     Dark,
