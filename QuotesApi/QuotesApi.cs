@@ -171,7 +171,7 @@ public class QuotesApi
         return (string)jsonDict["User-Token"];
     }
 
-    public async Task UpdateProfile(string username, string email, string password)
+    public async Task UpdateProfile(string username, string email, string? password)
     {
         var url = _urlBuilder.BuildUpdateProfileUrl(username);
         var requestBody = new UpdateUserRequestRm
