@@ -1,0 +1,22 @@
+using FormFields.lib;
+
+namespace FormFields.Inputs;
+
+public record Password(string Value, bool IsPure = true) : FormZInput<string, PasswordValidationError?>(Value, IsPure)
+{
+    protected override PasswordValidationError? Validator(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return PasswordValidationError.Empty;
+        if (value.Length is < 5 or > 120)
+            return PasswordValidationError.Invalid;
+
+        return null;
+    }
+}
+
+public enum PasswordValidationError
+{
+    Empty,
+    Invalid,
+}
