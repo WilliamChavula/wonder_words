@@ -1,4 +1,6 @@
-﻿namespace Maui.Wonder.Words;
+﻿using Microsoft.Maui.Controls;
+
+namespace Maui.Wonder.Words;
 
 public partial class AppShell : Shell
 {

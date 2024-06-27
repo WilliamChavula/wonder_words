@@ -1,4 +1,8 @@
-﻿namespace Maui.Wonder.Words;
+﻿using System;
+using Microsoft.Maui.Accessibility;
+using Microsoft.Maui.Controls;
+
+namespace Maui.Wonder.Words;
 
 public partial class MainPage : ContentPage
 {
