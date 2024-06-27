@@ -3,9 +3,9 @@ using FormFields.lib;
 
 namespace FormFields.Inputs;
 
-public partial record Email(string Value, bool IsPure = true) : FormZInput<string, EmailValidationError?>(Value, IsPure)
+public partial record Email(string Value, bool IsPure = true, bool IsAlreadyRegistered = false) : FormZInput<string, EmailValidationError?>(Value, IsPure)
 {
-    public bool IsAlreadyRegistered { get; set; } = false;
+    public bool IsAlreadyRegistered { get; set; } = IsAlreadyRegistered;
 
     [GeneratedRegex("""
                     (?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)
@@ -25,6 +25,16 @@ public partial record Email(string Value, bool IsPure = true) : FormZInput<strin
     }
 }
 
+public static class EmailExtension
+{
+    public static Email CopyWith(this Email email, string? emailValue, bool? newIsPure, bool? isAlreadyRegistered)
+    {
+        return new Email(emailValue ?? email.Value, newIsPure ?? email.IsPure)
+        {
+            IsAlreadyRegistered = isAlreadyRegistered ?? email.IsAlreadyRegistered
+        };
+    }
+}
 public enum EmailValidationError
 {
     Empty,
