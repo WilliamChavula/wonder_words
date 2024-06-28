@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using Email = FormFields.Inputs.Email;
 using ForgotMyPassword.Interfaces;
+using ForgotMyPassword.ViewModels;
 using FormFields.Inputs;
 
 namespace ForgotMyPassword;
@@ -14,7 +15,7 @@ public partial class ForgotMyPasswordViewModel : ObservableObject
     private readonly UserRepository.UserRepository _userRepository;
     private readonly INavigationService _navigationService;
 
-    [ObservableProperty] private ForgotMyPasswordState _state = new();
+    [ObservableProperty] private ViewModels.ForgotMyPasswordState _state = new();
     [ObservableProperty] private bool _isSubmissionInProgress;
     [ObservableProperty] private EmailValidationError? _emailError;
     [ObservableProperty] private bool _isEntryFieldEmptyError;
@@ -92,7 +93,7 @@ public partial class ForgotMyPasswordViewModel : ObservableObject
     [RelayCommand]
     private async Task OnEmailRequestSuccess() => await _navigationService.GoBackAsync();
 
-    async partial void OnStateChanged(ForgotMyPasswordState value)
+    async partial void OnStateChanged(ViewModels.ForgotMyPasswordState value)
     {
         if (value.SubmissionStatus != SubmissionStatus.Success) return;
         

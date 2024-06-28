@@ -1,7 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Email = FormFields.Inputs.Email;
 
-namespace ForgotMyPassword;
-using FormFields.Inputs;
+namespace ForgotMyPassword.ViewModels;
 
 public partial class ForgotMyPasswordState : ObservableObject
 {
