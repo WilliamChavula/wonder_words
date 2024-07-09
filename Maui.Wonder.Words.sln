@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForgotMyPassword", "ForgotM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlsLibrary", "ControlsLibrary\ControlsLibrary.csproj", "{8FBA1B1A-E535-4ED2-AF62-25E7031EEE3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileMenu", "ProfileMenu\ProfileMenu.csproj", "{AF7DA6AF-E27B-467E-88FE-873C71C0C2A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,8 +64,13 @@ Global
 		{8FBA1B1A-E535-4ED2-AF62-25E7031EEE3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FBA1B1A-E535-4ED2-AF62-25E7031EEE3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FBA1B1A-E535-4ED2-AF62-25E7031EEE3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF7DA6AF-E27B-467E-88FE-873C71C0C2A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF7DA6AF-E27B-467E-88FE-873C71C0C2A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF7DA6AF-E27B-467E-88FE-873C71C0C2A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF7DA6AF-E27B-467E-88FE-873C71C0C2A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{96336639-F943-4C22-861F-EA23AD35D3AE} = {D82B7530-8865-46B0-9539-82E6AC1EA5BA}
+		{AF7DA6AF-E27B-467E-88FE-873C71C0C2A6} = {D82B7530-8865-46B0-9539-82E6AC1EA5BA}
 	EndGlobalSection
 EndGlobal
