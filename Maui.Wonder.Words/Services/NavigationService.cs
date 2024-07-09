@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ForgotMyPassword.Interfaces;
-using Microsoft.Maui.Controls;
 
 namespace Maui.Wonder.Words.Services;
 

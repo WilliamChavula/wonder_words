@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<uranium:StatefulContentView
+    x:Class="ControlsLibrary.ChevronListTile"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:m="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
+    xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+    x:Name="ListTileContentView"
+    BindingContext="{x:Reference ListTileContentView}"
+    PressedCommand="{Binding Command}">
+    <uranium:StatefulContentView.Resources>
+        <ResourceDictionary Source="Resources/Styles/AppTheme.xaml" />
+    </uranium:StatefulContentView.Resources>
+    <FlexLayout Padding="10" StyleClass="PrimaryContainer">
+        <Label
+            FlexLayout.Grow="1"
+            FontSize="{StaticResource MediumLarge}"
+            Text="{Binding Text}" />
+        <Image Width="40" Height="40">
+            <Image.Source>
+                <FontImageSource
+                    FontFamily="MaterialOutlined"
+                    Glyph="{x:Static m:MaterialOutlined.Chevron_right}"
+                    Size="40" />
+            </Image.Source>
+        </Image>
+    </FlexLayout>
+</uranium:StatefulContentView>

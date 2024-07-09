@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView
+    x:Class="ControlsLibrary.InProgressTextButton"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    x:Name="TextButton">
+    <material:ButtonView
+        Padding="12"
+        BindingContext="{x:Reference TextButton}"
+        IsEnabled="False"
+        StyleClass="TextButton">
+        <HorizontalStackLayout Padding="10,6" VerticalOptions="Center">
+            <ActivityIndicator IsRunning="True" Scale="0.5" />
+            <Label FontSize="{Binding TextFontSize}" Text="{Binding ButtonText}" />
+        </HorizontalStackLayout>
+    </material:ButtonView>
+</ContentView>

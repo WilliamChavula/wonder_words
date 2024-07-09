@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Maui;
+using ControlsLibrary.Extensions;
 using ForgotMyPassword.Extensions;
 using ForgotMyPassword.Interfaces;
 using Maui.Wonder.Words.Services;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Maui.Hosting;
 using UserRepository.Extensions;
 
 namespace Maui.Wonder.Words;
@@ -21,9 +20,11 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                ConfigureControlsLibrary.AddMaterialFontImage(fonts);
             })
             .RegisterUserRepositoryServices()
-            .ConfigureForgotMyPasswordServices();
+            .ConfigureForgotMyPasswordServices()
+            .UseControlsLibrary();
 
         builder.Services.AddSingleton<QuotesApi.QuotesApi>();
         builder.Services.AddSingleton<QuoteRepository.QuoteRepository>();
