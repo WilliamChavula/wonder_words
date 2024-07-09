@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView
+    x:Class="ControlsLibrary.ExpandedElevatedButtonOld"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="ElevatedButtonView">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <Border
+        Height="48"
+        BindingContext="{x:Reference ElevatedButtonView}"
+        InputTransparent="True">
+        <material:ButtonView
+            IsVisible="{Binding Icon, Converter={StaticResource IsNotNullConverter}}"
+            StyleClass="ElevatedButton"
+            TappedCommand="{Binding OnTap}">
+            <HorizontalStackLayout Spacing="16">
+                <Label Text="{Binding TextLabel}" />
+                <Image>
+                    <Image.Source>
+                        <FontImageSource Glyph="{Binding Icon}" />
+                    </Image.Source>
+                </Image>
+            </HorizontalStackLayout>
+        </material:ButtonView>
+    </Border>
+</ContentView>

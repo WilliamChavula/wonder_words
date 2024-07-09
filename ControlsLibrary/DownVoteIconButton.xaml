@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView
+    x:Class="ControlsLibrary.DownVoteIconButton"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:ControlsLibrary"
+    xmlns:m="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
+    xmlns:resources="clr-namespace:ControlsLibrary.Resources"
+    x:Name="DownVoteIconButtonContentView">
+    <ContentView.Resources>
+        <ResourceDictionary Source="Resources/Styles/AppTheme.xaml" />
+    </ContentView.Resources>
+    <local:CountIndicatorIconButton
+        x:Name="IconButtonView"
+        BindingContext="{x:Reference DownVoteIconButtonContentView}"
+        Count="{Binding Count}"
+        Icon="{x:Static m:MaterialSharp.Arrow_downward}"
+        OnTap="{Binding OnTap}"
+        Tooltip="{x:Static resources:Resources.downvoteIconButtonTooltip}" />
+</ContentView>

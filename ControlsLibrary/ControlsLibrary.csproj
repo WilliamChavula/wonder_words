@@ -19,8 +19,48 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Maui" Version="9.0.1" />
+        <PackageReference Include="CommunityToolkit.Maui.Markup" Version="4.0.0" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)"/>
+        <PackageReference Include="UraniumUI.Icons.MaterialIcons" Version="2.8.1" />
+        <PackageReference Include="UraniumUI.Icons.MaterialSymbols" Version="2.8.1" />
+        <PackageReference Include="UraniumUI.Material" Version="2.8.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="CenteredActivityIndicator.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="CenteredActivityIndicator.xaml.cs">
+        <DependentUpon>CenteredActivityIndicator.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Resources\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Converters\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="UraniumUI.Material">
+        <HintPath>..\..\..\..\.nuget\packages\uraniumui.material\2.8.1\lib\net8.0-ios17.2\UraniumUI.Material.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
