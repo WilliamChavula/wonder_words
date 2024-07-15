@@ -67,6 +67,7 @@
       <ProjectReference Include="..\ControlsLibrary\ControlsLibrary.csproj" />
       <ProjectReference Include="..\ForgotMyPassword\ForgotMyPassword.csproj" />
       <ProjectReference Include="..\LocalStorage\LocalStorage.csproj" />
+      <ProjectReference Include="..\ProfileMenu\ProfileMenu.csproj" />
       <ProjectReference Include="..\QuoteRepository\QuoteRepository.csproj" />
       <ProjectReference Include="..\QuotesApi\QuotesApi.csproj" />
       <ProjectReference Include="..\UserRepository\UserRepository.csproj" />

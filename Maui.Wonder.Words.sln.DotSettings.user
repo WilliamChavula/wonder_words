@@ -3,5 +3,6 @@
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=ControlsLibrary_002FResources_002FResources/@EntryIndexedValue">True</s:Boolean>
 	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Features_002FForgotMyPassword_002FResources_002FResources/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Features_002FProfileMenu_002FResources_002FResources/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/ShowComments/@EntryValue">False</s:Boolean></wpf:ResourceDictionary>

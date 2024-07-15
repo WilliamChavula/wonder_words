@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
 
-<?xaml-comp compile="true" ?>
 <ResourceDictionary
-    x:Class="ControlLibrary.Resources.Styles.AppTheme"
+    x:Class="ControlsLibrary.Resources.Styles.Styles"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material">
+
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Sizes.xaml" />
         <ResourceDictionary Source="Spacing.xaml" />

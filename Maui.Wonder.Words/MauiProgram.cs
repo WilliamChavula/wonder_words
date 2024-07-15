@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using ControlsLibrary.Extensions;
 using ForgotMyPassword.Extensions;
-using ForgotMyPassword.Interfaces;
 using Maui.Wonder.Words.Services;
 using Microsoft.Extensions.Logging;
 using UserRepository.Extensions;
@@ -30,7 +29,14 @@ public static class MauiProgram
         builder.Services.AddSingleton<QuoteRepository.QuoteRepository>();
         builder.Services.AddSingleton<LocalStorage.LocalStorage>();
 
-        builder.Services.AddSingleton<INavigationService, NavigationService>();
+        builder.Services.AddSingleton<NavigationService>();
+
+        builder.Services.AddSingleton<ForgotMyPassword.Interfaces.INavigationService>(
+            x => x.GetService<NavigationService>()!
+        );
+        builder.Services.AddSingleton<ProfileMenu.Interfaces.INavigationService>(
+            x => x.GetService<NavigationService>()!
+        );
 
 #if DEBUG
         builder.Logging.AddDebug();

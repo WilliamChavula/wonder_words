@@ -4,7 +4,7 @@ namespace ControlsLibrary;
 
 public class InProgressExpandedElevatedButton : ButtonView
 {
-    public static readonly BindableProperty TextLabelProperty = BindableProperty.Create(nameof(TextLabel), typeof(string), typeof(ExpandedElevatedButton));
+    public static readonly BindableProperty TextLabelProperty = BindableProperty.Create(nameof(TextLabel), typeof(string), typeof(InProgressExpandedElevatedButton));
     
     public InProgressExpandedElevatedButton()
     {
