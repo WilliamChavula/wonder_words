@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui;
 using ProfileMenu.ViewModels;
+using ProfileMenu.Views;
 
 namespace ProfileMenu.Extensions;
 
@@ -9,6 +10,7 @@ public static class ConfigureProfileMenu
     {
         builder.UseMauiCommunityToolkit();
         builder.Services.AddSingleton<ProfileMenuViewModel>();
+        builder.Services.AddSingleton<ProfileMenuPage>();
 
         return builder;
     }
