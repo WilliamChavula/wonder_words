@@ -19,14 +19,26 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Maui" Version="9.0.2" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)"/>
+        <PackageReference Include="System.Reactive" Version="6.0.1" />
+        <PackageReference Include="UraniumUI.Icons.MaterialIcons" Version="2.9.0" />
+        <PackageReference Include="UraniumUI.Material" Version="2.9.0" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Resources\" />
       <Folder Include="ViewModels\" />
       <Folder Include="Views\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ControlsLibrary\ControlsLibrary.csproj" />
+      <ProjectReference Include="..\DomainModels\DomainModels.csproj" />
+      <ProjectReference Include="..\QuoteRepository\QuoteRepository.csproj" />
+      <ProjectReference Include="..\UserRepository\UserRepository.csproj" />
     </ItemGroup>
 
 </Project>
