@@ -5,7 +5,7 @@ namespace QuoteList.Extensions;
 
 public static class ConfigureQuoteList
 {
-    public static MauiAppBuilder UseQuotesDetail(this MauiAppBuilder builder)
+    public static MauiAppBuilder UseQuotesList(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<QuoteListViewModel>();
         builder.Services.AddTransient<QuoteListPage>();
