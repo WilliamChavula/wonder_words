@@ -33,11 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ViewModels\" />
-      <Folder Include="Views\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\ControlsLibrary\ControlsLibrary.csproj" />
       <ProjectReference Include="..\DomainModels\DomainModels.csproj" />
       <ProjectReference Include="..\QuoteRepository\QuoteRepository.csproj" />
@@ -57,6 +52,15 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
       </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiImage Include="Resources\Images\closing-quote.svg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </MauiImage>
+      <MauiImage Include="Resources\Images\opening-quote.svg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </MauiImage>
     </ItemGroup>
 
 </Project>

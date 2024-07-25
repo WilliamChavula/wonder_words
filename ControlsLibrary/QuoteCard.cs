@@ -9,7 +9,7 @@ using UraniumUI.Views;
 
 namespace ControlsLibrary;
 
-public class QuoteCard : Border
+public class QuoteCard : StatefulContentView
 {
     public static readonly BindableProperty StatementProperty =
         BindableProperty.Create(nameof(Statement), typeof(string), typeof(QuoteCard));
@@ -91,14 +91,14 @@ public class QuoteCard : Border
         _ = Resources.TryGetValue("Large", out var fontLarge);
 
         StyleClass.Add("Elevation1");
-        StrokeShape = new RoundRectangle
-        {
-            CornerRadius = new CornerRadius(12)
-        };
         Margin = new Thickness(0);
 
-        Content = new StatefulContentView
+        Content = new Border
         {
+            StrokeShape = new RoundRectangle
+            {
+                CornerRadius = new CornerRadius(12)
+            },
             Content = new VerticalStackLayout
             {
                 HorizontalOptions = LayoutOptions.End,

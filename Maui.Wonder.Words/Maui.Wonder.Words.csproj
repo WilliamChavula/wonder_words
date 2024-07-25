@@ -74,4 +74,11 @@
       <ProjectReference Include="..\UserRepository\UserRepository.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="GoogleService-Info.plist" />
+      <BundleResource Include="GoogleService-Info.plist" />
+      <None Remove="google-services.json" />
+      <BundleResource Include="google-services.json" />
+    </ItemGroup>
+
 </Project>
