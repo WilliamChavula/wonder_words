@@ -3,7 +3,7 @@ using FormFields.lib;
 
 namespace FormFields.Inputs;
 
-public partial record Email(string Value, bool IsPure = true, bool IsAlreadyRegistered = false) : FormZInput<string, EmailValidationError?>(Value, IsPure)
+public partial record Email(string Value, bool IsPure = true, bool IsAlreadyRegistered = false) : FormZInput<string, EmailValidationError?>(Value, IsPure), IInput
 {
     public bool IsAlreadyRegistered { get; set; } = IsAlreadyRegistered;
 
@@ -23,6 +23,9 @@ public partial record Email(string Value, bool IsPure = true, bool IsAlreadyRegi
             IsAlreadyRegistered ? EmailValidationError.AlreadyRegistered :
             EmailRegex().IsMatch(value) ? null : EmailValidationError.InValid;
     }
+
+    public bool IsInputValid => IsValid;
+    public bool IsInputPure => IsPure;
 }
 
 public static class EmailExtension

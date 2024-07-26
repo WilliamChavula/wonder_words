@@ -72,6 +72,7 @@
       <ProjectReference Include="..\QuoteList\QuoteList.csproj" />
       <ProjectReference Include="..\QuoteRepository\QuoteRepository.csproj" />
       <ProjectReference Include="..\QuotesApi\QuotesApi.csproj" />
+      <ProjectReference Include="..\SignIn\SignIn.csproj" />
       <ProjectReference Include="..\UserRepository\UserRepository.csproj" />
     </ItemGroup>
 

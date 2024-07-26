@@ -5,6 +5,7 @@ using QuoteDetails.Extensions;
 using Maui.Wonder.Words.Services;
 using Microsoft.Extensions.Logging;
 using QuoteList.Extensions;
+using SignIn.Extensions;
 using UserRepository.Extensions;
 
 namespace Maui.Wonder.Words;
@@ -27,7 +28,8 @@ public static class MauiProgram
             .ConfigureForgotMyPasswordServices()
             .UseControlsLibrary()
             .UseQuotesDetail()
-            .UseQuotesList();
+            .UseQuotesList()
+            .UseSignIn();
 
         builder.Services.AddSingleton<QuotesApi.QuotesApi>();
         builder.Services.AddSingleton<QuoteRepository.QuoteRepository>();

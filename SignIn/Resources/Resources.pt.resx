@@ -1,11 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -19,39 +12,39 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="invalidCredentialsErrorMessage" xml:space="preserve">
-        <value>Invalid email and/or password.</value>
+        <value>Email e/ou senha inválida.</value>
     </data>
     <data name="appBarTitle" xml:space="preserve">
-        <value>Sign In</value>
+        <value>Entrar</value>
     </data>
     <data name="emailTextFieldLabel" xml:space="preserve">
         <value>Email</value>
     </data>
     <data name="emailTextFieldEmptyErrorMessage" xml:space="preserve">
-        <value>Your email can't be empty.</value>
+        <value>Seu email não pode ser vazio.</value>
     </data>
     <data name="emailTextFieldInvalidErrorMessage" xml:space="preserve">
-        <value>This email is not valid.</value>
+        <value>Este email não é válido.</value>
     </data>
     <data name="passwordTextFieldLabel" xml:space="preserve">
-        <value>Password</value>
+        <value>Senha</value>
     </data>
     <data name="passwordTextFieldEmptyErrorMessage" xml:space="preserve">
-        <value>Your password can't be empty.</value>
+        <value>Sua senha não pode ser vazia.</value>
     </data>
     <data name="passwordTextFieldInvalidErrorMessage" xml:space="preserve">
-        <value>Password must be at least five characters long.</value>
+        <value>Sua senha precisa ter pelo menos cinco caracteres.</value>
     </data>
     <data name="forgotMyPasswordButtonLabel" xml:space="preserve">
-        <value>Forgot my password</value>
+        <value>Esqueci minha senha</value>
     </data>
     <data name="signInButtonLabel" xml:space="preserve">
-        <value>Sign In</value>
+        <value>Entrar</value>
     </data>
     <data name="signUpOpeningText" xml:space="preserve">
-        <value>Don't have an account?</value>
+        <value>Não tem uma conta?</value>
     </data>
     <data name="signUpButtonLabel" xml:space="preserve">
-        <value>Sign up</value>
+        <value>Cadastrar</value>
     </data>
 </root>

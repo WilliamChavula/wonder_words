@@ -146,16 +146,16 @@ public static class FormZSubmissionStatusExtenstion
         status.IsSuccess() || status.IsInProgress();
 }
 
-public record FormZ
+public static class FormZ
 {
     /// <summary>
     /// Given an IEnumerable of FormZInputs, checks whether all inputs are valid
     /// </summary>
     /// <param name="inputs"></param>
     /// <returns>bool</returns>
-    public static bool Validate(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public static bool Validate(IEnumerable<IInput> inputs)
     {
-        return inputs.All(input => input.IsValid);
+        return inputs.All(input => input.IsInputValid);
     }
 
     /// <summary>
@@ -163,33 +163,33 @@ public record FormZ
     /// </summary>
     /// <param name="inputs"></param>
     /// <returns>bool</returns>
-    public static bool IsPure(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public static bool IsPure(IEnumerable<IInput> inputs)
     {
-        return inputs.All(input => input.IsPure);
+        return inputs.All(input => input.IsInputPure);
     }
 }
 
 public abstract record FormZMixin
 {
-    public bool IsValid(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public bool IsValid(IEnumerable<IInput> inputs)
     {
         return FormZ.Validate(inputs);
     }
 
-    public bool IsNotValid(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public bool IsNotValid(IEnumerable<IInput> inputs)
     {
         return !FormZ.Validate(inputs);
     }
 
-    public bool IsPure(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public bool IsPure(IEnumerable<IInput> inputs)
     {
         return FormZ.IsPure(inputs);
     }
 
-    public bool IsDirty(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public bool IsDirty(IEnumerable<IInput> inputs)
     {
         return !FormZ.IsPure(inputs);
     }
 
-    public abstract IList<FormZInput<dynamic, dynamic>> Inputs { get; }
+    public abstract IList<IInput> Inputs { get; }
 }

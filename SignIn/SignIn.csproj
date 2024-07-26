@@ -46,4 +46,11 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ControlsLibrary\ControlsLibrary.csproj" />
+      <ProjectReference Include="..\DomainModels\DomainModels.csproj" />
+      <ProjectReference Include="..\FormFields\FormFields.csproj" />
+      <ProjectReference Include="..\UserRepository\UserRepository.csproj" />
+    </ItemGroup>
+
 </Project>

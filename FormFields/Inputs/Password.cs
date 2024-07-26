@@ -2,7 +2,7 @@ using FormFields.lib;
 
 namespace FormFields.Inputs;
 
-public record Password(string Value, bool IsPure = true) : FormZInput<string, PasswordValidationError?>(Value, IsPure)
+public record Password(string Value, bool IsPure = true) : FormZInput<string, PasswordValidationError?>(Value, IsPure), IInput
 {
     protected override PasswordValidationError? Validator(string value)
     {
@@ -13,6 +13,9 @@ public record Password(string Value, bool IsPure = true) : FormZInput<string, Pa
 
         return null;
     }
+
+    public bool IsInputValid => IsValid;
+    public bool IsInputPure => IsPure;
 }
 
 public enum PasswordValidationError

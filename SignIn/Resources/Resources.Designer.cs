@@ -44,5 +44,77 @@ namespace SignIn.Resources {
                 resourceCulture = value;
             }
         }
+        
+        internal static string invalidCredentialsErrorMessage {
+            get {
+                return ResourceManager.GetString("invalidCredentialsErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string appBarTitle {
+            get {
+                return ResourceManager.GetString("appBarTitle", resourceCulture);
+            }
+        }
+        
+        internal static string emailTextFieldLabel {
+            get {
+                return ResourceManager.GetString("emailTextFieldLabel", resourceCulture);
+            }
+        }
+        
+        internal static string emailTextFieldEmptyErrorMessage {
+            get {
+                return ResourceManager.GetString("emailTextFieldEmptyErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string emailTextFieldInvalidErrorMessage {
+            get {
+                return ResourceManager.GetString("emailTextFieldInvalidErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string passwordTextFieldLabel {
+            get {
+                return ResourceManager.GetString("passwordTextFieldLabel", resourceCulture);
+            }
+        }
+        
+        internal static string passwordTextFieldEmptyErrorMessage {
+            get {
+                return ResourceManager.GetString("passwordTextFieldEmptyErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string passwordTextFieldInvalidErrorMessage {
+            get {
+                return ResourceManager.GetString("passwordTextFieldInvalidErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string forgotMyPasswordButtonLabel {
+            get {
+                return ResourceManager.GetString("forgotMyPasswordButtonLabel", resourceCulture);
+            }
+        }
+        
+        internal static string signInButtonLabel {
+            get {
+                return ResourceManager.GetString("signInButtonLabel", resourceCulture);
+            }
+        }
+        
+        internal static string signUpOpeningText {
+            get {
+                return ResourceManager.GetString("signUpOpeningText", resourceCulture);
+            }
+        }
+        
+        internal static string signUpButtonLabel {
+            get {
+                return ResourceManager.GetString("signUpButtonLabel", resourceCulture);
+            }
+        }
     }
 }
