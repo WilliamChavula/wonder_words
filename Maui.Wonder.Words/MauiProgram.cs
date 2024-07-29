@@ -6,6 +6,7 @@ using Maui.Wonder.Words.Services;
 using Microsoft.Extensions.Logging;
 using QuoteList.Extensions;
 using SignIn.Extensions;
+using SignUp.Extensions;
 using UserRepository.Extensions;
 
 namespace Maui.Wonder.Words;
@@ -29,7 +30,8 @@ public static class MauiProgram
             .UseControlsLibrary()
             .UseQuotesDetail()
             .UseQuotesList()
-            .UseSignIn();
+            .UseSignIn()
+            .UseSignUp();
 
         builder.Services.AddSingleton<QuotesApi.QuotesApi>();
         builder.Services.AddSingleton<QuoteRepository.QuoteRepository>();

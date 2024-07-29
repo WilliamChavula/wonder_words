@@ -1,11 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-            
-        </xsd:element>
-    </xsd:schema>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -19,54 +12,54 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="invalidCredentialsErrorMessage" xml:space="preserve">
-        <value>Invalid email and/or password.</value>
+        <value>Email e/ou senha inválida.</value>
     </data>
     <data name="appBarTitle" xml:space="preserve">
-        <value>Sign Up</value>
+        <value>Cadastro</value>
     </data>
     <data name="signUpButtonLabel" xml:space="preserve">
-        <value>Sign Up</value>
+        <value>Cadastrar</value>
     </data>
     <data name="usernameTextFieldLabel" xml:space="preserve">
-        <value>Username</value>
+        <value>Usuário</value>
     </data>
     <data name="usernameTextFieldEmptyErrorMessage" xml:space="preserve">
-        <value>Your username can't be empty.</value>
+        <value>Seu usuário não pode ser vazio.</value>
     </data>
     <data name="usernameTextFieldInvalidErrorMessage" xml:space="preserve">
-        <value>Your username must be 1-20 characters long and can only contain letters, numbers, and the underscore (_).</value>
+        <value>Seu usuário precisa ter entre 1 e 20 caracteres e pode conter apenas letras, números, e underline (_).</value>
     </data>
     <data name="usernameTextFieldAlreadyTakenErrorMessage" xml:space="preserve">
-        <value>This username is already taken.</value>
+        <value>Este usuário já está cadastrado.</value>
     </data>
     <data name="emailTextFieldLabel" xml:space="preserve">
         <value>Email</value>
     </data>
     <data name="emailTextFieldEmptyErrorMessage" xml:space="preserve">
-        <value>Your email can't be empty.</value>
+        <value>Seu email não pode ser vazio.</value>
     </data>
     <data name="emailTextFieldInvalidErrorMessage" xml:space="preserve">
-        <value>This email is not valid.</value>
+        <value>Este email não é válido.</value>
     </data>
     <data name="emailTextFieldAlreadyRegisteredErrorMessage" xml:space="preserve">
-        <value>This email is already registered.</value>
+        <value>Este email já está cadastrado.</value>
     </data>
     <data name="passwordTextFieldLabel" xml:space="preserve">
-        <value>Password</value>
+        <value>Senha</value>
     </data>
     <data name="passwordTextFieldEmptyErrorMessage" xml:space="preserve">
-        <value>Your password can't be empty.</value>
+        <value>Sua senha não pode ser vazia.</value>
     </data>
     <data name="passwordTextFieldInvalidErrorMessage" xml:space="preserve">
-        <value>Password must be at least five characters long.</value>
+        <value>Sua senha precisa ter pelo menos cinco caracteres.</value>
     </data>
     <data name="passwordConfirmationTextFieldLabel" xml:space="preserve">
-        <value>Password Confirmation</value>
+        <value>Confirmação de Senha</value>
     </data>
     <data name="passwordConfirmationTextFieldEmptyErrorMessage" xml:space="preserve">
-        <value>Can't be empty.</value>
+        <value>Não pode ser vazia.</value>
     </data>
     <data name="passwordConfirmationTextFieldInvalidErrorMessage" xml:space="preserve">
-        <value>Your passwords don't match.</value>
+        <value>Suas senhas precisam ser iguais.</value>
     </data>
 </root>

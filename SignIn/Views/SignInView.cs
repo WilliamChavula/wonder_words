@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
 using ControlsLibrary.Resources.Styles;
@@ -11,6 +12,7 @@ namespace SignIn.Views;
 
 public class SignInView : ContentPage
 {
+    [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
     public SignInView(SignInViewModel viewModel)
     {
         BindingContext = viewModel;
