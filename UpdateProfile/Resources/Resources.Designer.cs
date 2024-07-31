@@ -44,5 +44,89 @@ namespace UpdateProfile.Resources {
                 resourceCulture = value;
             }
         }
+        
+        internal static string appBarTitle {
+            get {
+                return ResourceManager.GetString("appBarTitle", resourceCulture);
+            }
+        }
+        
+        internal static string updateProfileButtonLabel {
+            get {
+                return ResourceManager.GetString("updateProfileButtonLabel", resourceCulture);
+            }
+        }
+        
+        internal static string usernameTextFieldLabel {
+            get {
+                return ResourceManager.GetString("usernameTextFieldLabel", resourceCulture);
+            }
+        }
+        
+        internal static string usernameTextFieldEmptyErrorMessage {
+            get {
+                return ResourceManager.GetString("usernameTextFieldEmptyErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string usernameTextFieldInvalidErrorMessage {
+            get {
+                return ResourceManager.GetString("usernameTextFieldInvalidErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string usernameTextFieldAlreadyTakenErrorMessage {
+            get {
+                return ResourceManager.GetString("usernameTextFieldAlreadyTakenErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string emailTextFieldLabel {
+            get {
+                return ResourceManager.GetString("emailTextFieldLabel", resourceCulture);
+            }
+        }
+        
+        internal static string emailTextFieldEmptyErrorMessage {
+            get {
+                return ResourceManager.GetString("emailTextFieldEmptyErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string emailTextFieldInvalidErrorMessage {
+            get {
+                return ResourceManager.GetString("emailTextFieldInvalidErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string emailTextFieldAlreadyRegisteredErrorMessage {
+            get {
+                return ResourceManager.GetString("emailTextFieldAlreadyRegisteredErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string passwordTextFieldLabel {
+            get {
+                return ResourceManager.GetString("passwordTextFieldLabel", resourceCulture);
+            }
+        }
+        
+        internal static string passwordTextFieldInvalidErrorMessage {
+            get {
+                return ResourceManager.GetString("passwordTextFieldInvalidErrorMessage", resourceCulture);
+            }
+        }
+        
+        internal static string passwordConfirmationTextFieldLabel {
+            get {
+                return ResourceManager.GetString("passwordConfirmationTextFieldLabel", resourceCulture);
+            }
+        }
+        
+        internal static string passwordConfirmationTextFieldInvalidErrorMessage {
+            get {
+                return ResourceManager.GetString("passwordConfirmationTextFieldInvalidErrorMessage", resourceCulture);
+            }
+        }
     }
 }
