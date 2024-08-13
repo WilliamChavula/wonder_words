@@ -10,7 +10,12 @@ public class QuoteRm
 
     [JsonPropertyName("author")] public string? Author { get; set; }
 
-    // [JsonPropertyName("user_details")] public QuoteUserInfoRm? UserInfo { get; set; }
+    [JsonPropertyName("user_details")] public QuoteUserInfoRm UserInfo { get; set; } = new()
+    {
+        IsFavorite = false,
+        IsUpVoted = false,
+        IsDownVoted = false
+    };
 
     [JsonPropertyName("favorites_count")] public int FavoritesCount { get; set; }
 

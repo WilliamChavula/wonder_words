@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using CommunityToolkit.Maui.Converters;
+using ControlsLibrary.Icons;
 using ControlsLibrary.Resources.Styles;
 using Microsoft.Maui.Controls.Shapes;
 using UraniumUI.Icons.MaterialSymbols;
@@ -17,7 +18,13 @@ public class QuoteCard : StatefulContentView
         BindableProperty.Create(nameof(Author), typeof(string), typeof(QuoteCard));
 
     public static readonly BindableProperty IsFavoriteProperty =
-        BindableProperty.Create(nameof(IsFavorite), typeof(bool), typeof(QuoteCard));
+        BindableProperty.Create(nameof(IsFavorite), typeof(bool), typeof(QuoteCard), propertyChanged: IsFavoritePropertyChanged);
+
+    private static void IsFavoritePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var control = (QuoteCard)bindable;
+        control._isFavorite = (bool)newValue;
+    }
 
     public static readonly BindableProperty TopProperty =
         BindableProperty.Create(nameof(Top), typeof(View), typeof(QuoteCard));
@@ -31,6 +38,7 @@ public class QuoteCard : StatefulContentView
     public static readonly BindableProperty FavoriteProperty =
         BindableProperty.Create(nameof(Favorite), typeof(ICommand), typeof(QuoteCard));
 
+    private bool _isFavorite;
 
     public string Statement
     {
@@ -127,7 +135,7 @@ public class QuoteCard : StatefulContentView
             {
                 Source = new FontImageSource
                 {
-                    Glyph = IsFavorite ? MaterialRounded.Favorite : MaterialOutlined.Favorite,
+                    Glyph = _isFavorite ? MaterialOutlineIcons.Favorite : MaterialOutlineIcons.FavoriteBorder,
                     FontFamily = "MaterialIconsRegular",
                     Size = 12
                 }

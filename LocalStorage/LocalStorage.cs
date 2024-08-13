@@ -1,4 +1,3 @@
-using LocalStorage.Models;
 using Realms;
 
 namespace LocalStorage;

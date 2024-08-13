@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using CommunityToolkit.Maui.Converters;
 using ControlsLibrary;
 using ControlsLibrary.Resources.Styles;
 using QuoteList.ViewModels;
@@ -24,7 +25,7 @@ public class QuotePagedGridView : ContentView
     {
         Resources.MergedDictionaries.Add(new Styles());
         Padding = new Thickness((double)Resources["MediumLargeSpacing"], default);
-        
+
         // var emptyView = new ExceptionIndicator(); // Todo: Swap with a DataTemplateSelector
         // emptyView.SetBinding(
         //     ExceptionIndicator.TryAgainProperty,
@@ -60,11 +61,23 @@ public class QuotePagedGridView : ContentView
                         Source = "closing_quote.png"
                     },
                 };
-                
+
                 quoteCard.SetBinding(QuoteCard.StatementProperty, "Body");
                 quoteCard.SetBinding(QuoteCard.AuthorProperty, "Author");
-                quoteCard.SetBinding(QuoteCard.IsFavoriteProperty, "IsFavorite");
-                quoteCard.SetBinding(QuoteCard.FavoriteProperty, "QuoteListItemFavoriteToggledCommand");
+                quoteCard.SetBinding(
+                    QuoteCard.IsFavoriteProperty,
+                    "UserInfo.IsFavorite",
+                    converter: new IsNotNullConverter()
+                );
+                quoteCard.SetBinding(QuoteCard.FavoriteProperty, new Binding
+                {
+                    Path = "QuoteListItemFavoriteToggledCommand",
+                    Source = new RelativeBindingSource(
+                        RelativeBindingSourceMode.FindAncestorBindingContext,
+                        typeof(QuoteListViewModel),
+                        ancestorLevel: 2
+                    )
+                });
                 quoteCard.SetBinding(StatefulContentView.CommandParameterProperty, ".");
 
                 return quoteCard;
@@ -104,7 +117,7 @@ public class QuotePagedGridView : ContentView
 
         Content = collectionView;
     }
-    
+
     /*
      *  new Label
                   {
