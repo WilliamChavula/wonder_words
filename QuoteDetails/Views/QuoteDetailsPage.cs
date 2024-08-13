@@ -69,7 +69,7 @@ public class QuoteDetailsPage : ContentPage
                                 nameof(QuoteDetailsViewModel.QuoteDetailsState.QuoteDetailFailed)),
                         ])
                     .Bind(
-                        ExceptionIndicator.OnTryAgainProperty,
+                        ExceptionIndicator.TryAgainProperty,
                         nameof(viewModel.ReFetchCommand)),
 
                 new VerticalStackLayout

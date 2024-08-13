@@ -38,6 +38,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<QuotesApi.QuotesApi>();
         builder.Services.AddSingleton<QuoteRepository.QuoteRepository>();
+        builder.Services.AddSingleton<QuoteRepository.QuoteLocalStorage>();
         builder.Services.AddSingleton<LocalStorage.LocalStorage>();
 
         builder.Services.AddSingleton<NavigationService>();

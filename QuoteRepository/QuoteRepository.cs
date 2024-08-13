@@ -91,7 +91,7 @@ public class QuoteRepository(QuotesApi.QuotesApi quotesApi)
                 var shouldEmptyCache = pageNumber == 1;
                 if (shouldEmptyCache)
                     _quoteLocalStorage.ClearQuoteListPageList(favoritesOnly);
-
+            
                 var quoteListCachePage = quoteListPage.ToCacheModel();
                 _quoteLocalStorage.UpsertQuoteListPage(quoteListCachePage, favoritesOnly);
             }

@@ -30,8 +30,14 @@ public class QuotesApi
         string searchTerm = "")
     {
         var url = _urlBuilder.BuildGetQuoteListPageUrl(page, tag, favoredByUsername, searchTerm);
+        var serializerOptions = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
 
         var response = await _client.GetFromJsonAsync<QuoteListPageRm>(url);
+        // var response = JsonSerializer.Deserialize<QuoteListPageRm>(await LocalApi.GetAsync(), serializerOptions);
 
         var firstItem = response?.QuoteList.First();
 

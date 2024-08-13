@@ -7,12 +7,14 @@
     xmlns:icons="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
     xmlns:local="clr-namespace:ControlsLibrary"
     xmlns:res="clr-namespace:ControlsLibrary.Resources"
+    xmlns:styles="clr-namespace:ControlsLibrary.Resources.Styles"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
     x:Name="ExceptionIndicatorView">
 
     <uranium:StatefulContentView.Resources>
         <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+        <styles:Styles x:Key="LibStyles" />
     </uranium:StatefulContentView.Resources>
 
     <VerticalStackLayout
@@ -37,11 +39,11 @@
             FontAttributes="Bold"
             FontSize="{StaticResource MediumLarge}"
             HorizontalTextAlignment="Center" />
-        <BoxView HeightRequest="{StaticResource XxxLargeSpacing}" IsVisible="{Binding OnTryAgain, Converter={StaticResource IsNotNullConverter}}" />
+        <BoxView HeightRequest="{StaticResource XxxLargeSpacing}" IsVisible="{Binding TryAgain, Converter={StaticResource IsNotNullConverter}}" />
         <local:ExpandedElevatedButton
             Icon="{x:Static icons:MaterialRounded.Refresh}"
-            IsVisible="{Binding OnTryAgain, Converter={StaticResource IsNotNullConverter}}"
-            OnTap="{Binding OnTryAgain}"
+            IsVisible="{Binding TryAgain, Converter={StaticResource IsNotNullConverter}}"
+            OnTap="{Binding TryAgain}"
             TextLabel="{x:Static res:Resources.exceptionIndicatorTryAgainButton}" />
     </VerticalStackLayout>
 </uranium:StatefulContentView>

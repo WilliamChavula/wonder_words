@@ -1,15 +1,20 @@
-using System.Reflection;
 using System.Windows.Input;
 using ControlsLibrary.Resources.Styles;
 using UraniumUI.Views;
 using L10n = ControlsLibrary.Resources.Resources;
 
 namespace ControlsLibrary;
+
 public partial class ExceptionIndicator : StatefulContentView
 {
-    public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string), typeof(ExceptionIndicator), propertyChanged: OnTitlePropertyChanged);
-    public static readonly BindableProperty MessageProperty = BindableProperty.Create(nameof(Message), typeof(string), typeof(ExceptionIndicator), propertyChanged: OnMessagePropertyChanged);
-    public static readonly BindableProperty OnTryAgainProperty = BindableProperty.Create(nameof(OnTryAgain), typeof(ICommand), typeof(ExceptionIndicator));
+    public static readonly BindableProperty TitleProperty = BindableProperty.Create(nameof(Title), typeof(string),
+        typeof(ExceptionIndicator), propertyChanged: OnTitlePropertyChanged);
+
+    public static readonly BindableProperty MessageProperty = BindableProperty.Create(nameof(Message), typeof(string),
+        typeof(ExceptionIndicator), propertyChanged: OnMessagePropertyChanged);
+
+    public static readonly BindableProperty TryAgainProperty =
+        BindableProperty.Create(nameof(TryAgain), typeof(ICommand), typeof(ExceptionIndicator));
 
     public ExceptionIndicator()
     {
@@ -27,16 +32,17 @@ public partial class ExceptionIndicator : StatefulContentView
         get => (string)GetValue(TitleProperty);
         set => SetValue(TitleProperty, value);
     }
+
     public string? Message
     {
         get => (string)GetValue(MessageProperty);
         set => SetValue(MessageProperty, value);
     }
 
-    public ICommand? OnTryAgain
+    public ICommand? TryAgain
     {
-        get => (ICommand)GetValue(OnTryAgainProperty);
-        set => SetValue(OnTryAgainProperty, value);
+        get => (ICommand)GetValue(TryAgainProperty);
+        set => SetValue(TryAgainProperty, value);
     }
 
     private static void OnTitlePropertyChanged(BindableObject bindable, object oldValue, object newValue)
@@ -44,6 +50,7 @@ public partial class ExceptionIndicator : StatefulContentView
         var control = (Label)bindable;
         control.Text = (string)newValue;
     }
+
     private static void OnMessagePropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
         var control = (Label)bindable;

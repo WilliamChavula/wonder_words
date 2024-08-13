@@ -15,7 +15,7 @@ public class LocalStorage
 
     private static Realm GetInstance(string realmName)
     {
-        var config = new RealmConfiguration("quote-list-pages");
+        var config = new RealmConfiguration(realmName);
 
         return Realm.GetInstance(config);
     }

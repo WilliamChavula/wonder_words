@@ -57,7 +57,11 @@ public partial class QuoteListViewModel : ObservableObject
             .Subscribe(QuoteListSearchTermChangedCommand.Execute);
     }
 
-    private async Task FetchData(int page, QuoteListPageFetchPolicy fetchPolicy, bool isRefreshing = false)
+    private async Task FetchData(
+        int page,
+        QuoteListPageFetchPolicy fetchPolicy,
+        bool isRefreshing = false
+    )
     {
         var currentlyAppliedFilter = Filter;
         var isFilteringByFavorites = currentlyAppliedFilter is QuoteListFilter.QuoteListFilterByFavorites;
@@ -128,7 +132,7 @@ public partial class QuoteListViewModel : ObservableObject
             _authenticatedUsername = user?.Username;
         }
 
-        await FetchData(1, QuoteListPageFetchPolicy.CacheAndNetwork);
+        await FetchData(0, QuoteListPageFetchPolicy.CacheAndNetwork);
     }
 
     [RelayCommand]

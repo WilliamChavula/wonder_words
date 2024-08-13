@@ -127,4 +127,82 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}" />
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}" />
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}" />
+
+    <SolidColorBrush x:Key="ShadowBrush" Color="{StaticResource Shadow}" />
+
+    <!--#region Style Resources-->
+    <Shadow
+        x:Key="ShadowElevation0"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0"
+        Radius="0"
+        Offset="0,0" />
+    <Shadow
+        x:Key="ShadowElevation1"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.2"
+        Radius="4"
+        Offset="2,2" />
+    <Shadow
+        x:Key="ShadowElevation2"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.4"
+        Radius="8"
+        Offset="4,4" />
+    <Shadow
+        x:Key="ShadowElevation3"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.6"
+        Radius="12"
+        Offset="6,6" />
+    <Shadow
+        x:Key="ShadowElevation4"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.6"
+        Radius="16"
+        Offset="8,8" />
+    <Shadow
+        x:Key="ShadowElevation5"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.8"
+        Radius="20"
+        Offset="10,10" />
+    <!--#endregion-->
+
+    <Style
+        x:Key="Elevation0"
+        ApplyToDerivedTypes="True"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation0}" />
+    </Style>
+    <Style
+        x:Key="Elevation1"
+        ApplyToDerivedTypes="True"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation1}" />
+    </Style>
+    <Style
+        x:Key="Elevation2"
+        ApplyToDerivedTypes="True"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation2}" />
+    </Style>
+    <Style
+        x:Key="Elevation3"
+        ApplyToDerivedTypes="True"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation3}" />
+    </Style>
+    <Style
+        x:Key="Elevation4"
+        ApplyToDerivedTypes="True"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation3}" />
+    </Style>
+    <Style
+        x:Key="Elevation5"
+        ApplyToDerivedTypes="True"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation3}" />
+    </Style>
 </ResourceDictionary>

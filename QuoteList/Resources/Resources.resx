@@ -19,7 +19,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="quoteListRefreshErrorMessage" xml:space="preserve">
-        <value>We couldn't refresh your items.\nPlease, check your internet connection and try again later.</value>
+        <value>We couldn't refresh your items. Please, check your internet connection and try again later.</value>
     </data>
     <data name="favoritesTagLabel" xml:space="preserve">
         <value>Favorites</value>

@@ -15,7 +15,9 @@ public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
 
     public void ClearQuoteListPageList(bool favoritesOnly)
     {
-        var realm = localStorage.GetFavoriteQuoteListPageRealm;
+        var realm = favoritesOnly
+            ? localStorage.GetFavoriteQuoteListPageRealm
+            : localStorage.GetQuoteListPageRealm;
 
         realm.Write(() => { realm.RemoveAll(); });
     }
@@ -44,7 +46,7 @@ public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
             ? localStorage.GetFavoriteQuoteListPageRealm
             : localStorage.GetQuoteListPageRealm;
 
-        return null; //realm.All<QuoteListPageCm>().FirstOrDefault(quote => quote.PageNumber == pageNumber);
+        return realm.All<QuoteListPageCm>().FirstOrDefault(quote => quote.PageNumber == pageNumber);
     }
 
     public QuoteCm? GetQuote(int id)

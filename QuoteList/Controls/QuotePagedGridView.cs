@@ -24,40 +24,56 @@ public class QuotePagedGridView : ContentView
     {
         Resources.MergedDictionaries.Add(new Styles());
         Padding = new Thickness((double)Resources["MediumLargeSpacing"], default);
-
-        var quoteCard = new QuoteCard
-        {
-            Top = new Image
-            {
-                WidthRequest = 46,
-                HorizontalOptions = LayoutOptions.Start,
-                VerticalOptions = LayoutOptions.Center,
-                Source = ImageSource.FromFile("opening_quote.svg")
-            },
-            Bottom = new Image
-            {
-                WidthRequest = 46,
-                Source = "closing_quote.svg"
-            },
-        };
-        var dataTemplate = new DataTemplate(() => quoteCard);
+        
         // var emptyView = new ExceptionIndicator(); // Todo: Swap with a DataTemplateSelector
         // emptyView.SetBinding(
-        //     ExceptionIndicator.OnTryAgainProperty,
+        //     ExceptionIndicator.TryAgainProperty,
         //     "BindingContext.QuoteListFailedFetchRetriedCommand"
         // );
 
         var collectionView = new CollectionView
         {
+            RemainingItemsThreshold = 4,
             ItemsLayout = new GridItemsLayout(2, ItemsLayoutOrientation.Vertical)
             {
                 HorizontalItemSpacing = (double)Resources["MediumLargeSpacing"],
                 VerticalItemSpacing = (double)Resources["MediumLargeSpacing"]
             },
-            ItemTemplate = dataTemplate,
+            ItemTemplate = new DataTemplate(() =>
+            {
+                var quoteCard = new QuoteCard
+                {
+                    Top = new Image
+                    {
+                        WidthRequest = 24,
+                        HeightRequest = 24,
+                        HorizontalOptions = LayoutOptions.Start,
+                        VerticalOptions = LayoutOptions.Center,
+                        Source = ImageSource.FromFile("opening_quote.png")
+                    },
+                    Bottom = new Image
+                    {
+                        WidthRequest = 24,
+                        HeightRequest = 24,
+                        HorizontalOptions = LayoutOptions.End,
+                        VerticalOptions = LayoutOptions.Center,
+                        Source = "closing_quote.png"
+                    },
+                };
+                
+                quoteCard.SetBinding(QuoteCard.StatementProperty, "Body");
+                quoteCard.SetBinding(QuoteCard.AuthorProperty, "Author");
+                quoteCard.SetBinding(QuoteCard.IsFavoriteProperty, "IsFavorite");
+                quoteCard.SetBinding(QuoteCard.FavoriteProperty, "QuoteListItemFavoriteToggledCommand");
+                quoteCard.SetBinding(StatefulContentView.CommandParameterProperty, ".");
+
+                return quoteCard;
+            }),
             EmptyView = new Label
             {
-                Text = "No Results"
+                HorizontalTextAlignment = TextAlignment.Center,
+                Text = "No Results",
+                TextColor = Colors.LightGray
             }
         };
         collectionView.SetBinding(ItemsView.ItemsSourceProperty, new Binding
@@ -69,16 +85,32 @@ public class QuotePagedGridView : ContentView
             Path = "ItemList"
         });
         collectionView.SetBinding(SelectableItemsView.SelectionChangedCommandProperty, nameof(QuoteSelectedCommand));
-
-        quoteCard.SetBinding(QuoteCard.StatementProperty, "Body");
-        quoteCard.SetBinding(QuoteCard.AuthorProperty, "Author");
-        quoteCard.SetBinding(QuoteCard.IsFavoriteProperty, "IsFavorite");
-        quoteCard.SetBinding(
-            QuoteCard.OnFavoriteProperty,
-            new Binding("BindingContext.QuoteListItemFavoriteToggledCommand", source: collectionView)
-        );
-        quoteCard.SetBinding(StatefulContentView.CommandParameterProperty, ".");
+        collectionView.SetBinding(ItemsView.RemainingItemsThresholdReachedCommandProperty, new Binding
+        {
+            Source = new RelativeBindingSource(
+                RelativeBindingSourceMode.FindAncestorBindingContext,
+                typeof(QuoteListViewModel)
+            ),
+            Path = "QuoteListNextPageRequestedCommand",
+        });
+        collectionView.SetBinding(ItemsView.RemainingItemsThresholdReachedCommandParameterProperty, new Binding
+        {
+            Source = new RelativeBindingSource(
+                RelativeBindingSourceMode.FindAncestorBindingContext,
+                typeof(QuoteListViewModel)
+            ),
+            Path = "NextPage",
+        });
 
         Content = collectionView;
     }
+    
+    /*
+     *  new Label
+                  {
+                      HorizontalTextAlignment = TextAlignment.Center,
+                      Text = "No Results",
+                      TextColor = Colors.LightGray
+                  }
+     */
 }

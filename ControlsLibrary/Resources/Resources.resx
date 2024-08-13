@@ -43,7 +43,7 @@
         <value>Try Again</value>
     </data>
     <data name="exceptionIndicatorGenericMessage" xml:space="preserve">
-        <value>There has been an error.\nPlease, check your internet connection and try again later.</value>
+        <value>There has been an error. Please, check your internet connection and try again later.</value>
     </data>
     <data name="genericErrorSnackbarMessage" xml:space="preserve">
         <value>There has been an error. Please, check your internet connection.</value>
