@@ -1,4 +1,4 @@
-namespace ProfileMenu.Interfaces;
+namespace Maui.Wonder.Words.Interfaces;
 
 public interface INavigationService
 {

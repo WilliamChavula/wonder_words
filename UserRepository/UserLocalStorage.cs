@@ -2,20 +2,26 @@ namespace UserRepository;
 
 public class UserLocalStorage(LocalStorage.LocalStorage localStorage)
 {
-    public async Task UpsertDarkModePreference(DarkModePreferenceCm preference)
+    public void UpsertDarkModePreference(DarkModePreferenceCm preference)
     {
-        var realm = await localStorage.GetDarkModePreferenceRealm;
+        var realm = localStorage.GetDarkModePreferenceRealm;
         
-        await realm.WriteAsync(() =>
+        realm.Write(() =>
         {
             realm.Add(preference);
+            realm.Dispose();
         });
+        
     }
 
-    public async Task<DarkModePreferenceCm?> GetDarkModePreference()
+    public DarkModePreferenceCm? GetDarkModePreference()
     {
-        var realm = await localStorage.GetDarkModePreferenceRealm;
+        var realm = localStorage.GetDarkModePreferenceRealm;
         
-        return realm.All<DarkModePreferenceCm>().FirstOrDefault();
+        var preference = realm.All<DarkModePreferenceCm>().FirstOrDefault();
+        
+        realm.Dispose();
+
+        return preference;
     }
 }

@@ -1,13 +1,13 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DomainModels;
-using QuoteDetails.Interfaces;
 using Repository = QuoteRepository.QuoteRepository;
 
 namespace QuoteDetails.ViewModels;
 
 [QueryProperty(nameof(QuoteId), "QuoteId")]
-public partial class QuoteDetailsViewModel(Repository quoteRepository, INavigationService navigationService) : ObservableObject
+public partial class QuoteDetailsViewModel(Repository quoteRepository, Func<Task> onAuthenticationError)
+    : ObservableObject
 {
     [ObservableProperty] private int _quoteId;
     public QuoteDetailsState? QuoteDetailsState { get; private set; }
@@ -82,10 +82,7 @@ public partial class QuoteDetailsViewModel(Repository quoteRepository, INavigati
     }
 
     [RelayCommand]
-    private async Task OnAuthenticationError()
-    {
-        await navigationService.GoToAsync("");  // Todo: Navigate to SignIn Page
-    }
-    
+    private async Task OnAuthenticationError() => await onAuthenticationError();
+
     // Todo: Add Logic to pass back Quote onNavigateBack
 }

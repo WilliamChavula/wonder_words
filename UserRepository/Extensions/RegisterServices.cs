@@ -2,7 +2,7 @@ namespace UserRepository.Extensions;
 
 public static class RegisterServices
 {
-    public static MauiAppBuilder RegisterUserRepositoryServices(this MauiAppBuilder mauiAppBuilder)
+    public static MauiAppBuilder UseUserRepositoryServices(this MauiAppBuilder mauiAppBuilder)
     {
         mauiAppBuilder.Services.AddSingleton<IUserSecureStorage, UserSecureStorage>();
         mauiAppBuilder.Services.AddSingleton<UserRepository>();

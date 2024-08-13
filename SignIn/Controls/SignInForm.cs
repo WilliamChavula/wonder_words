@@ -15,6 +15,7 @@ internal class SignInForm : ContentView
 {
     internal SignInForm(SignInViewModel viewModel)
     {
+        var context = Application.Current?.MainPage?.Handler?.MauiContext?.Services.GetService<SignInViewModel>();
         BindingContext = viewModel;
 
 

@@ -1,7 +1,8 @@
+using Maui.Wonder.Words.Interfaces;
+
 namespace Maui.Wonder.Words.Services;
 
-public class NavigationService 
-    : ForgotMyPassword.Interfaces.INavigationService, ProfileMenu.Interfaces.INavigationService, QuoteDetails.Interfaces.INavigationService
+public class NavigationService : INavigationService
 {
     private static NavigationService? _instance;
 

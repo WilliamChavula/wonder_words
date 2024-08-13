@@ -41,13 +41,7 @@
 
     <ItemGroup>
       <None Remove="Resources\Images\closing-quote.svg" />
-      <MauiImage Include="Resources\Images\closing-quote.svg">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </MauiImage>
       <None Remove="Resources\Images\opening-quote.svg" />
-      <MauiImage Include="Resources\Images\opening-quote.svg">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </MauiImage>
     </ItemGroup>
 
 </Project>

@@ -55,10 +55,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <MauiImage Include="Resources\Images\closing-quote.svg">
+      <MauiImage Include="Resources\Images\closing_quote.svg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </MauiImage>
-      <MauiImage Include="Resources\Images\opening-quote.svg">
+      <MauiImage Include="Resources\Images\opening_quote.svg">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </MauiImage>
     </ItemGroup>

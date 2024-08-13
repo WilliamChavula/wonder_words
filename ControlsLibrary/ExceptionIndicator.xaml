@@ -12,7 +12,6 @@
     x:Name="ExceptionIndicatorView">
 
     <uranium:StatefulContentView.Resources>
-        <ResourceDictionary Source="Resources/Styles/AppTheme.xaml" />
         <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
     </uranium:StatefulContentView.Resources>
 
@@ -26,23 +25,23 @@
                 <FontImageSource Glyph="{x:Static icons:MaterialOutlined.Error}" Size="48" />
             </Image.Source>
         </Image>
-        <BoxView Height="{StaticResource XxLargeSpacing}" />
+        <BoxView HeightRequest="{StaticResource XxLargeSpacing}" />
         <Label
             x:Name="TitleLabel"
             FontAttributes="Bold"
             FontSize="{StaticResource MediumLarge}"
             HorizontalTextAlignment="Center" />
-        <BoxView Height="16" />
+        <BoxView HeightRequest="16" />
         <Label
             x:Name="MessageLabel"
             FontAttributes="Bold"
             FontSize="{StaticResource MediumLarge}"
             HorizontalTextAlignment="Center" />
-        <BoxView Height="{StaticResource XxxLargeSpacing}" IsVisible="{Binding OnTryAgain, Converter={StaticResource IsNotNullConverter}}" />
+        <BoxView HeightRequest="{StaticResource XxxLargeSpacing}" IsVisible="{Binding OnTryAgain, Converter={StaticResource IsNotNullConverter}}" />
         <local:ExpandedElevatedButton
             Icon="{x:Static icons:MaterialRounded.Refresh}"
             IsVisible="{Binding OnTryAgain, Converter={StaticResource IsNotNullConverter}}"
             OnTap="{Binding OnTryAgain}"
-            TextLabel="{x:Static res:Resources. exceptionIndicatorTryAgainButton}" />
+            TextLabel="{x:Static res:Resources.exceptionIndicatorTryAgainButton}" />
     </VerticalStackLayout>
 </uranium:StatefulContentView>

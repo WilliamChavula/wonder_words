@@ -4,55 +4,53 @@ namespace QuoteRepository;
 
 public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
 {
-    public async Task UpsertQuoteListPage(QuoteListPageCm quoteListPage, bool favoritesOnly)
+    public void UpsertQuoteListPage(QuoteListPageCm quoteListPage, bool favoritesOnly)
     {
-        var realm = await (favoritesOnly
+        var realm = (favoritesOnly
             ? localStorage.GetFavoriteQuoteListPageRealm
             : localStorage.GetQuoteListPageRealm);
 
-        await realm.WriteAsync(() => { realm.Add(quoteListPage); });
+        realm.Write(() => { realm.Add(quoteListPage); });
     }
 
-    public async Task ClearQuoteListPageList(bool favoritesOnly)
+    public void ClearQuoteListPageList(bool favoritesOnly)
     {
-        var realm = await (favoritesOnly
-            ? localStorage.GetFavoriteQuoteListPageRealm
-            : localStorage.GetQuoteListPageRealm);
+        var realm = localStorage.GetFavoriteQuoteListPageRealm;
 
-        await realm.WriteAsync(() => { realm.RemoveAll(); });
+        realm.Write(() => { realm.RemoveAll(); });
     }
 
     public async Task Clear()
     {
-        await Task.WhenAll([FavoriteRealmLambda(), QuoteListRealmLambda()]);
+        await Task.WhenAll([OnFavoriteRealmLambda(), OnQuoteListRealmLambda()]);
         return;
 
-        async Task QuoteListRealmLambda()
+        Task OnQuoteListRealmLambda() => Task.Run(() =>
         {
-            var quoteListRealm = await localStorage.GetQuoteListPageRealm;
-            await quoteListRealm.WriteAsync(() => { quoteListRealm.RemoveAll(); });
-        }
+            var quoteListRealm = localStorage.GetQuoteListPageRealm;
+            quoteListRealm.Write(() => { quoteListRealm.RemoveAll(); });
+        });
 
-        async Task FavoriteRealmLambda()
+        Task OnFavoriteRealmLambda() => Task.Run(() =>
         {
-            var favoriteRealm = await localStorage.GetFavoriteQuoteListPageRealm;
-            await favoriteRealm.WriteAsync(() => { favoriteRealm.RemoveAll(); });
-        }
+            var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
+            favoriteRealm.WriteAsync(() => { favoriteRealm.RemoveAll(); });
+        });
     }
 
-    public async Task<QuoteListPageCm?> GetQuoteListPage(int pageNumber, bool favoritesOnly)
+    public QuoteListPageCm? GetQuoteListPage(int pageNumber, bool favoritesOnly)
     {
-        var realm = await (favoritesOnly
+        var realm = favoritesOnly
             ? localStorage.GetFavoriteQuoteListPageRealm
-            : localStorage.GetQuoteListPageRealm);
+            : localStorage.GetQuoteListPageRealm;
 
-        return realm.All<QuoteListPageCm>().FirstOrDefault(quote => quote.PageNumber == pageNumber);
+        return null; //realm.All<QuoteListPageCm>().FirstOrDefault(quote => quote.PageNumber == pageNumber);
     }
 
-    public async Task<QuoteCm?> GetQuote(int id)
+    public QuoteCm? GetQuote(int id)
     {
-        var quoteListRealm = await localStorage.GetQuoteListPageRealm;
-        var favoriteRealm = await localStorage.GetFavoriteQuoteListPageRealm;
+        var quoteListRealm = localStorage.GetQuoteListPageRealm;
+        var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
 
         var quoteList = quoteListRealm.All<QuoteListPageCm>().ToList();
         var favoritesList = favoriteRealm.All<QuoteListPageCm>().ToList();
@@ -65,11 +63,11 @@ public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
         return completeList;
     }
 
-    public async Task UpdateQuote(QuoteCm updatedQuote, bool shouldUpdateFavorites)
+    public void UpdateQuote(QuoteCm updatedQuote, bool shouldUpdateFavorites)
     {
         List<Task> tasks = [];
-        var quoteListRealm = await localStorage.GetQuoteListPageRealm;
-        var favoriteRealm = await localStorage.GetFavoriteQuoteListPageRealm;
+        var quoteListRealm = localStorage.GetQuoteListPageRealm;
+        var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
 
         var pageList = quoteListRealm.All<QuoteListPageCm>();
 
@@ -107,7 +105,7 @@ public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
             }));
         }
 
-        await Task.WhenAll(tasks);
+        Task.WhenAll(tasks);
     }
 }
 

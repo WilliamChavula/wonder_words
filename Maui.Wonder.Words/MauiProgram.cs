@@ -7,10 +7,10 @@ using Microsoft.Extensions.Logging;
 using QuoteList.Extensions;
 using SignIn.Extensions;
 using SignUp.Extensions;
+using UpdateProfile.Extensions;
 using UserRepository.Extensions;
 
 namespace Maui.Wonder.Words;
-
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
@@ -23,15 +23,18 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("MaterialIconsOutlined-Regular.otf", "MaterialIconsRegular");
+                fonts.AddFont("MaterialIconsRound-Regular.otf", "MaterialIconsRound");
                 ConfigureControlsLibrary.AddMaterialFontImage(fonts);
             })
-            .RegisterUserRepositoryServices()
-            .ConfigureForgotMyPasswordServices()
-            .UseControlsLibrary()
-            .UseQuotesDetail()
-            .UseQuotesList()
-            .UseSignIn()
-            .UseSignUp();
+            .UseUserRepositoryServices();
+
+        builder.Services.AddSingleton<QuotesApi.UserTokenSupplier>(provider =>
+        {
+            var userRepository = provider.GetRequiredService<UserRepository.Services.IUserSecureStorage>();
+
+            return userRepository.GetUserToken;
+        });
 
         builder.Services.AddSingleton<QuotesApi.QuotesApi>();
         builder.Services.AddSingleton<QuoteRepository.QuoteRepository>();
@@ -39,16 +42,15 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<NavigationService>();
 
-        builder.Services.AddSingleton<ForgotMyPassword.Interfaces.INavigationService>(
-            x => x.GetService<NavigationService>()!
-        );
-        builder.Services.AddSingleton<ProfileMenu.Interfaces.INavigationService>(
-            x => x.GetService<NavigationService>()!
-        );
-
-        builder.Services.AddSingleton<QuoteDetails.Interfaces.INavigationService>(
-            x => x.GetService<NavigationService>()!
-        );
+        builder
+            .RegisterScreens(NavigationService.GetInstance())
+            .UseControlsLibrary()
+            // .UseForgotMyPasswordServices()
+            .UseQuotesList();
+        // .UseQuotesDetail()
+        // .UseSignIn()
+        // .UseSignUp()
+        // .UseUpdateProfile();
 
 #if DEBUG
         builder.Logging.AddDebug();

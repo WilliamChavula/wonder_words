@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using CommunityToolkit.Maui.Converters;
 using CommunityToolkit.Maui.Markup;
+using ControlsLibrary.Resources.Styles;
 using Microsoft.Maui.Controls.Shapes;
 using Microsoft.Maui.Layouts;
 using UraniumUI.Icons.MaterialSymbols;
@@ -77,20 +78,14 @@ public class QuoteCard : StatefulContentView
 
     public QuoteCard()
     {
-        Resources.MergedDictionaries.Add(new ResourceDictionary
-        {
-            Source = new Uri("Resources/Styles/Spacing.xaml", UriKind.RelativeOrAbsolute)
-        });
-        Resources.MergedDictionaries.Add(new ResourceDictionary
-        {
-            Source = new Uri("Resources/Styles/Sizes.xaml", UriKind.RelativeOrAbsolute)
-        });
+        
+        Resources.MergedDictionaries.Add(new Styles());
 
         _ = Resources.TryGetValue("MediumSpacing", out var mediumSp);
         _ = Resources.TryGetValue("XLargeSpacing", out var xLarge);
         _ = Resources.TryGetValue("Large", out var fontLarge);
 
-        StyleClass.Add("Elevation1");
+        // StyleClass.Add("Elevation1");
         Margin = new Thickness(0);
 
         Content = new Border

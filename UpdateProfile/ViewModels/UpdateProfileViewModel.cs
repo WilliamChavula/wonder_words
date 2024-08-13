@@ -7,16 +7,15 @@ using Email = FormFields.Inputs.Email;
 using UserRepo = UserRepository.UserRepository;
 
 namespace UpdateProfile.ViewModels;
-
-public partial class UpdateProfileViewModel : ObservableObject
+public partial class UpdateProfileViewModel : ObservableObject, IQueryAttributable
 {
     private readonly UserRepo _userRepository;
-    public UpdateProfileViewModel(Email email, Username username, UserRepo userRepository)
+    private readonly Func<Task> _onUpdateProfileSuccess;
+    public UpdateProfileViewModel(UserRepo userRepository, Func<Task> onUpdateProfileSuccess)
     {
         _userRepository = userRepository;
-        _email = email;
-        _username = username;
-        
+        _onUpdateProfileSuccess = onUpdateProfileSuccess;
+
         FetchUser();
     }
     
@@ -147,6 +146,9 @@ public partial class UpdateProfileViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private async Task OnUpdateProfileSuccess() => await _onUpdateProfileSuccess();
+
     private async void FetchUser()
     {
         await foreach (var user in _userRepository.GetUser())
@@ -156,5 +158,11 @@ public partial class UpdateProfileViewModel : ObservableObject
             Username = new Username(user.Username);
             Email = new Email(user.Email);
         }
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        Email = (query["Email"] as Email)!;
+        Username = (query["Username"] as Username)!;
     }
 }

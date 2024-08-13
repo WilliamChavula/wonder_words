@@ -2,16 +2,13 @@ using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Markup;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using ControlsLibrary;
 using ControlsLibrary.Resources.Styles;
 using DomainModels;
-using Microsoft.Maui.Layouts;
 using QuoteList.Controls;
 using QuoteList.ViewModels;
-using FlexLayout = Microsoft.Maui.Controls.Compatibility.FlexLayout;
 using L10n = QuoteList.Resources.Resources;
 using SearchBar = Microsoft.Maui.Controls.SearchBar;
 
@@ -35,12 +32,13 @@ public class QuoteListPage : ContentPage
 
         viewModel.EncounteredRefreshError += RefreshErrorStateListener;
         viewModel.EncounteredFavoriteToggleError += FavoriteToggleErrorStateListener;
-        
+
         var searchBar = new SearchBar
         {
             Placeholder = "Search...",
             HorizontalOptions = LayoutOptions.Fill,
-            VerticalTextAlignment = TextAlignment.Center
+            VerticalTextAlignment = TextAlignment.Center,
+            BackgroundColor = Colors.White
         };
         searchBar.SetBinding(SearchBar.TextProperty, new Binding("SearchTerm", BindingMode.TwoWay));
 
@@ -60,26 +58,32 @@ public class QuoteListPage : ContentPage
                 typeof(QuoteListViewModel)),
             Path = "QuoteListRefreshedCommand",
         });
-        refreshView.Grow(1);
 
-        Content = new FlexLayout
+        var grid = new Grid
         {
-            Direction = FlexDirection.Column,
-            Children =
+            BackgroundColor = Colors.White,
+            RowDefinitions =
             {
-                new Border
-                {
-                    Padding = new Thickness
-                    {
-                        Left = (double)Resources["MediumLargeSpacing"],
-                        Right = (double)Resources["MediumLargeSpacing"]
-                    },
-                    Content = searchBar
-                },
-                new FilterHorizontalList(),
-                refreshView
+                new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) },
+                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
             }
         };
+        grid.Add(new Border
+        {
+            Padding = new Thickness
+            {
+                Left = 16,
+                Right = 16
+            },
+            Content = searchBar
+        });
+
+        grid.Add(new FilterHorizontalList(), 0, 1);
+
+        grid.Add(refreshView, 0, 2);
+
+        Content = grid;
     }
 
     private static void FavoriteToggleErrorStateListener(object? sender, EventArgs e)

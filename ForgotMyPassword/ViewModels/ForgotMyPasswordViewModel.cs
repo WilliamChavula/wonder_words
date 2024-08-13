@@ -2,30 +2,32 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.Input;
-
 using Email = FormFields.Inputs.Email;
-using ForgotMyPassword.Interfaces;
-using ForgotMyPassword.ViewModels;
 using FormFields.Inputs;
 
-namespace ForgotMyPassword;
+namespace ForgotMyPassword.ViewModels;
 
 public partial class ForgotMyPasswordViewModel : ObservableObject
 {
     private readonly UserRepository.UserRepository _userRepository;
-    private readonly INavigationService _navigationService;
+    private readonly Func<Task> _onCancelTap;
+    private readonly Func<Task> _onEmailRequestSuccess;
 
-    [ObservableProperty] private ViewModels.ForgotMyPasswordState _state = new();
+    [ObservableProperty] private ForgotMyPasswordState _state = new();
     [ObservableProperty] private bool _isSubmissionInProgress;
     [ObservableProperty] private EmailValidationError? _emailError;
     [ObservableProperty] private bool _isEntryFieldEmptyError;
     [ObservableProperty] private bool _isSubmissionStatusError;
 
-    public ForgotMyPasswordViewModel(UserRepository.UserRepository userRepository,
-        INavigationService navigationService)
+    public ForgotMyPasswordViewModel(
+        UserRepository.UserRepository userRepository,
+        Func<Task> onCancelTap,
+        Func<Task> onEmailRequestSuccess
+    )
     {
         _userRepository = userRepository;
-        _navigationService = navigationService;
+        _onCancelTap = onCancelTap;
+        _onEmailRequestSuccess = onEmailRequestSuccess;
         IsSubmissionInProgress = State.SubmissionStatus == SubmissionStatus.InProgress;
         EmailError = State.Email.IsNotValid ? State.Email.Error : null;
         IsEntryFieldEmptyError = EmailError == EmailValidationError.Empty;
@@ -88,15 +90,15 @@ public partial class ForgotMyPasswordViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task OnCancelTap() => await _navigationService.GoBackAsync();
+    private async Task OnCancelTap() => await _onCancelTap();
 
     [RelayCommand]
-    private async Task OnEmailRequestSuccess() => await _navigationService.GoBackAsync();
+    private async Task OnEmailRequestSuccess() => await _onEmailRequestSuccess();
 
-    async partial void OnStateChanged(ViewModels.ForgotMyPasswordState value)
+    async partial void OnStateChanged(ForgotMyPasswordState value)
     {
         if (value.SubmissionStatus != SubmissionStatus.Success) return;
-        
+
         var snackbarOptions = new SnackbarOptions
         {
             BackgroundColor = Colors.GhostWhite,
@@ -115,6 +117,5 @@ public partial class ForgotMyPasswordViewModel : ObservableObject
         await snackbar.Show();
 
         EmailRequestSuccessCommand.Execute(null);
-
     }
 }

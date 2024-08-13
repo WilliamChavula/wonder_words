@@ -1,4 +1,5 @@
 using ControlsLibrary;
+using ControlsLibrary.Resources.Styles;
 using DomainModels;
 using QuoteList.Converters;
 using QuoteList.Extensions;
@@ -11,19 +12,38 @@ public class TagChip : ContentView
 {
     public static readonly BindableProperty TagNameProperty = BindableProperty.Create(
         nameof(TagName),
-        typeof(Tag),
-        typeof(TagChip)
+        typeof(string),
+        typeof(TagChip),
+        propertyChanged: TagNamePropertyChanged
     );
 
-    public static readonly BindableProperty SelectedTagProperty = BindableProperty.Create(
+    private static readonly BindableProperty SelectedTagProperty = BindableProperty.Create(
         nameof(SelectedTag),
         typeof(Tag),
-        typeof(TagChip)
+        typeof(TagChip),
+        propertyChanged: SelectedTagPropertyChanged
     );
 
-    public Tag TagName
+    private static void TagNamePropertyChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        get => (Tag)GetValue(TagNameProperty);
+        var cls = (TagChip)bindable;
+        
+        var last = ((Tag[])Enum.GetValues(typeof(Tag))).Last();
+
+        cls._isLastTag = last.ToLocalizedString() == cls.TagName;
+    }
+
+    private static void SelectedTagPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var cls = (TagChip)bindable;
+
+        cls._isSelected = cls.TagName == cls.SelectedTag.ToLocalizedString();
+        cls._selectedTag = cls.SelectedTag;
+    }
+
+    public string TagName
+    {
+        get => (string)GetValue(TagNameProperty);
         set => SetValue(TagNameProperty, value);
     }
 
@@ -33,24 +53,29 @@ public class TagChip : ContentView
         set => SetValue(SelectedTagProperty, value);
     }
 
+    private bool _isLastTag;
+    private bool _isSelected;
+    private Tag _selectedTag;
+
     public TagChip()
     {
-        var isLastTag = ((Tag[])Enum.GetValues(typeof(Tag))).Last() == TagName;
-        var isSelected = SelectedTag == TagName;
+        Resources.MergedDictionaries.Add(new Styles());
 
-        var choiceChip = new RoundedChoiceChip
+        var choiceChip = new RoundedChoiceChip();
+        choiceChip.SetBinding(RoundedChoiceChip.LabelTextProperty, new Binding
         {
-            LabelText = TagName.ToLocalizedString()
-        };
+            Source = this,
+            Path = nameof(TagName)
+        });
         choiceChip.SetBinding(RoundedChoiceChip.IsSelectedProperty, new Binding
         {
             Source = new RelativeBindingSource(RelativeBindingSourceMode.FindAncestorBindingContext,
                 typeof(QuoteListViewModel)),
             Path = "Tag",
             Converter = new IsTagSelectedBoolConverter(),
-            ConverterParameter = SelectedTag
+            ConverterParameter = _selectedTag
         });
-        choiceChip.SetBinding(RoundedChoiceChip.OnSelectedProperty, new Binding
+        choiceChip.SetBinding(RoundedChoiceChip.SelectCommandProperty, new Binding
         {
             Source = new RelativeBindingSource(
                 RelativeBindingSourceMode.FindAncestorBindingContext,
@@ -58,12 +83,15 @@ public class TagChip : ContentView
             ),
             Path = "QuoteListTagChangedCommand",
         });
-        choiceChip.SetBinding(StatefulContentView.CommandParameterProperty, isSelected ? nameof(TagName) : null);
+        choiceChip.SetBinding(StatefulContentView.CommandParameterProperty, new Binding
+        {
+            Source = this,
+            Path = _isSelected ? nameof(TagName) : null
+        });
 
         Padding = new Thickness
         {
-            Right = isLastTag ? (double)Resources["MediumLargeSpacing"] : (double)Resources["XSmallSpacing"],
-            Left = (double)Resources["MediumLargeSpacing"]
+            Right = _isLastTag ? (double)Resources["MediumLargeSpacing"] : (double)Resources["XSmallSpacing"]
         };
 
         Content = choiceChip;

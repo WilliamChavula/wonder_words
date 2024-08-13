@@ -9,7 +9,7 @@ public partial class QuoteDetailsState : ObservableObject
     
     [ObservableProperty] private bool _inProgress;
     [ObservableProperty] private Quote? _quote;
-    [ObservableProperty] private dynamic? _quoteUpdateError;
+    [ObservableProperty] private Exception? _quoteUpdateError;
     [ObservableProperty] private bool _quoteDetailFailed;
 
     public void StateChangedEvent(EventArgs eventArgs)

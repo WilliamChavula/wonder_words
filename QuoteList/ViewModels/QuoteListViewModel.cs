@@ -5,6 +5,7 @@ using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DomainModels;
+using QuoteList.Delegates;
 using QuoteRepository;
 using QuoteRepo = QuoteRepository.QuoteRepository;
 using UserRepo = UserRepository.UserRepository;
@@ -15,10 +16,10 @@ public partial class QuoteListViewModel : ObservableObject
 {
     [ObservableProperty] private IList<Quote> _itemList = new ObservableCollection<Quote>();
     [ObservableProperty] private int? _nextPage;
-    [ObservableProperty] private dynamic? _error;
+    [ObservableProperty] private Exception? _error;
     [ObservableProperty] private QuoteListFilter _filter;
-    [ObservableProperty] private dynamic? _refreshError;
-    [ObservableProperty] private dynamic? _favoriteToggleError;
+    [ObservableProperty] private Exception? _refreshError;
+    [ObservableProperty] private Exception? _favoriteToggleError;
     [ObservableProperty] private string? _searchTerm;
     [ObservableProperty] private Tag? _tag;
     [ObservableProperty] private bool _isRefreshing;
@@ -26,15 +27,24 @@ public partial class QuoteListViewModel : ObservableObject
     private string? _authenticatedUsername;
     private readonly QuoteRepo _quoteRepository;
     private readonly UserRepo _userRepository;
+    private readonly QuoteSelectedDelegate _onQuoteSelected;
+    private readonly AuthenticationErrorDelegate _onAuthenticationError;
 
     public event EventHandler? EncounteredRefreshError;
     public event EventHandler? EncounteredFavoriteToggleError;
 
     /// <inheritdoc/>
-    public QuoteListViewModel(QuoteRepo quoteRepository, UserRepo userRepository)
+    public QuoteListViewModel(
+        QuoteRepo quoteRepository,
+        UserRepo userRepository,
+        QuoteSelectedDelegate onQuoteSelectedFunc,
+        AuthenticationErrorDelegate onAuthenticationError
+    )
     {
         _quoteRepository = quoteRepository;
         _userRepository = userRepository;
+        _onQuoteSelected = onQuoteSelectedFunc;
+        _onAuthenticationError = onAuthenticationError;
 
         OnQuoteListUsernameObtained();
 
@@ -122,14 +132,10 @@ public partial class QuoteListViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void OnAuthenticationError()
-    {
-    }
+    private async Task OnAuthenticationError() => await _onAuthenticationError();
 
     [RelayCommand]
-    private void OnQuoteSelected()
-    {
-    }
+    private async Task OnQuoteSelected(string quoteId) => await _onQuoteSelected(quoteId);
 
     [RelayCommand]
     private async Task QuoteListItemFavoriteToggled(Quote item)
@@ -215,9 +221,11 @@ public partial class QuoteListViewModel : ObservableObject
     }
 
 
-    // QuoteListItemUpdated: Used when the user taps a quote and modifies it on
-    // that quote’s details screen — favoriting it, unfavoriting, upvoting, etc. You
-    // need this event so you can reflect that change on the home screen as well
+    ///<summary>
+    /// <see cref="QuoteListItemUpdated" />: Used when the user taps a quote and modifies it on
+    /// that quote’s details screen — favoriting it, unfavoriting, upvoting, etc. You
+    /// need this event so you can reflect that change on the home screen as well
+    /// </summary>
     [RelayCommand]
     private void QuoteListItemUpdated(Quote updatedQuote)
     {

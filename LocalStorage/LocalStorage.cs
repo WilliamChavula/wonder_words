@@ -3,20 +3,20 @@ using Realms;
 
 namespace LocalStorage;
 
-public abstract class LocalStorage
+public class LocalStorage
 {
-    private const string QuoteListPagesRealmKey = "quote-list-pages.realm";
+    private const string QuoteListPagesRealmKey = "quote-list-pages";
     private const string FavoriteQuoteListPagesRealmKey = "favorite-quote-list-pages";
     private const string DarkModePreferenceRealmKey = "dark-mode-preference";
 
-    public Task<Realm> GetFavoriteQuoteListPageRealm => GetInstance(FavoriteQuoteListPagesRealmKey);
-    public Task<Realm> GetDarkModePreferenceRealm => GetInstance(DarkModePreferenceRealmKey);
-    public Task<Realm> GetQuoteListPageRealm => GetInstance(QuoteListPagesRealmKey);
+    public Realm GetFavoriteQuoteListPageRealm => GetInstance(FavoriteQuoteListPagesRealmKey);
+    public Realm GetDarkModePreferenceRealm => GetInstance(DarkModePreferenceRealmKey);
+    public Realm GetQuoteListPageRealm => GetInstance(QuoteListPagesRealmKey);
 
-    private static Task<Realm> GetInstance(string realmName)
+    private static Realm GetInstance(string realmName)
     {
-        var config = new RealmConfiguration(realmName);
+        var config = new RealmConfiguration("quote-list-pages");
 
-        return Realm.GetInstanceAsync(config);
+        return Realm.GetInstance(config);
     }
 }

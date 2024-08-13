@@ -8,7 +8,12 @@ using UserRepo = UserRepository.UserRepository;
 
 namespace SignIn.ViewModels;
 
-public partial class SignInViewModel(UserRepo userRepository) : ObservableObject
+public partial class SignInViewModel(
+    UserRepo userRepository,
+    Func<Task> onSignInSuccess,
+    Func<Task> onSignUpTap,
+    Func<Task> onForgotMyPasswordTap
+) : ObservableObject
 {
     [ObservableProperty] private Email _email = new(string.Empty);
     [ObservableProperty] private Password _password = new(string.Empty);
@@ -63,7 +68,7 @@ public partial class SignInViewModel(UserRepo userRepository) : ObservableObject
             {
                 await userRepository.SignIn(email.Value, password.Value);
                 SubmissionStatus = SubmissionStatus.Success;
-                
+
                 // Todo: Navigate to previous page
             }
             catch (Exception e)
@@ -76,15 +81,13 @@ public partial class SignInViewModel(UserRepo userRepository) : ObservableObject
     }
 
     [RelayCommand]
-    private void OnSignUpTap()
-    {
-        // Todo: Navigate to previous page
-    }
+    private async Task OnSignUpTap() => await onSignUpTap();
 
     [RelayCommand]
-    private void OnForgotPasswordTap()
-    {
-    }
+    private async Task OnSignInSuccess() => await onSignInSuccess();
+
+    [RelayCommand]
+    private async Task OnForgotPasswordTap() => await onForgotMyPasswordTap();
 }
 
 public enum SubmissionStatus

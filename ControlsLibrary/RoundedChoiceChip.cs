@@ -1,7 +1,7 @@
 using System.Windows.Input;
 using CommunityToolkit.Maui.Views;
+using ControlsLibrary.Resources.Styles;
 using Microsoft.Maui.Controls.Shapes;
-using UraniumUI.Resources;
 using UraniumUI.Views;
 
 namespace ControlsLibrary;
@@ -20,10 +20,10 @@ public class RoundedChoiceChip : StatefulContentView
         set => SetValue(AvatarProperty, value);
     }
 
-    public ICommand? OnSelected
+    public ICommand? SelectCommand
     {
-        get => (ICommand)GetValue(OnSelectedProperty);
-        set => SetValue(OnSelectedProperty, value);
+        get => (ICommand)GetValue(SelectCommandProperty);
+        set => SetValue(SelectCommandProperty, value);
     }
 
     public Color? LabelColor
@@ -59,8 +59,15 @@ public class RoundedChoiceChip : StatefulContentView
     public static readonly BindableProperty LabelTextProperty = BindableProperty.Create(
         nameof(LabelText),
         typeof(string),
-        typeof(RoundedChoiceChip)
+        typeof(RoundedChoiceChip),
+        propertyChanged: LabelTextPropertyChanged
     );
+
+    private static void LabelTextPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var cls = (RoundedChoiceChip)bindable;
+        cls.LabelText = (string)newValue;
+    }
 
     public static readonly BindableProperty AvatarProperty = BindableProperty.Create(
         nameof(Avatar),
@@ -68,8 +75,8 @@ public class RoundedChoiceChip : StatefulContentView
         typeof(RoundedChoiceChip)
     );
 
-    public static readonly BindableProperty OnSelectedProperty = BindableProperty.Create(
-        nameof(OnSelected),
+    public static readonly BindableProperty SelectCommandProperty = BindableProperty.Create(
+        nameof(SelectCommand),
         typeof(ICommand),
         typeof(RoundedChoiceChip)
     );
@@ -113,39 +120,70 @@ public class RoundedChoiceChip : StatefulContentView
 
     public RoundedChoiceChip()
     {
-        Content = new Border
+        Resources.MergedDictionaries.Add(new Styles());
+
+        var label = new Label
         {
-            BackgroundColor = IsSelected ? SelectedBackgroundColor : ChipBackgroundColor,
+            HorizontalTextAlignment = TextAlignment.Center,
+            VerticalTextAlignment = TextAlignment.Center,
+            FontSize = 14
+        };
+
+        if (IsSelected)
+            label.SetAppThemeColor(Label.TextColorProperty, 
+                SelectedLabelColor ?? (Color)Resources["Background"], 
+                SelectedLabelColor ?? (Color)Resources["BackgroundDark"]);
+        else
+            label.SetAppThemeColor(Label.TextColorProperty, 
+                LabelColor ?? (Color)Resources["OnBackground"], 
+                LabelColor ?? (Color)Resources["OnBackgroundDark"]);
+        
+        label.SetBinding(Label.TextProperty, new Binding
+        {
+            Source = this,
+            Path = nameof(LabelText)
+        });
+
+        var imgView = new Border { Stroke = Colors.Transparent };
+        imgView.SetBinding(Border.ContentProperty, new Binding
+        {
+            Source = this,
+            Path = nameof(Avatar)
+        });
+
+        var content =  new Border
+        {
+            Padding = new Thickness { Left = 4, Right = 8 },
+            HorizontalOptions = LayoutOptions.Center,
             StrokeShape = new RoundRectangle
             {
-                CornerRadius = 20,
+                CornerRadius = new CornerRadius(16)
             },
             Content = new HorizontalStackLayout
             {
                 Spacing = 5,
+                HorizontalOptions = LayoutOptions.Center,
                 Children =
                 {
-                    Avatar,
-                    new Label
-                    {
-                        Text = LabelText,
-                        TextColor = IsSelected ? SelectedLabelColor ?? AssignColor() : LabelColor ?? AssignColor()
-                    }
+                    imgView,
+                    label
                 }
             }
         };
-
-        TappedCommand = OnSelected;
-        Tapped += (_, _) => { IsSelected = !IsSelected; };
-    }
-
-    private static Color AssignColor()
-    {
-        if (Application.Current != null && Application.Current.RequestedTheme == AppTheme.Dark)
+        content.SetBinding(BackgroundColorProperty, new Binding
         {
-            return ColorResource.GetColor("PrimaryDark", Colors.White);
-        }
+            Source = this,
+            Path = IsSelected ? nameof(SelectedBackgroundColor) : nameof(ChipBackgroundColor)
+        });
+        
+        Content = content;
 
-        return ColorResource.GetColor("Primary", Colors.Black);
+        // TappedCommand = SelectCommand;
+        this.SetBinding(TappedCommandProperty, new Binding
+        {
+            Source = this,
+            Path = nameof(SelectCommand)
+        });
+        Tapped += (_, _) => { IsSelected = !IsSelected; };
     }
 }

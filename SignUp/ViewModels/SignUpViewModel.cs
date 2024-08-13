@@ -7,7 +7,7 @@ using UserRepo = UserRepository.UserRepository;
 
 namespace SignUp.ViewModels;
 
-public partial class SignUpViewModel(UserRepo userRepository)
+public partial class SignUpViewModel(UserRepo userRepository, Func<Task> onSignUpSuccess)
 {
     [RelayCommand]
     private void OnEmailChanged(string newValue)
@@ -129,9 +129,5 @@ public partial class SignUpViewModel(UserRepo userRepository)
     }
 
     [RelayCommand]
-    private void OnSignUpSuccess()
-    {
-        // Todo: Implement Navigation
-        throw new NotImplementedException("Implement Navigation");
-    }
+    private async Task OnSignUpSuccess() => await onSignUpSuccess();
 }

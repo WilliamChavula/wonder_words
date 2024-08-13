@@ -7,19 +7,19 @@ using QuotesApi.Models.Response;
 
 namespace QuotesApi;
 
-public delegate Task<string?> UserTokenSupplier();
-
 public class QuotesApi
 {
     private const string ErrorCodeJsonKey = "error_code";
     private const string ErrorMessageJsonKey = "message";
 
-    public QuotesApi(UserTokenSupplier userTokenSupplier, HttpClient? httpClient, UrlBuilder? urlBuilder)
+    public QuotesApi(UserTokenSupplier userTokenSupplier)
     {
-        _urlBuilder = urlBuilder ?? new UrlBuilder();
+        _urlBuilder = new UrlBuilder();
 
-        _client = httpClient ??
-                  new HttpClient(new RequestInterceptHandler(new HttpClientHandler(), userTokenSupplier));
+        _client = new HttpClient(new RequestInterceptHandler(new HttpClientHandler(), userTokenSupplier))
+        {
+            Timeout = TimeSpan.FromSeconds(30)
+        };
         _client.SetupHeaders();
     }
 
@@ -171,7 +171,7 @@ public class QuotesApi
         return (string)jsonDict["User-Token"];
     }
 
-    public async Task UpdateProfile(string username, string email, string? password)
+    public async Task UpdateProfile(string username, string email, string password)
     {
         var url = _urlBuilder.BuildUpdateProfileUrl(username);
         var requestBody = new UpdateUserRequestRm
@@ -185,7 +185,7 @@ public class QuotesApi
         };
 
         using var response = await _client.PutAsJsonAsync(url, requestBody);
-        
+
         var jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse);
 
@@ -220,7 +220,7 @@ public static class HttpClientExtension
     public static void SetupHeaders(this HttpClient client)
     {
         var appToken = Environment.GetEnvironmentVariable(AppTokenEnvironmentVariableKey);
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Token token={appToken}");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", $"token=\"{appToken}\"");
     }
 }
 
@@ -233,10 +233,10 @@ public class RequestInterceptHandler(HttpMessageHandler innerHandler, UserTokenS
         CancellationToken cancellationToken)
     {
         var token = await UserToken();
-        
-        if(token is not null)
+
+        if (token is not null)
             request.Headers.Add("User-Token", token);
-        
+
         return await base.SendAsync(request, cancellationToken);
     }
 }

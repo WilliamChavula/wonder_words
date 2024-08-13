@@ -82,7 +82,7 @@ public class QuoteDetailsPage : ContentPage
                             WidthRequest = 46,
                             HorizontalOptions = LayoutOptions.Start,
                             VerticalOptions = LayoutOptions.Center,
-                            Source = ImageSource.FromFile("opening-quote.svg")
+                            Source = ImageSource.FromFile("opening_quote.svg")
                         },
 
                         new Label
@@ -104,7 +104,7 @@ public class QuoteDetailsPage : ContentPage
                         new Image
                         {
                             WidthRequest = 46,
-                            Source = "closing-quote.svg"
+                            Source = "closing_quote.svg"
                         },
 
                         new BoxView { HeightRequest = (double)Resources["MediumSpacing"] },

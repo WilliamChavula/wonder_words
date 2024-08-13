@@ -24,7 +24,7 @@
         <ApplicationTitle>Maui.Wonder.Words</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.quivr.developers.maui-wonder-words</ApplicationId>
+        <ApplicationId>com.quivr.developers.mauiwonderwords</ApplicationId>
 
         <!-- Versions -->
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -66,6 +66,7 @@
     <ItemGroup>
       <ProjectReference Include="..\ControlsLibrary\ControlsLibrary.csproj" />
       <ProjectReference Include="..\ForgotMyPassword\ForgotMyPassword.csproj" />
+      <ProjectReference Include="..\FormFields\FormFields.csproj" />
       <ProjectReference Include="..\LocalStorage\LocalStorage.csproj" />
       <ProjectReference Include="..\ProfileMenu\ProfileMenu.csproj" />
       <ProjectReference Include="..\QuoteDetails\QuoteDetails.csproj" />
@@ -74,14 +75,13 @@
       <ProjectReference Include="..\QuotesApi\QuotesApi.csproj" />
       <ProjectReference Include="..\SignIn\SignIn.csproj" />
       <ProjectReference Include="..\SignUp\SignUp.csproj" />
+      <ProjectReference Include="..\UpdateProfile\UpdateProfile.csproj" />
       <ProjectReference Include="..\UserRepository\UserRepository.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="GoogleService-Info.plist" />
-      <BundleResource Include="GoogleService-Info.plist" />
       <None Remove="google-services.json" />
-      <BundleResource Include="google-services.json" />
     </ItemGroup>
 
 </Project>

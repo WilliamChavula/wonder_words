@@ -13,7 +13,7 @@ public partial class SignUpViewModel : ObservableObject
     [ObservableProperty] private SubmissionStatus _submissionStatus = SubmissionStatus.Idle;
 }
 
-internal enum SubmissionStatus
+public enum SubmissionStatus
 {
     // Used when the form has not been sent yet.
     Idle,

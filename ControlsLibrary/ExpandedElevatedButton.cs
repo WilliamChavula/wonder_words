@@ -63,7 +63,7 @@ public partial class ExpandedElevatedButton : ContentView
     {
         var btn = new Button
         {
-            StyleClass = { "ElevatedButton" }
+            StyleClass = new List<string>(){ "ElevatedButton" }
         };
         btn.SetBinding(Button.TextProperty, nameof(TextLabel));
         btn.SetBinding(Button.CommandProperty, new Binding(nameof(OnTap)));

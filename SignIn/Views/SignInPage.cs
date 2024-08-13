@@ -1,49 +1,47 @@
 using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
+using ControlsLibrary.Resources.Styles;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
-using ScrollView = Microsoft.Maui.Controls.ScrollView;
-using SignUp.ViewModels;
-using ControlsLibrary.Resources.Styles;
-using SignUp.Controls;
+using SignIn.Controls;
+using SignIn.ViewModels;
+using L10n = SignIn.Resources.Resources;
 
-namespace SignUp.Views;
+namespace SignIn.Views;
 
-public class SignUpView : ContentPage
+public class SignInPage : ContentPage
 {
     [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
-    public SignUpView(SignUpViewModel viewModel)
+    public SignInPage(SignInViewModel viewModel)
     {
-        On<iOS>().SetUseSafeArea(true);
-        
         BindingContext = viewModel;
+        On<iOS>().SetUseSafeArea(true);
         Resources.MergedDictionaries.Add(new Styles());
 
-        var statusBar = new StatusBarBehavior
+        Behaviors.Add(new StatusBarBehavior
         {
             StatusBarColor = Colors.Black,
             StatusBarStyle = StatusBarStyle.LightContent
-        };
+        });
+
         var behavior = new EventToCommandBehavior
         {
             EventName = nameof(Unfocused),
             Command = new Command(Unfocus)
         };
-        
-        Behaviors.Add(statusBar);
         Behaviors.Add(behavior);
+        Title = L10n.appBarTitle;
 
-        Content = new ScrollView
+        Content = new Border
         {
-            Padding = new Thickness
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+            Content = new Microsoft.Maui.Controls.ScrollView // Normal import conflicting with ScrollView from iOS.
             {
-                Left = (double)Resources["MediumLargeSpacing"],
-                Right = (double)Resources["MediumLargeSpacing"],
-                Top = (double)Resources["MediumLargeSpacing"]
+                Padding = new Thickness((double)Resources["MediumLargeSpacing"], default),
+                Content = new SignInForm(viewModel)
             },
-            
-            Content = new SignUpForm(viewModel)
         };
     }
 }

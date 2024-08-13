@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using ControlsLibrary;
+using ControlsLibrary.Resources.Styles;
 using QuoteList.ViewModels;
 using UraniumUI.Views;
 
@@ -7,20 +8,21 @@ namespace QuoteList.Controls;
 
 public class QuotePagedGridView : ContentView
 {
-    public static readonly BindableProperty OnQuoteSelectedProperty = BindableProperty.Create(
-        nameof(OnQuoteSelected),
+    public static readonly BindableProperty QuoteSelectedCommandProperty = BindableProperty.Create(
+        nameof(QuoteSelectedCommand),
         typeof(ICommand),
         typeof(QuotePagedGridView)
     );
 
-    public ICommand OnQuoteSelected
+    public ICommand QuoteSelectedCommand
     {
-        get => (ICommand)GetValue(OnQuoteSelectedProperty);
-        set => SetValue(OnQuoteSelectedProperty, value);
+        get => (ICommand)GetValue(QuoteSelectedCommandProperty);
+        set => SetValue(QuoteSelectedCommandProperty, value);
     }
 
     public QuotePagedGridView()
     {
+        Resources.MergedDictionaries.Add(new Styles());
         Padding = new Thickness((double)Resources["MediumLargeSpacing"], default);
 
         var quoteCard = new QuoteCard
@@ -30,21 +32,20 @@ public class QuotePagedGridView : ContentView
                 WidthRequest = 46,
                 HorizontalOptions = LayoutOptions.Start,
                 VerticalOptions = LayoutOptions.Center,
-                Source = ImageSource.FromFile("opening-quote.svg")
+                Source = ImageSource.FromFile("opening_quote.svg")
             },
             Bottom = new Image
             {
                 WidthRequest = 46,
-                Source = "closing-quote.svg"
+                Source = "closing_quote.svg"
             },
         };
-
         var dataTemplate = new DataTemplate(() => quoteCard);
-        var emptyView = new ExceptionIndicator(); // Todo: Swap with a DataTemplateSelector
-        emptyView.SetBinding(
-            ExceptionIndicator.OnTryAgainProperty,
-            "BindingContext.QuoteListFailedFetchRetriedCommand"
-        );
+        // var emptyView = new ExceptionIndicator(); // Todo: Swap with a DataTemplateSelector
+        // emptyView.SetBinding(
+        //     ExceptionIndicator.OnTryAgainProperty,
+        //     "BindingContext.QuoteListFailedFetchRetriedCommand"
+        // );
 
         var collectionView = new CollectionView
         {
@@ -54,7 +55,10 @@ public class QuotePagedGridView : ContentView
                 VerticalItemSpacing = (double)Resources["MediumLargeSpacing"]
             },
             ItemTemplate = dataTemplate,
-            EmptyView = emptyView
+            EmptyView = new Label
+            {
+                Text = "No Results"
+            }
         };
         collectionView.SetBinding(ItemsView.ItemsSourceProperty, new Binding
         {
@@ -64,7 +68,7 @@ public class QuotePagedGridView : ContentView
             ),
             Path = "ItemList"
         });
-        collectionView.SetBinding(SelectableItemsView.SelectionChangedCommandProperty, nameof(OnQuoteSelected));
+        collectionView.SetBinding(SelectableItemsView.SelectionChangedCommandProperty, nameof(QuoteSelectedCommand));
 
         quoteCard.SetBinding(QuoteCard.StatementProperty, "Body");
         quoteCard.SetBinding(QuoteCard.AuthorProperty, "Author");
