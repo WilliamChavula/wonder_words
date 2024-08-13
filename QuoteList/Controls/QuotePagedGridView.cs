@@ -66,7 +66,7 @@ public class QuotePagedGridView : ContentView
                 quoteCard.SetBinding(QuoteCard.AuthorProperty, "Author");
                 quoteCard.SetBinding(
                     QuoteCard.IsFavoriteProperty,
-                    "UserInfo.IsFavorite",
+                    "IsFavorite",
                     converter: new IsNotNullConverter()
                 );
                 quoteCard.SetBinding(QuoteCard.FavoriteProperty, new Binding
