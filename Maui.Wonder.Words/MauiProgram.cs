@@ -11,6 +11,7 @@ using SignUp.Extensions;
 using UpdateProfile.Extensions;
 using UserRepository.Extensions;
 using System.Reflection;
+using Maui.Wonder.Words.Extensions;
 
 namespace Maui.Wonder.Words;
 public static class MauiProgram
@@ -20,19 +21,8 @@ public static class MauiProgram
 
         var builder = MauiApp.CreateBuilder();
 
-        var a = Assembly.GetExecutingAssembly();
-        using var stream = a.GetManifestResourceStream("Maui.Wonder.Words.appsettings.json");
-
-        ArgumentNullException.ThrowIfNull(stream, "File 'Maui.Wonder.Words.appsettings.json' not found in Assembly");
-
-        var config = new ConfigurationBuilder()
-                    .AddJsonStream(stream)
-                    .Build();
-
-
-        builder.Configuration.AddConfiguration(config);
-
         builder
+            .AddEnvironmentVariables()
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
