@@ -53,8 +53,8 @@ public static class MauiProgram
             .RegisterScreens(NavigationService.GetInstance())
             .UseControlsLibrary()
             // .UseForgotMyPasswordServices()
-            .UseQuotesList();
-        // .UseQuotesDetail()
+            .UseQuotesList()
+            .UseQuotesDetail();
         // .UseSignIn()
         // .UseSignUp()
         // .UseUpdateProfile();

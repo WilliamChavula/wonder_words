@@ -5,7 +5,7 @@ using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DomainModels;
-using QuoteList.Delegates;
+using DomainModels.Delegates;
 using QuoteRepository;
 using QuoteRepo = QuoteRepository.QuoteRepository;
 using UserRepo = UserRepository.UserRepository;
@@ -139,7 +139,11 @@ public partial class QuoteListViewModel : ObservableObject
     private async Task OnAuthenticationError() => await _onAuthenticationError();
 
     [RelayCommand]
-    private async Task OnQuoteSelected(string quoteId) => await _onQuoteSelected(quoteId);
+    private async Task OnQuoteSelected(Quote quote)
+    {
+        var id = quote.Id.ToString();
+        await _onQuoteSelected(quote.Id.ToString());
+    }
 
     [RelayCommand]
     private async Task QuoteListItemFavoriteToggled(Quote item)

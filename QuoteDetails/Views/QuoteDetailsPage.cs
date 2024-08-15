@@ -18,7 +18,8 @@ public class QuoteDetailsPage : ContentPage
     {
         On<iOS>().SetUseSafeArea(true);
         Resources.MergedDictionaries.Add(new Styles());
-        var quote = viewModel.QuoteDetailsState?.Quote;
+        // var quote = viewModel.QuoteDetailsState?.Quote;
+        BindingContext = viewModel;
 
         Behaviors.Add(new StatusBarBehavior
         {
@@ -28,28 +29,38 @@ public class QuoteDetailsPage : ContentPage
 
         // var command = (bool)quote?.IsFavorite! ? viewModel.UnVoteQuoteCommand : viewModel.UpVoteQuoteCommand;
 
-        viewModel.QuoteDetailsState!.OnStateChanged += StateChangeListener;
+        // viewModel.QuoteDetailsState!.OnStateChanged += StateChangeListener;
 
-        ToolbarItems.Add(new ToolbarItem
+        var fntSource = new FontImageSource();
+
+        // Glyph = (bool)quote?.IsFavorite! ? MaterialRounded.Favorite : MaterialOutlined.Favorite
+        // fntSource.SetBinding(FontImageSource.GlyphProperty, "");
+
+        var toolbarItem = new ToolbarItem
         {
-            IconImageSource = new FontImageSource
-            {
-                Glyph = (bool)quote?.IsFavorite! ? MaterialRounded.Favorite : MaterialOutlined.Favorite
-            },
-            Command = (bool)quote.IsFavorite! ? viewModel.UnVoteQuoteCommand : viewModel.UpVoteQuoteCommand
-        });
+            IconImageSource = fntSource,
 
-        ToolbarItems.Add(new ToolbarItem
+        };
+
+        // Command = (bool)quote.IsFavorite! ? viewModel.UnVoteQuoteCommand : viewModel.UpVoteQuoteCommand
+
+        // toolbarItem.SetBinding(ToolbarItem.CommandProperty, "");
+
+        // ToolbarItems.Add(toolbarItem);
+
+        var toolbarItem2 = new ToolbarItem
         {
             IconImageSource = new FontImageSource
             {
                 Glyph = MaterialRounded.Arrow_downward,
-                Color = (bool)quote.IsDownVoted!
-                    ? (Color)Resources["votedButtonColorDark"]
-                    : (Color)Resources["unVotedButtonColorDark"]
+                // Color = (bool)quote.IsDownVoted!
+                //     ? (Color)Resources["votedButtonColorDark"]
+                //     : (Color)Resources["unVotedButtonColorDark"]
             },
-            Command = (bool)quote.IsDownVoted! ? viewModel.UnVoteQuoteCommand : viewModel.DownVoteQuoteCommand,
-        });
+            // Command = (bool)quote.IsDownVoted! ? viewModel.UnVoteQuoteCommand : viewModel.DownVoteQuoteCommand,
+        };
+
+        // ToolbarItems.Add(toolbarItem2);
 
         Content = new VerticalStackLayout
         {

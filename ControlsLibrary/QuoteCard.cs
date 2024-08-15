@@ -38,6 +38,11 @@ public class QuoteCard : StatefulContentView
     public static readonly BindableProperty FavoriteProperty =
         BindableProperty.Create(nameof(Favorite), typeof(ICommand), typeof(QuoteCard));
 
+    public static readonly BindableProperty FavoriteCommandParameterProperty =
+    BindableProperty.Create(nameof(FavoriteCommandParameter), typeof(object), typeof(QuoteCard));
+    public static readonly BindableProperty SelectedQuoteCommandParameterProperty =
+    BindableProperty.Create(nameof(SelectedQuoteCommandParameter), typeof(object), typeof(QuoteCard));
+
     private bool _isFavorite;
 
     public string Statement
@@ -62,6 +67,18 @@ public class QuoteCard : StatefulContentView
     {
         get => (View)GetValue(TopProperty);
         set => SetValue(TopProperty, value);
+    }
+
+    public object? FavoriteCommandParameter
+    {
+        get => (object)GetValue(FavoriteCommandParameterProperty);
+        set => SetValue(FavoriteCommandParameterProperty, value);
+    }
+
+    public object? SelectedQuoteCommandParameter
+    {
+        get => (object)GetValue(SelectedQuoteCommandParameterProperty);
+        set => SetValue(SelectedQuoteCommandParameterProperty, value);
     }
 
     public View? Bottom
@@ -92,7 +109,7 @@ public class QuoteCard : StatefulContentView
 
         Margin = new Thickness(0);
         Padding = new Thickness(8);
-        
+
 
         var gridView = new Grid
         {
@@ -146,6 +163,11 @@ public class QuoteCard : StatefulContentView
             Source = this,
             Path = nameof(Favorite)
         });
+        btn.SetBinding(ButtonView.CommandParameterProperty, new Binding
+        {
+            Source = this,
+            Path = nameof(FavoriteCommandParameter)
+        });
 
         gridView.Add(btn, 2);
 
@@ -175,7 +197,7 @@ public class QuoteCard : StatefulContentView
             Source = this,
             Path = nameof(Bottom)
         });
-        
+
         bottomBorder.SetBinding(IsVisibleProperty, new Binding
         {
             Source = this,
@@ -193,7 +215,7 @@ public class QuoteCard : StatefulContentView
             FontSize = 14,
             HorizontalTextAlignment = TextAlignment.End
         };
-        
+
         authorLabel.SetBinding(Label.TextProperty, new Binding
         {
             Source = this,
@@ -205,7 +227,7 @@ public class QuoteCard : StatefulContentView
             Path = nameof(Author),
             Converter = new IsNotNullConverter()
         });
-        
+
         var container = new Border
         {
             Stroke = Brush.Transparent,
@@ -228,11 +250,17 @@ public class QuoteCard : StatefulContentView
                 }
             }
         };
-        
-        container.SetBinding(TappedCommandProperty, new Binding
+
+        SetBinding(TappedCommandProperty, new Binding
         {
             Source = this,
             Path = nameof(Tap)
+        });
+
+        SetBinding(CommandParameterProperty, new Binding{
+            Source = this,
+            Path = "SelectedQuoteCommandParameter",
+            
         });
 
         Content = new Border

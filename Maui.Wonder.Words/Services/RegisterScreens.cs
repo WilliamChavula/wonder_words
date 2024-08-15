@@ -3,36 +3,18 @@ using FormFields.Inputs;
 using Maui.Wonder.Words.Interfaces;
 using ProfileMenu.ViewModels;
 using QuoteDetails.ViewModels;
-using QuoteList.Delegates;
 using QuoteList.ViewModels;
 using QuoteList.Views;
 using SignIn.ViewModels;
 using SignUp.ViewModels;
 using UpdateProfile.ViewModels;
 using FormFieldsEmail = FormFields.Inputs.Email;
+using DomainModels.Delegates;
 
 namespace Maui.Wonder.Words.Services;
 
 public static class RegisterScreensExtension
 {
-    private delegate Task SignUpTapDelegate();
-
-    private delegate Task CancelTapDelegate();
-
-    private delegate Task EmailRequestSuccessDelegate();
-
-    private delegate Task SignInTapDelegate();
-
-    private delegate Task UpdateProfileTapDelegate(string email, string username);
-
-    private delegate Task SignInSuccessDelegate();
-
-    private delegate Task ForgotMyPasswordTapDelegate();
-
-    private delegate Task SignUpSuccessDelegate();
-
-    private delegate Task UpdateProfileSuccessDelegate();
-
     public static MauiAppBuilder RegisterScreens(this MauiAppBuilder builder, INavigationService navigationService)
     {
         #region RegisterDelegates
@@ -78,8 +60,6 @@ public static class RegisterScreensExtension
         builder.Services.AddSingleton<ForgotMyPasswordViewModel>();
 
         builder.Services.AddSingleton<ProfileMenuViewModel>();
-
-        builder.Services.AddSingleton<QuoteDetailsViewModel>();
 
         // builder.Services.AddSingleton<QuoteListViewModel>();
 

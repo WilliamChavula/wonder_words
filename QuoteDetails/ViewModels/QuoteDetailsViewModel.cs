@@ -1,15 +1,26 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DomainModels.Delegates;
 using DomainModels;
 using Repository = QuoteRepository.QuoteRepository;
 
 namespace QuoteDetails.ViewModels;
 
 [QueryProperty(nameof(QuoteId), "QuoteId")]
-public partial class QuoteDetailsViewModel(Repository quoteRepository, Func<Task> onAuthenticationError)
-    : ObservableObject
+public partial class QuoteDetailsViewModel : ObservableObject
 {
     [ObservableProperty] private int _quoteId;
+    private readonly Repository quoteRepository;
+    private readonly AuthenticationErrorDelegate onAuthenticationError;
+
+    public QuoteDetailsViewModel(Repository quoteRepository, AuthenticationErrorDelegate onAuthenticationError)
+    {
+        this.quoteRepository = quoteRepository;
+        this.onAuthenticationError = onAuthenticationError;
+
+        QuoteDetailsState = new QuoteDetailsState();
+    }
+
     public QuoteDetailsState? QuoteDetailsState { get; private set; }
 
     private async Task FetchQuoteDetails()

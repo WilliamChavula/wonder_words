@@ -99,22 +99,22 @@ public class QuotesApi
     private async Task<QuoteRm> UpdateQuote(string url)
     {
         using var response = await _client.PutAsync(url, null);
-        var jsonResponse = await response.Content.ReadAsStringAsync();
+        var jsonResponse = await response.Content.ReadFromJsonAsync<Dictionary<string, object>?>();
 
-        var jsonDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse);
+        // var jsonDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse);
 
-        if (jsonDict != null && jsonDict.TryGetValue(ErrorCodeJsonKey, out var code))
+        if (jsonResponse != null && jsonResponse.TryGetValue(ErrorCodeJsonKey, out var code))
         {
-            if ((int)code == 20)
+            var err_code = (JsonElement)code;
+            var error_int = err_code.GetInt32();
+            if (error_int == 20)
             {
                 throw new UserAuthRequiredQuoteException();
             }
         }
 
-        var updatedQuote = JsonSerializer.Deserialize<QuoteRm>(jsonResponse);
-        if (updatedQuote is null)
-            throw new InvalidOperationException();
-
+        var updatedString = await response.Content.ReadAsStringAsync();
+        var updatedQuote = JsonSerializer.Deserialize<QuoteRm>(updatedString) ?? throw new InvalidOperationException();
         return updatedQuote;
     }
 

@@ -14,9 +14,9 @@ public static class ApiQuotesToDomain
             Author = quoteRm.Author,
             DownVotesCount = quoteRm.DownVotesCount,
             FavoriteCount = quoteRm.FavoritesCount,
-            IsDownVoted = quoteRm.UserInfo?.IsDownVoted,
-            IsFavorite = quoteRm.UserInfo?.IsFavorite,
-            IsUpVoted = quoteRm.UserInfo?.IsUpVoted,
+            IsDownVoted = quoteRm.UserInfo?.IsDownVoted ?? false,
+            IsFavorite = quoteRm.UserInfo?.IsFavorite ?? false,
+            IsUpVoted = quoteRm.UserInfo?.IsUpVoted ?? false,
             UpVotesCount = quoteRm.UpVotesCount
         };
     }

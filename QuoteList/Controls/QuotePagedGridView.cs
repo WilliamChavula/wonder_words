@@ -74,11 +74,21 @@ public class QuotePagedGridView : ContentView
                     Path = "QuoteListItemFavoriteToggledCommand",
                     Source = new RelativeBindingSource(
                         RelativeBindingSourceMode.FindAncestorBindingContext,
-                        typeof(QuoteListViewModel),
-                        ancestorLevel: 2
+                        typeof(QuoteListViewModel)
                     )
                 });
-                quoteCard.SetBinding(StatefulContentView.CommandParameterProperty, ".");
+                quoteCard.SetBinding(QuoteCard.FavoriteCommandParameterProperty, ".");
+
+                quoteCard.SetBinding(QuoteCard.TapProperty, new Binding
+                {
+                    Source = new RelativeBindingSource(
+                        RelativeBindingSourceMode.FindAncestorBindingContext,
+                        typeof(QuoteListViewModel)
+                    ),
+                    Path = "QuoteSelectedCommand",
+                });
+
+                quoteCard.SetBinding(QuoteCard.SelectedQuoteCommandParameterProperty, ".");
 
                 return quoteCard;
             }),
@@ -89,6 +99,7 @@ public class QuotePagedGridView : ContentView
                 TextColor = Colors.LightGray
             }
         };
+
         collectionView.SetBinding(ItemsView.ItemsSourceProperty, new Binding
         {
             Source = new RelativeBindingSource(
@@ -97,7 +108,7 @@ public class QuotePagedGridView : ContentView
             ),
             Path = "ItemList"
         });
-        collectionView.SetBinding(SelectableItemsView.SelectionChangedCommandProperty, nameof(QuoteSelectedCommand));
+
         collectionView.SetBinding(ItemsView.RemainingItemsThresholdReachedCommandProperty, new Binding
         {
             Source = new RelativeBindingSource(
