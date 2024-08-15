@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using QuotesApi.Models;
 using QuotesApi.Models.Request;
 using QuotesApi.Models.Response;
@@ -12,19 +13,27 @@ public class QuotesApi
     private const string ErrorCodeJsonKey = "error_code";
     private const string ErrorMessageJsonKey = "message";
 
-    public QuotesApi(UserTokenSupplier userTokenSupplier)
+    public QuotesApi(UserTokenSupplier userTokenSupplier, IConfiguration configuration)
     {
+        _configuration = configuration;
+
+        var key = _configuration["ApiKeys:quotes-app-token"];
+        ArgumentNullException.ThrowIfNull(key, "ApiKeys:quotes-app-token must be set in launchsettings.json");
+
         _urlBuilder = new UrlBuilder();
 
         _client = new HttpClient(new RequestInterceptHandler(new HttpClientHandler(), userTokenSupplier))
         {
             Timeout = TimeSpan.FromSeconds(30)
         };
-        _client.SetupHeaders();
+
+        _client.SetupHeaders(apiKey: key);
     }
 
     private readonly UrlBuilder _urlBuilder;
     private readonly HttpClient _client;
+    private readonly IConfiguration _configuration;
+
 
     public async Task<QuoteListPageRm> GetQuoteListPage(int page, string? tag, string? favoredByUsername,
         string searchTerm = "")
@@ -223,11 +232,12 @@ public static class HttpClientExtension
 {
     private const string AppTokenEnvironmentVariableKey = "quotes-app-token";
 
-    public static void SetupHeaders(this HttpClient client)
+    public static void SetupHeaders(this HttpClient client, string apiKey)
     {
-        var appToken = Environment.GetEnvironmentVariable(AppTokenEnvironmentVariableKey);
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", $"token=\"{appToken}\"");
+        // var appToken = Environment.GetEnvironmentVariable(AppTokenEnvironmentVariableKey);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", $"token=\"{apiKey}\"");
     }
+
 }
 
 public class RequestInterceptHandler(HttpMessageHandler innerHandler, UserTokenSupplier userToken)

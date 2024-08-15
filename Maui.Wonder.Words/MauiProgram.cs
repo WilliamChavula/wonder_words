@@ -3,19 +3,35 @@ using ControlsLibrary.Extensions;
 using ForgotMyPassword.Extensions;
 using QuoteDetails.Extensions;
 using Maui.Wonder.Words.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using QuoteList.Extensions;
 using SignIn.Extensions;
 using SignUp.Extensions;
 using UpdateProfile.Extensions;
 using UserRepository.Extensions;
+using System.Reflection;
 
 namespace Maui.Wonder.Words;
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
+
         var builder = MauiApp.CreateBuilder();
+
+        var a = Assembly.GetExecutingAssembly();
+        using var stream = a.GetManifestResourceStream("Maui.Wonder.Words.appsettings.json");
+
+        ArgumentNullException.ThrowIfNull(stream, "File 'Maui.Wonder.Words.appsettings.json' not found in Assembly");
+
+        var config = new ConfigurationBuilder()
+                    .AddJsonStream(stream)
+                    .Build();
+
+
+        builder.Configuration.AddConfiguration(config);
+
         builder
             .UseMauiApp<App>()
             .UseMauiCommunityToolkit()

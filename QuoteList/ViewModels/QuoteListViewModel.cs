@@ -132,7 +132,7 @@ public partial class QuoteListViewModel : ObservableObject
             _authenticatedUsername = user?.Username;
         }
 
-        await FetchData(0, QuoteListPageFetchPolicy.CacheAndNetwork);
+        await FetchData(1, QuoteListPageFetchPolicy.CacheAndNetwork);
     }
 
     [RelayCommand]
