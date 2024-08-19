@@ -11,37 +11,71 @@ namespace ControlsLibrary;
 
 public class QuoteCard : StatefulContentView
 {
-    public static readonly BindableProperty StatementProperty =
-        BindableProperty.Create(nameof(Statement), typeof(string), typeof(QuoteCard));
+    public static readonly BindableProperty StatementProperty = BindableProperty.Create(
+        nameof(Statement),
+        typeof(string),
+        typeof(QuoteCard)
+    );
 
-    public static readonly BindableProperty AuthorProperty =
-        BindableProperty.Create(nameof(Author), typeof(string), typeof(QuoteCard));
+    public static readonly BindableProperty AuthorProperty = BindableProperty.Create(
+        nameof(Author),
+        typeof(string),
+        typeof(QuoteCard)
+    );
 
-    public static readonly BindableProperty IsFavoriteProperty =
-        BindableProperty.Create(nameof(IsFavorite), typeof(bool), typeof(QuoteCard), propertyChanged: IsFavoritePropertyChanged);
+    public static readonly BindableProperty IsFavoriteProperty = BindableProperty.Create(
+        nameof(IsFavorite),
+        typeof(bool),
+        typeof(QuoteCard),
+        propertyChanged: IsFavoritePropertyChanged
+    );
 
-    private static void IsFavoritePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+    private static void IsFavoritePropertyChanged(
+        BindableObject bindable,
+        object oldValue,
+        object newValue
+    )
     {
         var control = (QuoteCard)bindable;
         control._isFavorite = (bool)newValue;
     }
 
-    public static readonly BindableProperty TopProperty =
-        BindableProperty.Create(nameof(Top), typeof(View), typeof(QuoteCard));
+    public static readonly BindableProperty TopProperty = BindableProperty.Create(
+        nameof(Top),
+        typeof(View),
+        typeof(QuoteCard)
+    );
 
-    public static readonly BindableProperty BottomProperty =
-        BindableProperty.Create(nameof(Bottom), typeof(View), typeof(QuoteCard));
+    public static readonly BindableProperty BottomProperty = BindableProperty.Create(
+        nameof(Bottom),
+        typeof(View),
+        typeof(QuoteCard)
+    );
 
-    public static readonly BindableProperty TapProperty =
-        BindableProperty.Create(nameof(Tap), typeof(ICommand), typeof(QuoteCard));
+    public static readonly BindableProperty TapProperty = BindableProperty.Create(
+        nameof(Tap),
+        typeof(ICommand),
+        typeof(QuoteCard)
+    );
 
-    public static readonly BindableProperty FavoriteProperty =
-        BindableProperty.Create(nameof(Favorite), typeof(ICommand), typeof(QuoteCard));
+    public static readonly BindableProperty FavoriteProperty = BindableProperty.Create(
+        nameof(Favorite),
+        typeof(ICommand),
+        typeof(QuoteCard)
+    );
 
     public static readonly BindableProperty FavoriteCommandParameterProperty =
-    BindableProperty.Create(nameof(FavoriteCommandParameter), typeof(object), typeof(QuoteCard));
+        BindableProperty.Create(
+            nameof(FavoriteCommandParameter),
+            typeof(object),
+            typeof(QuoteCard)
+        );
     public static readonly BindableProperty SelectedQuoteCommandParameterProperty =
-    BindableProperty.Create(nameof(SelectedQuoteCommandParameter), typeof(object), typeof(QuoteCard));
+        BindableProperty.Create(
+            nameof(SelectedQuoteCommandParameter),
+            typeof(object),
+            typeof(QuoteCard)
+        );
 
     private bool _isFavorite;
 
@@ -110,10 +144,8 @@ public class QuoteCard : StatefulContentView
         Margin = new Thickness(0);
         Padding = new Thickness(8);
 
-
         var gridView = new Grid
         {
-            // Style = (Style)Resources["Elevation3"],
             Padding = new Thickness(12),
             ColumnDefinitions =
             [
@@ -128,154 +160,127 @@ public class QuoteCard : StatefulContentView
             Stroke = Brush.Transparent,
             Padding = new Thickness { Left = (double)mediumSp }
         };
-        topBorder.SetBinding(Border.ContentProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(Top)
-        });
-        topBorder.SetBinding(IsVisibleProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(Top),
-            Converter = new IsNotNullConverter()
-        });
+        topBorder.SetBinding(
+            Border.ContentProperty,
+            new Binding { Source = this, Path = nameof(Top) }
+        );
+        topBorder.SetBinding(
+            IsVisibleProperty,
+            new Binding
+            {
+                Source = this,
+                Path = nameof(Top),
+                Converter = new IsNotNullConverter()
+            }
+        );
 
         gridView.Add(topBorder, 0);
-        gridView.Add(new BoxView
-        {
-            BackgroundColor = Colors.Transparent
-        }, 1);
+        gridView.Add(new BoxView { BackgroundColor = Colors.Transparent }, 1);
 
         var btn = new ButtonView
         {
+            BackgroundColor = Colors.Transparent,
             Content = new Image
             {
                 Source = new FontImageSource
                 {
-                    Glyph = _isFavorite ? MaterialOutlineIcons.Favorite : MaterialOutlineIcons.FavoriteBorder,
+                    Glyph = _isFavorite
+                        ? MaterialOutlineIcons.Favorite
+                        : MaterialOutlineIcons.FavoriteBorder,
                     FontFamily = "MaterialIconsRegular",
-                    Size = 12
+                    Color = Colors.Black,
+                    Size = 16
                 }
             }
         };
-        btn.SetBinding(ButtonView.PressedCommandProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(Favorite)
-        });
-        btn.SetBinding(ButtonView.CommandParameterProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(FavoriteCommandParameter)
-        });
+        btn.SetBinding(
+            ButtonView.PressedCommandProperty,
+            new Binding { Source = this, Path = nameof(Favorite) }
+        );
+        btn.SetBinding(
+            ButtonView.CommandParameterProperty,
+            new Binding { Source = this, Path = nameof(FavoriteCommandParameter) }
+        );
 
         gridView.Add(btn, 2);
 
         var quoteBody = new Label
         {
-            Padding = new Thickness
-            {
-                Left = (double)xLarge,
-                Right = (double)xLarge
-            },
+            Padding = new Thickness { Left = (double)xLarge, Right = (double)xLarge },
             FontSize = 16, // (double)fontLarge,
             // MaxLines = 5
         };
-        quoteBody.SetBinding(Label.TextProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(Statement)
-        });
+        quoteBody.SetBinding(
+            Label.TextProperty,
+            new Binding { Source = this, Path = nameof(Statement) }
+        );
 
         var bottomBorder = new Border
         {
             Padding = new Thickness { Right = (double)mediumSp },
             Stroke = Brush.Transparent
         };
-        bottomBorder.SetBinding(Border.ContentProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(Bottom)
-        });
+        bottomBorder.SetBinding(
+            Border.ContentProperty,
+            new Binding { Source = this, Path = nameof(Bottom) }
+        );
 
-        bottomBorder.SetBinding(IsVisibleProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(Bottom),
-            Converter = new IsNotNullConverter()
-        });
+        bottomBorder.SetBinding(
+            IsVisibleProperty,
+            new Binding
+            {
+                Source = this,
+                Path = nameof(Bottom),
+                Converter = new IsNotNullConverter()
+            }
+        );
 
         var authorLabel = new Label
         {
-            Padding = new Thickness
-            {
-                Bottom = (double)mediumSp,
-                Right = (double)mediumSp
-            },
+            Padding = new Thickness { Bottom = (double)mediumSp, Right = (double)mediumSp },
             FontSize = 14,
             HorizontalTextAlignment = TextAlignment.End
         };
 
-        authorLabel.SetBinding(Label.TextProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(Author)
-        });
-        authorLabel.SetBinding(IsVisibleProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(Author),
-            Converter = new IsNotNullConverter()
-        });
+        authorLabel.SetBinding(
+            Label.TextProperty,
+            new Binding { Source = this, Path = nameof(Author) }
+        );
+        authorLabel.SetBinding(
+            IsVisibleProperty,
+            new Binding
+            {
+                Source = this,
+                Path = nameof(Author),
+                Converter = new IsNotNullConverter()
+            }
+        );
 
         var container = new Border
         {
             Stroke = Brush.Transparent,
-            StrokeShape = new RoundRectangle
-            {
-                CornerRadius = new CornerRadius(12)
-            },
+            StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(12) },
             Content = new VerticalStackLayout
             {
                 HorizontalOptions = LayoutOptions.End,
-                Children =
-                {
-                    gridView,
-
-                    quoteBody,
-
-                    bottomBorder,
-
-                    authorLabel
-                }
+                Children = { gridView, quoteBody, bottomBorder, authorLabel }
             }
         };
 
-        SetBinding(TappedCommandProperty, new Binding
-        {
-            Source = this,
-            Path = nameof(Tap)
-        });
+        SetBinding(TappedCommandProperty, new Binding { Source = this, Path = nameof(Tap) });
 
-        SetBinding(CommandParameterProperty, new Binding{
-            Source = this,
-            Path = "SelectedQuoteCommandParameter",
-            
-        });
+        SetBinding(
+            CommandParameterProperty,
+            new Binding { Source = this, Path = "SelectedQuoteCommandParameter", }
+        );
 
         Content = new Border
         {
             Content = container,
-            Shadow = new Shadow
-            {
-                Brush = Brush.DarkGray,
-                Offset = new Point(4, 4),
-                Opacity = 0.4f
-            },
-            StrokeShape = new RoundRectangle
-            {
-                CornerRadius = 12
-            }
+            Shadow = (Shadow)Resources["ShadowElevation1"],
+            BackgroundColor = Colors.White,
+            Stroke = Brush.Transparent,
+            StrokeShape = new RoundRectangle { CornerRadius = 8 }
         };
     }
 }

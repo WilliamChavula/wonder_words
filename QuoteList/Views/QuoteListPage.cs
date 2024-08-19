@@ -2,11 +2,11 @@ using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
-using Microsoft.Maui.Controls.PlatformConfiguration;
-using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using ControlsLibrary;
 using ControlsLibrary.Resources.Styles;
 using DomainModels;
+using Microsoft.Maui.Controls.PlatformConfiguration;
+using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using QuoteList.Controls;
 using QuoteList.ViewModels;
 using L10n = QuoteList.Resources.Resources;
@@ -21,12 +21,15 @@ public class QuoteListPage : ContentPage
     {
         On<iOS>().SetUseSafeArea(true);
         Resources.MergedDictionaries.Add(new Styles());
+        Shell.SetNavBarIsVisible(this, false);
 
-        Behaviors.Add(new StatusBarBehavior
-        {
-            StatusBarColor = Colors.Black,
-            StatusBarStyle = StatusBarStyle.LightContent
-        });
+        Behaviors.Add(
+            new StatusBarBehavior
+            {
+                StatusBarColor = Colors.White,
+                StatusBarStyle = StatusBarStyle.DarkContent
+            }
+        );
 
         BindingContext = viewModel;
 
@@ -42,22 +45,29 @@ public class QuoteListPage : ContentPage
         };
         searchBar.SetBinding(SearchBar.TextProperty, new Binding("SearchTerm", BindingMode.TwoWay));
 
-        var refreshView = new RefreshView
-        {
-            Content = new QuotePagedGridView()
-        };
-        refreshView.SetBinding(RefreshView.IsRefreshingProperty, new Binding
-        {
-            Source = new RelativeBindingSource(RelativeBindingSourceMode.FindAncestorBindingContext,
-                typeof(QuoteListViewModel)),
-            Path = "IsRefreshing",
-        });
-        refreshView.SetBinding(RefreshView.CommandProperty, new Binding
-        {
-            Source = new RelativeBindingSource(RelativeBindingSourceMode.FindAncestorBindingContext,
-                typeof(QuoteListViewModel)),
-            Path = "QuoteListRefreshedCommand",
-        });
+        var refreshView = new RefreshView { Content = new QuotePagedGridView() };
+        refreshView.SetBinding(
+            RefreshView.IsRefreshingProperty,
+            new Binding
+            {
+                Source = new RelativeBindingSource(
+                    RelativeBindingSourceMode.FindAncestorBindingContext,
+                    typeof(QuoteListViewModel)
+                ),
+                Path = "IsRefreshing",
+            }
+        );
+        refreshView.SetBinding(
+            RefreshView.CommandProperty,
+            new Binding
+            {
+                Source = new RelativeBindingSource(
+                    RelativeBindingSourceMode.FindAncestorBindingContext,
+                    typeof(QuoteListViewModel)
+                ),
+                Path = "QuoteListRefreshedCommand",
+            }
+        );
 
         var grid = new Grid
         {
@@ -69,15 +79,13 @@ public class QuoteListPage : ContentPage
                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
             }
         };
-        grid.Add(new Border
-        {
-            Padding = new Thickness
+        grid.Add(
+            new Border
             {
-                Left = 16,
-                Right = 16
-            },
-            Content = searchBar
-        });
+                Padding = new Thickness { Left = 16, Right = 16 },
+                Content = searchBar
+            }
+        );
 
         grid.Add(new FilterHorizontalList(), 0, 1);
 
@@ -107,7 +115,8 @@ public class QuoteListPage : ContentPage
     {
         var viewModel = (QuoteListViewModel)sender!;
 
-        if (viewModel.RefreshError is null) return;
+        if (viewModel.RefreshError is null)
+            return;
 
         var snackbarOptions = new SnackbarOptions
         {

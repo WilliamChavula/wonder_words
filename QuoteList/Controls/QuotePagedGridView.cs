@@ -69,24 +69,30 @@ public class QuotePagedGridView : ContentView
                     "IsFavorite",
                     converter: new IsNotNullConverter()
                 );
-                quoteCard.SetBinding(QuoteCard.FavoriteProperty, new Binding
-                {
-                    Path = "QuoteListItemFavoriteToggledCommand",
-                    Source = new RelativeBindingSource(
-                        RelativeBindingSourceMode.FindAncestorBindingContext,
-                        typeof(QuoteListViewModel)
-                    )
-                });
+                quoteCard.SetBinding(
+                    QuoteCard.FavoriteProperty,
+                    new Binding
+                    {
+                        Path = "QuoteListItemFavoriteToggledCommand",
+                        Source = new RelativeBindingSource(
+                            RelativeBindingSourceMode.FindAncestorBindingContext,
+                            typeof(QuoteListViewModel)
+                        )
+                    }
+                );
                 quoteCard.SetBinding(QuoteCard.FavoriteCommandParameterProperty, ".");
 
-                quoteCard.SetBinding(QuoteCard.TapProperty, new Binding
-                {
-                    Source = new RelativeBindingSource(
-                        RelativeBindingSourceMode.FindAncestorBindingContext,
-                        typeof(QuoteListViewModel)
-                    ),
-                    Path = "QuoteSelectedCommand",
-                });
+                quoteCard.SetBinding(
+                    QuoteCard.TapProperty,
+                    new Binding
+                    {
+                        Source = new RelativeBindingSource(
+                            RelativeBindingSourceMode.FindAncestorBindingContext,
+                            typeof(QuoteListViewModel)
+                        ),
+                        Path = "QuoteSelectedCommand",
+                    }
+                );
 
                 quoteCard.SetBinding(QuoteCard.SelectedQuoteCommandParameterProperty, ".");
 
@@ -100,31 +106,40 @@ public class QuotePagedGridView : ContentView
             }
         };
 
-        collectionView.SetBinding(ItemsView.ItemsSourceProperty, new Binding
-        {
-            Source = new RelativeBindingSource(
-                RelativeBindingSourceMode.FindAncestorBindingContext,
-                typeof(QuoteListViewModel)
-            ),
-            Path = "ItemList"
-        });
+        collectionView.SetBinding(
+            ItemsView.ItemsSourceProperty,
+            new Binding
+            {
+                Source = new RelativeBindingSource(
+                    RelativeBindingSourceMode.FindAncestorBindingContext,
+                    typeof(QuoteListViewModel)
+                ),
+                Path = "ItemList"
+            }
+        );
 
-        collectionView.SetBinding(ItemsView.RemainingItemsThresholdReachedCommandProperty, new Binding
-        {
-            Source = new RelativeBindingSource(
-                RelativeBindingSourceMode.FindAncestorBindingContext,
-                typeof(QuoteListViewModel)
-            ),
-            Path = "QuoteListNextPageRequestedCommand",
-        });
-        collectionView.SetBinding(ItemsView.RemainingItemsThresholdReachedCommandParameterProperty, new Binding
-        {
-            Source = new RelativeBindingSource(
-                RelativeBindingSourceMode.FindAncestorBindingContext,
-                typeof(QuoteListViewModel)
-            ),
-            Path = "NextPage",
-        });
+        collectionView.SetBinding(
+            ItemsView.RemainingItemsThresholdReachedCommandProperty,
+            new Binding
+            {
+                Source = new RelativeBindingSource(
+                    RelativeBindingSourceMode.FindAncestorBindingContext,
+                    typeof(QuoteListViewModel)
+                ),
+                Path = "QuoteListNextPageRequestedCommand",
+            }
+        );
+        collectionView.SetBinding(
+            ItemsView.RemainingItemsThresholdReachedCommandParameterProperty,
+            new Binding
+            {
+                Source = new RelativeBindingSource(
+                    RelativeBindingSourceMode.FindAncestorBindingContext,
+                    typeof(QuoteListViewModel)
+                ),
+                Path = "NextPage",
+            }
+        );
 
         Content = collectionView;
     }
