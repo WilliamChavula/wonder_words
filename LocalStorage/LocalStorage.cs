@@ -4,9 +4,9 @@ namespace LocalStorage;
 
 public class LocalStorage
 {
-    private const string QuoteListPagesRealmKey = "quote-list-pages.realm";
-    private const string FavoriteQuoteListPagesRealmKey = "favorite-quote-list-pages.realm";
-    private const string DarkModePreferenceRealmKey = "dark-mode-preference.realm";
+    private const string QuoteListPagesRealmKey = "quote-list-pages";
+    private const string FavoriteQuoteListPagesRealmKey = "favorite-quote-list-pages";
+    private const string DarkModePreferenceRealmKey = "dark-mode-preference";
 
     public Realm GetFavoriteQuoteListPageRealm => GetInstance(FavoriteQuoteListPagesRealmKey);
     public Realm GetDarkModePreferenceRealm => GetInstance(DarkModePreferenceRealmKey);
@@ -14,7 +14,7 @@ public class LocalStorage
 
     private static Realm GetInstance(string realmName)
     {
-        var config = new RealmConfiguration(realmName);
+        var config = new RealmConfiguration("quote-list-pages.realm");
 
         return Realm.GetInstance(config);
     }

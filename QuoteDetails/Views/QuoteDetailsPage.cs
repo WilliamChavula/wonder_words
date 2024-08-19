@@ -1,140 +1,324 @@
+using System.Diagnostics;
 using CommunityToolkit.Maui.Behaviors;
-using CommunityToolkit.Maui.Converters;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Markup;
-using Microsoft.Maui.Controls.PlatformConfiguration;
-using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
-using UraniumUI.Icons.MaterialSymbols;
 using ControlsLibrary;
+using ControlsLibrary.Icons;
 using ControlsLibrary.Resources.Styles;
 using DomainModels;
+using DomainModels.Delegates;
+using Microsoft.Maui.Controls.PlatformConfiguration;
+using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
+using QuoteDetails.Converters;
 using QuoteDetails.ViewModels;
+using MauiScrollView = Microsoft.Maui.Controls.ScrollView;
 
 namespace QuoteDetails.Views;
 
 public class QuoteDetailsPage : ContentPage
 {
-    public QuoteDetailsPage(QuoteDetailsViewModel viewModel)
+    public QuoteDetailsPage(QuoteDetailsViewModel viewModel, CancelTapDelegate goBackFunc)
     {
         On<iOS>().SetUseSafeArea(true);
         Resources.MergedDictionaries.Add(new Styles());
-        // var quote = viewModel.QuoteDetailsState?.Quote;
+        Shell.SetNavBarIsVisible(this, false);
+
         BindingContext = viewModel;
 
-        Behaviors.Add(new StatusBarBehavior
+#pragma warning disable CA1416 // Validate platform compatibility
+        Behaviors.Add(
+            new StatusBarBehavior
+            {
+                StatusBarColor = Colors.White,
+                StatusBarStyle = StatusBarStyle.DarkContent
+            }
+        );
+#pragma warning restore CA1416 // Validate platform compatibility
+
+        viewModel.OnStateChanged += StateChangeListener;
+
+        # region First Toolbar Item
+        var fntSource = new FontImageSource
         {
-            StatusBarColor = Colors.Black,
-            StatusBarStyle = StatusBarStyle.LightContent
-        });
-
-        // var command = (bool)quote?.IsFavorite! ? viewModel.UnVoteQuoteCommand : viewModel.UpVoteQuoteCommand;
-
-        // viewModel.QuoteDetailsState!.OnStateChanged += StateChangeListener;
-
-        var fntSource = new FontImageSource();
-
-        // Glyph = (bool)quote?.IsFavorite! ? MaterialRounded.Favorite : MaterialOutlined.Favorite
-        // fntSource.SetBinding(FontImageSource.GlyphProperty, "");
-
-        var toolbarItem = new ToolbarItem
-        {
-            IconImageSource = fntSource,
-
+            FontFamily = "MaterialIconsRegular",
+            Size = 24,
+            Color = Colors.Black
         };
 
-        // Command = (bool)quote.IsFavorite! ? viewModel.UnVoteQuoteCommand : viewModel.UpVoteQuoteCommand
-
-        // toolbarItem.SetBinding(ToolbarItem.CommandProperty, "");
-
-        // ToolbarItems.Add(toolbarItem);
-
-        var toolbarItem2 = new ToolbarItem
-        {
-            IconImageSource = new FontImageSource
+        fntSource.SetBinding(
+            FontImageSource.GlyphProperty,
+            new Binding
             {
-                Glyph = MaterialRounded.Arrow_downward,
-                // Color = (bool)quote.IsDownVoted!
-                //     ? (Color)Resources["votedButtonColorDark"]
-                //     : (Color)Resources["unVotedButtonColorDark"]
-            },
-            // Command = (bool)quote.IsDownVoted! ? viewModel.UnVoteQuoteCommand : viewModel.DownVoteQuoteCommand,
-        };
-
-        // ToolbarItems.Add(toolbarItem2);
-
-        Content = new VerticalStackLayout
-        {
-            Padding = new Thickness((double)Resources["MediumLargeSpacing"]),
-
-            Children =
-            {
-                new ExceptionIndicator().Bind(
-                        IsVisibleProperty,
-                        getter: static (
-                            QuoteDetailsViewModel viewModel) => viewModel.QuoteDetailsState is
-                            { QuoteDetailFailed: true },
-                        handlers:
-                        [
-                            (vm => vm, nameof(QuoteDetailsViewModel.QuoteDetailsState)),
-                            (vm => vm.QuoteDetailsState,
-                                nameof(QuoteDetailsViewModel.QuoteDetailsState.QuoteDetailFailed)),
-                        ])
-                    .Bind(
-                        ExceptionIndicator.TryAgainProperty,
-                        nameof(viewModel.ReFetchCommand)),
-
-                new VerticalStackLayout
+                Source = this,
+                Path = "BindingContext.Quote.IsFavorite",
+                Converter = new BooleanToIconConverter
                 {
-                    HorizontalOptions = LayoutOptions.End,
-                    Children =
-                    {
-                        new Image
-                        {
-                            WidthRequest = 46,
-                            HorizontalOptions = LayoutOptions.Start,
-                            VerticalOptions = LayoutOptions.Center,
-                            Source = ImageSource.FromFile("opening_quote.svg")
-                        },
-
-                        new Label
-                            {
-                                Padding = new Thickness
-                                {
-                                    Left = (double)Resources["XxLargeSpacing"],
-                                    Right = (double)Resources["XxLargeSpacing"]
-                                },
-                                HorizontalTextAlignment = TextAlignment.Center,
-                                VerticalTextAlignment = TextAlignment.Center,
-                                HorizontalOptions = LayoutOptions.Center,
-                                VerticalOptions = LayoutOptions.Center,
-                                FontSize = (double)Resources["XXl"]
-                            }.Grow(1)
-                            .Bind(Label.TextProperty,
-                                static (QuoteDetailsViewModel vm) => vm.QuoteDetailsState!.Quote!.Body),
-
-                        new Image
-                        {
-                            WidthRequest = 46,
-                            Source = "closing_quote.svg"
-                        },
-
-                        new BoxView { HeightRequest = (double)Resources["MediumSpacing"] },
-
-                        new Label { FontSize = (double)Resources["Large"] }
-                            .Bind(Label.TextProperty,
-                                nameof(viewModel.QuoteDetailsState.Quote.Author))
-                            .Bind(IsVisibleProperty,
-                                nameof(viewModel.QuoteDetailsState.Quote.Author),
-                                converter: new IsNotNullConverter())
-                    }
+                    FirstIcon = MaterialOutlineIcons.Favorite,
+                    SecondIcon = MaterialOutlineIcons.FavoriteBorder
                 }
             }
+        );
+
+        var favoriteImgBtn = new ImageButton
+        {
+            Padding = new Thickness(8),
+            HeightRequest = 16,
+            WidthRequest = 16,
+            Source = fntSource,
+            BackgroundColor = Colors.Transparent
         };
+
+        var commandConverter = new BooleanToCommandConverter
+        {
+            FirstCommandOption = viewModel.UnVoteQuoteCommand,
+            SecondCommandOption = viewModel.UpVoteQuoteCommand
+        };
+
+        favoriteImgBtn.SetBinding(
+            ImageButton.CommandProperty,
+            new Binding
+            {
+                Source = this,
+                Path = "BindingContext.Quote.IsFavorite",
+                Converter = commandConverter
+            }
+        );
+
+        #endregion
+
+        #region upVoted Button
+
+        var upVoteImgBtn = new CountIndicatorIconButton { Icon = MaterialOutlineIcons.ArrowUpward };
+
+        var IsUpVotedCommandConverter = new BooleanToCommandConverter
+        {
+            FirstCommandOption = viewModel.UnVoteQuoteCommand,
+            SecondCommandOption = viewModel.UpVoteQuoteCommand
+        };
+        upVoteImgBtn.SetBinding(
+            CountIndicatorIconButton.OnTapProperty,
+            new Binding
+            {
+                Source = this,
+                Path = "BindingContext.Quote.IsUpVoted",
+                Converter = IsUpVotedCommandConverter
+            }
+        );
+
+        upVoteImgBtn.SetBinding(
+            CountIndicatorIconButton.IconColorProperty,
+            new Binding
+            {
+                Source = this,
+                Path = "BindingContext.Quote.IsUpVoted",
+                Converter = new BooleanToColorConverter
+                {
+                    FirstColor = (Color)Resources["VotedButtonColorLight"],
+                    SecondColor = (Color)Resources["UnVotedButtonColorLight"]
+                }
+            }
+        );
+
+        upVoteImgBtn.SetBinding(
+            CountIndicatorIconButton.CountProperty,
+            new Binding { Source = this, Path = "BindingContext.Quote.UpVotesCount", }
+        );
+        #endregion
+
+        #region downVoted Button
+        var downVoteImgBtn = new CountIndicatorIconButton
+        {
+            Icon = MaterialOutlineIcons.ArrowDownward
+        };
+
+        var IsDownVotedCommandConverter = new BooleanToCommandConverter
+        {
+            FirstCommandOption = viewModel.UnVoteQuoteCommand,
+            SecondCommandOption = viewModel.DownVoteQuoteCommand
+        };
+
+        downVoteImgBtn.SetBinding(
+            CountIndicatorIconButton.OnTapProperty,
+            new Binding
+            {
+                Source = this,
+                Path = "BindingContext.Quote.IsDownVoted",
+                Converter = IsDownVotedCommandConverter
+            }
+        );
+
+        downVoteImgBtn.SetBinding(
+            CountIndicatorIconButton.IconColorProperty,
+            new Binding
+            {
+                Source = this,
+                Path = "BindingContext.Quote.IsDownVoted",
+                Converter = new BooleanToColorConverter
+                {
+                    FirstColor = (Color)Resources["VotedButtonColorLight"],
+                    SecondColor = (Color)Resources["UnVotedButtonColorLight"]
+                }
+            }
+        );
+
+        downVoteImgBtn.SetBinding(
+            CountIndicatorIconButton.CountProperty,
+            new Binding { Source = this, Path = "BindingContext.Quote.DownVotesCount", }
+        );
+        #endregion
+
+        #region App Bar
+
+        var goBackImgBtn = new ImageButton
+        {
+            Padding = new Thickness(4),
+            Margin = new Thickness(0),
+            HeightRequest = 28,
+            WidthRequest = 28,
+            Source = new FontImageSource
+            {
+                Glyph = MaterialOutlineIcons.ChevronLeft,
+                FontFamily = "MaterialIconsRegular",
+                Size = 36,
+                Color = Colors.Black
+            },
+            BackgroundColor = Colors.Transparent,
+            Command = new Command(() => goBackFunc())
+        };
+
+        var shareBtn = new ImageButton
+        {
+            Padding = new Thickness(8),
+            Margin = new Thickness(0),
+            HeightRequest = 22,
+            WidthRequest = 22,
+            Source = new FontImageSource
+            {
+                Glyph = MaterialRoundIcons.Share,
+                FontFamily = "MaterialIconsRegular",
+                Size = 28,
+                Color = Colors.Black
+            },
+            BackgroundColor = Colors.Transparent
+        };
+
+        var actionItems = new Grid
+        {
+            ColumnDefinitions =
+            [
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star),
+                new ColumnDefinition(GridLength.Star),
+            ],
+            Shadow = (Shadow)Resources["ShadowElevation0"]
+        };
+        actionItems.Add(goBackImgBtn, column: 0, row: 0);
+        actionItems.Add(favoriteImgBtn, column: 1, row: 0);
+        actionItems.Add(upVoteImgBtn, column: 2, row: 0);
+        actionItems.Add(downVoteImgBtn, column: 3, row: 0);
+        actionItems.Add(shareBtn, column: 4, row: 0);
+
+        #endregion
+
+        #region Page Content
+
+        var quoteLayout = new Grid
+        {
+            VerticalOptions = LayoutOptions.Center,
+            ColumnDefinitions =
+            [
+                new ColumnDefinition(GridLength.Auto),
+                new ColumnDefinition(),
+                new ColumnDefinition(GridLength.Auto),
+            ],
+            RowDefinitions =
+            [
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Star),
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Auto),
+            ]
+        };
+
+        var openingQuote = new Image
+        {
+            WidthRequest = 24,
+            HeightRequest = 24,
+            HorizontalOptions = LayoutOptions.Start,
+            VerticalOptions = LayoutOptions.Center,
+            Source = ImageSource.FromFile("opening_quote.png")
+        };
+        quoteLayout.Add(openingQuote, column: 0, row: 0);
+
+        var closingQuote = new Image
+        {
+            WidthRequest = 24,
+            HeightRequest = 24,
+            HorizontalOptions = LayoutOptions.End,
+            VerticalOptions = LayoutOptions.Center,
+            Source = "closing_quote.png"
+        };
+        quoteLayout.Add(closingQuote, column: 2, row: 2);
+
+        var quote = new Label
+        {
+            TextColor = Colors.Black,
+            FontSize = 22,
+            HorizontalTextAlignment = TextAlignment.Center,
+            VerticalTextAlignment = TextAlignment.Center
+        };
+        quote.SetBinding(
+            Label.TextProperty,
+            new Binding { Source = this, Path = "BindingContext.Quote.Body" }
+        );
+        Grid.SetRow(quote, 1);
+        Grid.SetColumnSpan(quote, 3);
+
+        quoteLayout.Add(quote);
+
+        var author = new Label
+        {
+            TextColor = Colors.Black,
+            FontSize = 18,
+            HorizontalTextAlignment = TextAlignment.End,
+            // VerticalTextAlignment = TextAlignment.Center
+        };
+        author.SetBinding(
+            Label.TextProperty,
+            new Binding { Source = this, Path = "BindingContext.Quote.Author" }
+        );
+
+        quoteLayout.Add(author, row: 3, column: 2);
+
+        var contentContainer = new MauiScrollView
+        {
+            Padding = new Thickness((double)Resources["MediumLargeSpacing"]),
+            Content = quoteLayout
+        };
+
+        var pageContent = new Grid
+        {
+            RowDefinitions =
+            [
+                new RowDefinition(GridLength.Auto),
+                new RowDefinition(GridLength.Star),
+                new RowDefinition(GridLength.Auto),
+            ],
+        };
+
+        pageContent.Add(actionItems);
+        pageContent.Add(contentContainer, column: 0, row: 1);
+
+        Content = pageContent;
+
+        #endregion
     }
 
     private static void StateChangeListener(object? sender, EventArgs e)
     {
-        var quoteUpdateError = ((QuoteDetailsState)sender!).QuoteUpdateError;
+        var quoteUpdateError = ((QuoteDetailsViewModel)sender!).QuoteUpdateError;
 
         switch (quoteUpdateError)
         {

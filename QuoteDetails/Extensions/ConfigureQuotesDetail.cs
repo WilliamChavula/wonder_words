@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui;
+
 using QuoteDetails.ViewModels;
 using QuoteDetails.Views;
 

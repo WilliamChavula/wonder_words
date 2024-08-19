@@ -52,13 +52,12 @@ public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
     public QuoteCm? GetQuote(int id)
     {
         var quoteListRealm = localStorage.GetQuoteListPageRealm;
-        var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
+        // var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
 
         var quoteList = quoteListRealm.All<QuoteListPageCm>().ToList();
-        var favoritesList = favoriteRealm.All<QuoteListPageCm>().ToList();
+        // var favoritesList = favoriteRealm.All<QuoteListPageCm>().ToList();
 
-        var completeList = favoritesList
-            .Union(quoteList)
+        var completeList = quoteList
             .SelectMany(page => page.QuotesList)
             .FirstOrDefault(quote => quote.Id == id);
 

@@ -48,25 +48,25 @@ public class UpvoteIconButton : ContentView
         typeof(UpvoteIconButton)
     );
 
-    public UpvoteIconButton()
-    {
-        var btn = new CountIndicatorIconButton
-        {
-            OnTap = OnTap,
-            Count = Count,
-            Icon = MaterialSharp.Arrow_upward,
-            Tooltip = ControlsLibrary.Resources.Resources.upvoteIconButtonTooltip
-        };
+    // public UpvoteIconButton()
+    // {
+    //     var btn = new CountIndicatorIconButton
+    //     {
+    //         OnTap = OnTap,
+    //         Count = Count,
+    //         Icon = MaterialSharp.Arrow_upward,
+    //         Tooltip = ControlsLibrary.Resources.Resources.upvoteIconButtonTooltip
+    //     };
 
-        if (IsUpVoted)
-        {
-            btn.SetAppThemeColor(btn.IconColorProperty, Colors.Black, Colors.White);
-        }
-        else
-        {
-            btn.SetAppThemeColor(btn.IconColorProperty, Color.FromArgb("#8A000000"), Color.FromArgb("#8AFFFFFF"));
-        }
+    //     if (IsUpVoted)
+    //     {
+    //         btn.SetAppThemeColor(btn.IconColorProperty, Colors.Black, Colors.White);
+    //     }
+    //     else
+    //     {
+    //         btn.SetAppThemeColor(btn.IconColorProperty, Color.FromArgb("#8A000000"), Color.FromArgb("#8AFFFFFF"));
+    //     }
 
-        Content = btn;
-    }
+    //     Content = btn;
+    // }
 }

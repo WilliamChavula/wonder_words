@@ -14,6 +14,6 @@ public partial class App : Application
         
         Routing.RegisterRoute(nameof(SignInPage), typeof(SignInPage));
         Routing.RegisterRoute(nameof(SignUpPage), typeof(SignUpPage));
-        Routing.RegisterRoute(nameof(QuoteDetailsPage), typeof(QuoteDetailsPage));
+        Routing.RegisterRoute("quoteDetails", typeof(QuoteDetailsPage));
     }
 }

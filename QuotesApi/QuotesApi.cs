@@ -18,11 +18,16 @@ public class QuotesApi
         _configuration = configuration;
 
         var key = _configuration["ApiKeys:quotes-app-token"];
-        ArgumentNullException.ThrowIfNull(key, "ApiKeys:quotes-app-token must be set in launchsettings.json");
+        ArgumentNullException.ThrowIfNull(
+            key,
+            "ApiKeys:quotes-app-token must be set in launchsettings.json"
+        );
 
         _urlBuilder = new UrlBuilder();
 
-        _client = new HttpClient(new RequestInterceptHandler(new HttpClientHandler(), userTokenSupplier))
+        _client = new HttpClient(
+            new RequestInterceptHandler(new HttpClientHandler(), userTokenSupplier)
+        )
         {
             Timeout = TimeSpan.FromSeconds(30)
         };
@@ -34,9 +39,12 @@ public class QuotesApi
     private readonly HttpClient _client;
     private readonly IConfiguration _configuration;
 
-
-    public async Task<QuoteListPageRm> GetQuoteListPage(int page, string? tag, string? favoredByUsername,
-        string searchTerm = "")
+    public async Task<QuoteListPageRm> GetQuoteListPage(
+        int page,
+        string? tag,
+        string? favoredByUsername,
+        string searchTerm = ""
+    )
     {
         var url = _urlBuilder.BuildGetQuoteListPageUrl(page, tag, favoredByUsername, searchTerm);
         var serializerOptions = new JsonSerializerOptions
@@ -101,8 +109,6 @@ public class QuotesApi
         using var response = await _client.PutAsync(url, null);
         var jsonResponse = await response.Content.ReadFromJsonAsync<Dictionary<string, object>?>();
 
-        // var jsonDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse);
-
         if (jsonResponse != null && jsonResponse.TryGetValue(ErrorCodeJsonKey, out var code))
         {
             var err_code = (JsonElement)code;
@@ -114,7 +120,9 @@ public class QuotesApi
         }
 
         var updatedString = await response.Content.ReadAsStringAsync();
-        var updatedQuote = JsonSerializer.Deserialize<QuoteRm>(updatedString) ?? throw new InvalidOperationException();
+        var updatedQuote =
+            JsonSerializer.Deserialize<QuoteRm>(updatedString)
+            ?? throw new InvalidOperationException();
         return updatedQuote;
     }
 
@@ -123,11 +131,7 @@ public class QuotesApi
         var url = _urlBuilder.BuildSignInUrl();
         var requestJsonBody = new SignInRequestRm
         {
-            Credentials = new UserCredentialsRm
-            {
-                Email = email,
-                Password = password
-            }
+            Credentials = new UserCredentialsRm { Email = email, Password = password }
         };
 
         using var response = await _client.PostAsJsonAsync(url, requestJsonBody);
@@ -172,8 +176,10 @@ public class QuotesApi
         {
             if ((int)code == 32)
             {
-                if (jsonDict[ErrorMessageJsonKey] is string errorMessage &&
-                    errorMessage.Contains("email", StringComparison.CurrentCultureIgnoreCase))
+                if (
+                    jsonDict[ErrorMessageJsonKey] is string errorMessage
+                    && errorMessage.Contains("email", StringComparison.CurrentCultureIgnoreCase)
+                )
                     throw new EmailAlreadyRegisteredQuoteException();
 
                 throw new UsernameAlreadyTakenQuoteException();
@@ -218,13 +224,10 @@ public class QuotesApi
     public async Task RequestPasswordResetEmail(string email)
     {
         var url = _urlBuilder.BuildRequestPasswordResetEmailUrl();
-        using var response = await _client.PostAsJsonAsync(url, new PasswordResetEmailRequestRm
-        {
-            User = new UserEmailRm
-            {
-                Email = email
-            }
-        });
+        using var response = await _client.PostAsJsonAsync(
+            url,
+            new PasswordResetEmailRequestRm { User = new UserEmailRm { Email = email } }
+        );
     }
 }
 
@@ -235,9 +238,11 @@ public static class HttpClientExtension
     public static void SetupHeaders(this HttpClient client, string apiKey)
     {
         // var appToken = Environment.GetEnvironmentVariable(AppTokenEnvironmentVariableKey);
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Token", $"token=\"{apiKey}\"");
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            "Token",
+            $"token=\"{apiKey}\""
+        );
     }
-
 }
 
 public class RequestInterceptHandler(HttpMessageHandler innerHandler, UserTokenSupplier userToken)
@@ -245,8 +250,10 @@ public class RequestInterceptHandler(HttpMessageHandler innerHandler, UserTokenS
 {
     private UserTokenSupplier UserToken { get; } = userToken;
 
-    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
-        CancellationToken cancellationToken)
+    protected override async Task<HttpResponseMessage> SendAsync(
+        HttpRequestMessage request,
+        CancellationToken cancellationToken
+    )
     {
         var token = await UserToken();
 
