@@ -11,7 +11,8 @@
     PressedCommand="{Binding Command}"
     BackgroundColor="Transparent">
     <FlexLayout Padding="24"
-                Style="{StaticResource Background}">
+                AlignItems="Center"
+                BackgroundColor="{StaticResource Background}">
         <Label
             FlexLayout.Grow="1"
             FontSize="{StaticResource MediumLarge}"
@@ -21,9 +22,9 @@
             <Image.Source>
                 <FontImageSource
                     FontFamily="MaterialOutlined"
-                    Color="Black"
+                    Color="{StaticResource OnBackground}"
                     Glyph="{x:Static m:MaterialOutlined.Chevron_right}"
-                    Size="40"/>
+                    Size="32"/>
             </Image.Source>
         </Image>
     </FlexLayout>
