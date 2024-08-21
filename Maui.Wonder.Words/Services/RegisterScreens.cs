@@ -2,7 +2,6 @@ using DomainModels.Delegates;
 using ForgotMyPassword.ViewModels;
 using FormFields.Inputs;
 using Maui.Wonder.Words.Interfaces;
-using SignIn.ViewModels;
 using SignUp.ViewModels;
 using UpdateProfile.ViewModels;
 using FormFieldsEmail = FormFields.Inputs.Email;
@@ -60,7 +59,6 @@ public static class RegisterScreensExtension
         builder.Services.AddSingleton<SignUpSuccessDelegate>(OnSignUpSuccess);
         builder.Services.AddSingleton<UpdateProfileSuccessDelegate>(OnUpdateProfileSuccess);
         builder.Services.AddSingleton<ForgotMyPasswordViewModel>();
-        builder.Services.AddSingleton<SignInViewModel>();
         builder.Services.AddSingleton<SignUpViewModel>();
         builder.Services.AddSingleton<UpdateProfileViewModel>();
 

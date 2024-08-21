@@ -7,6 +7,7 @@ using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using SignIn.Controls;
 using SignIn.ViewModels;
 using L10n = SignIn.Resources.Resources;
+using MauiScrollView = Microsoft.Maui.Controls.ScrollView; // Normal import conflicting with ScrollView from iOS.
 
 namespace SignIn.Views;
 
@@ -15,15 +16,17 @@ public class SignInPage : ContentPage
     [SuppressMessage("Interoperability", "CA1416:Validate platform compatibility")]
     public SignInPage(SignInViewModel viewModel)
     {
-        BindingContext = viewModel;
         On<iOS>().SetUseSafeArea(true);
         Resources.MergedDictionaries.Add(new Styles());
+        BindingContext = viewModel;
 
-        Behaviors.Add(new StatusBarBehavior
-        {
-            StatusBarColor = Colors.Black,
-            StatusBarStyle = StatusBarStyle.LightContent
-        });
+        Behaviors.Add(
+            new StatusBarBehavior
+            {
+                StatusBarColor = Colors.Black,
+                StatusBarStyle = StatusBarStyle.LightContent
+            }
+        );
 
         var behavior = new EventToCommandBehavior
         {
@@ -35,10 +38,10 @@ public class SignInPage : ContentPage
 
         Content = new Border
         {
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center,
-            Content = new Microsoft.Maui.Controls.ScrollView // Normal import conflicting with ScrollView from iOS.
+            Stroke = Brush.Transparent,
+            Content = new MauiScrollView
             {
+                Margin = new Thickness { Top = (double)Resources["MediumLargeSpacing"] },
                 Padding = new Thickness((double)Resources["MediumLargeSpacing"], default),
                 Content = new SignInForm(viewModel)
             },

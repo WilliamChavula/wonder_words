@@ -12,13 +12,18 @@ public class PasswordValidationTextConverter : IValueConverter
 
         return passwordError switch
         {
-            null => null,
+            null => string.Empty,
             PasswordValidationError.Empty => L10n.passwordTextFieldEmptyErrorMessage,
             _ => L10n.passwordTextFieldInvalidErrorMessage
         };
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture
+    )
     {
         throw new NotImplementedException();
     }

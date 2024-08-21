@@ -57,8 +57,8 @@ public static class MauiProgram
             // .UseForgotMyPasswordServices()
             .UseQuotesList()
             .UseQuotesDetail()
-            .UseProfileMenu();
-        // .UseSignIn()
+            .UseProfileMenu()
+            .UseSignIn();
         // .UseSignUp()
         // .UseUpdateProfile();
 

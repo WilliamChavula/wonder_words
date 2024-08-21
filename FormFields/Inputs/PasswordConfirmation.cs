@@ -2,8 +2,9 @@ using FormFields.lib;
 
 namespace FormFields.Inputs;
 
-public record PasswordConfirmation(string Value, bool IsPure)
-    : FormZInput<string, PasswordConfirmationValidationError?>(Value, IsPure), IInput
+public class PasswordConfirmation(string Value, bool IsPure)
+    : FormZInput<string, PasswordConfirmationValidationError?>(Value, IsPure),
+        IInput
 {
     public Password Password { get; set; } = new(string.Empty);
 

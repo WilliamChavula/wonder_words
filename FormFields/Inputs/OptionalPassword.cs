@@ -9,8 +9,9 @@ namespace FormFields.Inputs;
 /// </summary>
 /// <param name="Value"></param>
 /// <param name="IsPure"></param>
-public record OptionalPassword(string Value, bool IsPure)
-    : FormZInput<string, OptionalPasswordValidationError?>(Value, IsPure), IInput
+public class OptionalPassword(string Value, bool IsPure)
+    : FormZInput<string, OptionalPasswordValidationError?>(Value, IsPure),
+        IInput
 {
     protected override OptionalPasswordValidationError? Validator(string value)
     {

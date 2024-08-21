@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DomainModels;
+using DomainModels.Delegates;
 using FormFields.Inputs;
 using FormFields.lib;
 using Email = FormFields.Inputs.Email;
@@ -8,16 +10,42 @@ using UserRepo = UserRepository.UserRepository;
 
 namespace SignIn.ViewModels;
 
-public partial class SignInViewModel(
-    UserRepo userRepository,
-    Func<Task> onSignInSuccess,
-    Func<Task> onSignUpTap,
-    Func<Task> onForgotMyPasswordTap
-) : ObservableObject
+public partial class SignInViewModel : ObservableObject
 {
-    [ObservableProperty] private Email _email = new(string.Empty);
-    [ObservableProperty] private Password _password = new(string.Empty);
-    [ObservableProperty] private SubmissionStatus _submissionStatus = SubmissionStatus.Idle;
+    [ObservableProperty]
+    private Email _email = new(string.Empty);
+
+    [ObservableProperty]
+    private Password _password = new();
+
+    [ObservableProperty]
+    private PasswordValidationError? _passwordError;
+
+    [ObservableProperty]
+    private EmailValidationError? _emailError;
+
+    [ObservableProperty]
+    private SubmissionStatus _submissionStatus = SubmissionStatus.Idle;
+    private readonly UserRepo userRepository;
+    private readonly SignInSuccessDelegate onSignInSuccess;
+    private readonly SignUpTapDelegate onSignUpTap;
+    private readonly ForgotMyPasswordTapDelegate onForgotMyPasswordTap;
+
+    public SignInViewModel(
+        UserRepo userRepository,
+        SignInSuccessDelegate onSignInSuccess,
+        SignUpTapDelegate onSignUpTap,
+        ForgotMyPasswordTapDelegate onForgotMyPasswordTap
+    )
+    {
+        this.userRepository = userRepository;
+        this.onSignInSuccess = onSignInSuccess;
+        this.onSignUpTap = onSignUpTap;
+        this.onForgotMyPasswordTap = onForgotMyPasswordTap;
+
+        PasswordError = Password.DisplayError;
+        EmailError = Email.DisplayError;
+    }
 
     [RelayCommand]
     private void OnEmailChanged(string newValue)
@@ -35,6 +63,7 @@ public partial class SignInViewModel(
         var previousEmailValue = previousEmail.Value;
 
         Email = new Email(previousEmailValue, false);
+        EmailError = Email.IsInputValid ? null : Email.DisplayError;
     }
 
     [RelayCommand]
@@ -52,11 +81,16 @@ public partial class SignInViewModel(
         var previousPasswordValue = previousPasswordState.Value;
 
         Password = new Password(previousPasswordValue, false);
+        PasswordError = Password.IsInputValid ? null : Password.DisplayError;
     }
 
     [RelayCommand]
     private async Task OnSubmit()
     {
+        // Clear any errors that are being displayed
+        PasswordError = null;
+        EmailError = null;
+
         var email = new Email(Email.Value, false);
         var password = new Password(Password.Value, false);
 
@@ -73,10 +107,16 @@ public partial class SignInViewModel(
             }
             catch (Exception e)
             {
-                SubmissionStatus = e is InvalidCredentialsException
-                    ? SubmissionStatus.InvalidCredentialsError
-                    : SubmissionStatus.GenericError;
+                SubmissionStatus =
+                    e is InvalidCredentialsException
+                        ? SubmissionStatus.InvalidCredentialsError
+                        : SubmissionStatus.GenericError;
             }
+        }
+        else
+        {
+            PasswordError = password.DisplayError;
+            EmailError = email.DisplayError;
         }
     }
 
