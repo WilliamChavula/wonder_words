@@ -1,21 +1,20 @@
+using DomainModels.Delegates;
 using ForgotMyPassword.ViewModels;
 using FormFields.Inputs;
 using Maui.Wonder.Words.Interfaces;
-using ProfileMenu.ViewModels;
-using QuoteDetails.ViewModels;
-using QuoteList.ViewModels;
-using QuoteList.Views;
 using SignIn.ViewModels;
 using SignUp.ViewModels;
 using UpdateProfile.ViewModels;
 using FormFieldsEmail = FormFields.Inputs.Email;
-using DomainModels.Delegates;
 
 namespace Maui.Wonder.Words.Services;
 
 public static class RegisterScreensExtension
 {
-    public static MauiAppBuilder RegisterScreens(this MauiAppBuilder builder, INavigationService navigationService)
+    public static MauiAppBuilder RegisterScreens(
+        this MauiAppBuilder builder,
+        INavigationService navigationService
+    )
     {
         # region DefineDelegates
         Task OnUpdateProfileTap(string email, string username)
@@ -26,14 +25,19 @@ public static class RegisterScreensExtension
                 { "Username", new Username(username) }
             };
 
-            return navigationService.GoToAsync($"{RouteConstants.UpdateProfileScreen}", navigationParameters);
+            return navigationService.GoToAsync(
+                $"{RouteConstants.UpdateProfileScreen}",
+                navigationParameters
+            );
         }
         Task OnSignInTap() => navigationService.GoToAsync($"{RouteConstants.SignInScreen}");
         Task OnSignUpTap() => navigationService.GoToAsync($"{RouteConstants.SignUpScreen}");
-        Task OnAuthenticationError() => navigationService.GoToAsync($"{RouteConstants.SignInScreen}");
+        Task OnAuthenticationError() =>
+            navigationService.GoToAsync($"{RouteConstants.SignInScreen}");
         Task OnQuoteSelected(string quoteId) =>
-                navigationService.GoToAsync($"quoteDetails?quoteId={quoteId}");
-        Task OnForgotMyPasswordTap() => navigationService.GoToAsync($"{RouteConstants.ForgotMyPasswordScreen}");
+            navigationService.GoToAsync($"quoteDetails?quoteId={quoteId}");
+        Task OnForgotMyPasswordTap() =>
+            navigationService.GoToAsync($"{RouteConstants.ForgotMyPasswordScreen}");
         Task OnCancelTap() => navigationService.GoBackAsync();
         Task OnEmailRequestSuccess() => navigationService.GoBackAsync();
         Task OnSignInSuccess() => navigationService.GoBackAsync();
@@ -56,7 +60,6 @@ public static class RegisterScreensExtension
         builder.Services.AddSingleton<SignUpSuccessDelegate>(OnSignUpSuccess);
         builder.Services.AddSingleton<UpdateProfileSuccessDelegate>(OnUpdateProfileSuccess);
         builder.Services.AddSingleton<ForgotMyPasswordViewModel>();
-        builder.Services.AddSingleton<ProfileMenuViewModel>();
         builder.Services.AddSingleton<SignInViewModel>();
         builder.Services.AddSingleton<SignUpViewModel>();
         builder.Services.AddSingleton<UpdateProfileViewModel>();

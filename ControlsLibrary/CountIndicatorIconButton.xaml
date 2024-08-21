@@ -5,25 +5,28 @@
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              x:Name="IconButton">
     <ContentView.Resources>
-        <ResourceDictionary Source="Resources/Styles/Sizes.xaml" />
+        <ResourceDictionary Source="Resources/Styles/Sizes.xaml"/>
     </ContentView.Resources>
-    <material:ButtonView Padding="10"
+    <VerticalStackLayout HorizontalOptions="Center"
+                         Spacing="0"
                          BackgroundColor="Transparent"
                          BindingContext="{x:Reference IconButton}"
-                         TappedCommand="{Binding OnTap}"
                          ToolTipProperties.Text="{Binding Tooltip}">
-        <VerticalStackLayout HorizontalOptions="Center">
-            <Image BackgroundColor="Transparent">
-                <Image.Source>
-                    <FontImageSource Glyph="{Binding Icon}"
-                                     Color="Black"
-                                     FontFamily="MaterialIconsRegular"
-                                     Size="24" />
-                </Image.Source>
-            </Image>
-            <Label FontSize="{StaticResource Small}"
-                   HorizontalTextAlignment="Center"
-                   Text="{Binding Count}" />
-        </VerticalStackLayout>
-    </material:ButtonView>
+        <ImageButton BackgroundColor="Transparent"
+                     Margin="0"
+                     Padding="8"
+                     WidthRequest="24"
+                     HeightRequest="24"
+                     Command="{Binding OnTap}">
+            <ImageButton.Source>
+                <FontImageSource Glyph="{Binding Icon}"
+                                 Color="Black"
+                                 FontFamily="MaterialIconsRegular"
+                                 Size="16"/>
+            </ImageButton.Source>
+        </ImageButton>
+        <Label FontSize="{StaticResource Small}"
+               HorizontalTextAlignment="Center"
+               Text="{Binding Count}"/>
+    </VerticalStackLayout>
 </ContentView>

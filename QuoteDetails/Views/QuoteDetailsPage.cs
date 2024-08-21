@@ -1,7 +1,5 @@
-using System.Diagnostics;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Markup;
 using ControlsLibrary;
 using ControlsLibrary.Icons;
 using ControlsLibrary.Resources.Styles;
@@ -331,5 +329,7 @@ public class QuoteDetailsPage : ContentPage
                 GenericErrorSnackBar.MakeSnackBar();
                 break;
         }
+
+        ((QuoteDetailsViewModel)sender!).QuoteUpdateError = null;
     }
 }

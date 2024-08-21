@@ -1,15 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="Maui.Wonder.Words.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Maui.Wonder.Words.AppShell"
     xmlns:local="clr-namespace:Maui.Wonder.Words"
+    xmlns:listPage="clr-namespace:QuoteList.Views;assembly=QuoteList"
+    xmlns:profile="clr-namespace:ProfileMenu.Views;assembly=ProfileMenu"
+    xmlns:icons="clr-namespace:ControlsLibrary.Icons;assembly=ControlsLibrary"
+    xmlns:styles="clr-namespace:ControlLibrary.Resources.Styles;assembly=ControlsLibrary"
     Title="Maui.Wonder.Words"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <Shell.Resources>
+        <Style TargetType="TabBar">
+            <Setter Property="Shell.TabBarTitleColor"
+                    Value="Black"/>
+            <Setter Property="Shell.TabBarUnselectedColor"
+                    Value="Gray"/>
+        </Style>
+    </Shell.Resources>
+
+    <TabBar>
+        <Tab Title="Quotes"
+             Icon="format_quote.png">
+            <ShellContent
+                Title="Home"
+                ContentTemplate="{DataTemplate listPage:QuoteListPage}"
+                Route="MainPage"/>
+
+        </Tab>
+        <Tab Title="Profile"
+             Icon="person.png">
+            <ShellContent
+                Title="Profile"
+                ContentTemplate="{DataTemplate profile:ProfileMenuPage}"
+                Route="ProfilePage"/>
+
+        </Tab>
+    </TabBar>
 
 </Shell>

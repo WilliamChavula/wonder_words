@@ -3,8 +3,9 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DomainModels;
-using UserRepositoryImpl = UserRepository.UserRepository;
+using DomainModels.Delegates;
 using QuoteRepositoryImpl = QuoteRepository.QuoteRepository;
+using UserRepositoryImpl = UserRepository.UserRepository;
 
 namespace ProfileMenu.ViewModels;
 
@@ -12,27 +13,33 @@ public partial class ProfileMenuViewModel : ObservableObject
 {
     private readonly UserRepositoryImpl _userRepository;
     private readonly QuoteRepositoryImpl _quoteRepository;
-    private readonly Func<Task> _onSignInTap;
-    private readonly Func<Task> _onSignUpTap;
-    private readonly Func<string, string, Task> _onUpdateProfileTap;
+    private readonly SignInTapDelegate _onSignInTap;
+    private readonly SignUpTapDelegate _onSignUpTap;
+    private readonly UpdateProfileTapDelegate _onUpdateProfileTap;
 
-    [ObservableProperty] private DarkModePreference _darkModePreference;
+    [ObservableProperty]
+    private DarkModePreference? _darkModePreference;
 
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IsUserAuthenticated))]
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsUserAuthenticated))]
     private string? _username;
 
-    [ObservableProperty] private string? _email;
+    [ObservableProperty]
+    private string? _email;
 
-    [ObservableProperty] private bool _isSignOutInProgress;
-    [ObservableProperty] private bool _isLoadingData;
+    [ObservableProperty]
+    private bool _isSignOutInProgress;
+
+    [ObservableProperty]
+    private bool _isLoadingData;
 
     /// <inheritdoc/>
     public ProfileMenuViewModel(
         UserRepositoryImpl userRepository,
         QuoteRepositoryImpl quoteRepository,
-        Func<Task> onSignInTap,
-        Func<Task> onSignUpTap,
-        Func<string, string, Task> onUpdateProfileTap
+        SignInTapDelegate onSignInTap,
+        SignUpTapDelegate onSignUpTap,
+        UpdateProfileTapDelegate onUpdateProfileTap
     )
     {
         _userRepository = userRepository;
@@ -58,6 +65,7 @@ public partial class ProfileMenuViewModel : ObservableObject
         await foreach (var user in _userRepository.GetUser())
         {
             Username = user?.Username;
+            IsLoadingData = false;
             Email = user?.Email;
         }
 
@@ -65,8 +73,6 @@ public partial class ProfileMenuViewModel : ObservableObject
         {
             DarkModePreference = preference;
         }
-
-        IsLoadingData = false;
     }
 
     [RelayCommand]
@@ -74,10 +80,7 @@ public partial class ProfileMenuViewModel : ObservableObject
     {
         IsSignOutInProgress = true;
 
-        await Task.WhenAll([
-            _userRepository.SignOut(),
-            _quoteRepository.ClearCache()
-        ]);
+        await Task.WhenAll([_userRepository.SignOut(), _quoteRepository.ClearCache()]);
 
         IsSignOutInProgress = false;
     }

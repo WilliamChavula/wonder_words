@@ -82,6 +82,7 @@ public class QuoteListPage : ContentPage
         grid.Add(
             new Border
             {
+                Stroke = Brush.Transparent,
                 Padding = new Thickness { Left = 16, Right = 16 },
                 Content = searchBar
             }

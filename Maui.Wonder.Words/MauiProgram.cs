@@ -1,24 +1,25 @@
-﻿using CommunityToolkit.Maui;
+﻿using System.Reflection;
+using CommunityToolkit.Maui;
 using ControlsLibrary.Extensions;
 using ForgotMyPassword.Extensions;
-using QuoteDetails.Extensions;
+using Maui.Wonder.Words.Extensions;
 using Maui.Wonder.Words.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using ProfileMenu.Extensions;
+using QuoteDetails.Extensions;
 using QuoteList.Extensions;
 using SignIn.Extensions;
 using SignUp.Extensions;
 using UpdateProfile.Extensions;
 using UserRepository.Extensions;
-using System.Reflection;
-using Maui.Wonder.Words.Extensions;
 
 namespace Maui.Wonder.Words;
+
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-
         var builder = MauiApp.CreateBuilder();
 
         builder
@@ -37,7 +38,8 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<QuotesApi.UserTokenSupplier>(provider =>
         {
-            var userRepository = provider.GetRequiredService<UserRepository.Services.IUserSecureStorage>();
+            var userRepository =
+                provider.GetRequiredService<UserRepository.Services.IUserSecureStorage>();
 
             return userRepository.GetUserToken;
         });
@@ -54,7 +56,8 @@ public static class MauiProgram
             .UseControlsLibrary()
             // .UseForgotMyPasswordServices()
             .UseQuotesList()
-            .UseQuotesDetail();
+            .UseQuotesDetail()
+            .UseProfileMenu();
         // .UseSignIn()
         // .UseSignUp()
         // .UseUpdateProfile();

@@ -79,6 +79,7 @@
       <ProjectReference Include="..\SignUp\SignUp.csproj" />
       <ProjectReference Include="..\UpdateProfile\UpdateProfile.csproj" />
       <ProjectReference Include="..\UserRepository\UserRepository.csproj" />
+      <ProjectReference Include="..\DomainModels\DomainModels.csproj" />
     </ItemGroup>
 
     <ItemGroup>
