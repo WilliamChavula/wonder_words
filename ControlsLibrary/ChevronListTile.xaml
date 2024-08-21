@@ -11,8 +11,7 @@
     PressedCommand="{Binding Command}"
     BackgroundColor="Transparent">
     <FlexLayout Padding="24"
-                AlignItems="Center"
-                BackgroundColor="{StaticResource Background}">
+                AlignItems="Center">
         <Label
             FlexLayout.Grow="1"
             FontSize="{StaticResource MediumLarge}"

@@ -11,15 +11,6 @@
     Title="Maui.Wonder.Words"
     Shell.FlyoutBehavior="Disabled">
 
-    <Shell.Resources>
-        <Style TargetType="TabBar">
-            <Setter Property="Shell.TabBarTitleColor"
-                    Value="Black"/>
-            <Setter Property="Shell.TabBarUnselectedColor"
-                    Value="Gray"/>
-        </Style>
-    </Shell.Resources>
-
     <TabBar>
         <Tab Title="Quotes"
              Icon="format_quote.png">

@@ -116,6 +116,8 @@
         <Color x:Key="Gray600">#404040</Color>
         <Color x:Key="Gray900">#212121</Color>
         <Color x:Key="Gray950">#141414</Color>
+        <Color x:Key="Gray">#808080</Color>
+        <Color x:Key="OffBlack">#1f1f1f</Color>
 
         <SolidColorBrush x:Key="SecondaryBrush"
                          Color="{StaticResource Secondary}"/>
@@ -336,9 +338,9 @@
                 <Setter Property="Shell.BackgroundColor"
                         Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}"/>
                 <Setter Property="Shell.ForegroundColor"
-                        Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource SecondaryDarkText}}"/>
+                        Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OnSecondaryDark}}"/>
                 <Setter Property="Shell.TitleColor"
-                        Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource SecondaryDarkText}}"/>
+                        Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OnSecondaryDark}}"/>
                 <Setter Property="Shell.DisabledColor"
                         Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}"/>
                 <Setter Property="Shell.UnselectedColor"
@@ -352,6 +354,6 @@
                 <Setter Property="Shell.TabBarTitleColor"
                         Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
                 <Setter Property="Shell.TabBarUnselectedColor"
-                        Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}"/>
+                        Value="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}"/>
         </Style>
 </ResourceDictionary>
