@@ -6,10 +6,12 @@ namespace UserRepository;
 public class UserRepository(
     QuotesApi.QuotesApi api,
     IUserSecureStorage secureStorage,
-    UserLocalStorage userLocalStorage)
+    UserLocalStorage userLocalStorage
+)
 {
     private readonly BehaviorSubject<User?> _userSubject = new(null);
-    private readonly BehaviorSubject<DarkModePreference> _darkModePreference = new(DarkModePreference.Unspecified);
+    private readonly BehaviorSubject<DarkModePreference> _darkModePreference =
+        new(DarkModePreference.Unspecified);
 
     public void UpsertDarkModePreference(DarkModePreference preference)
     {
@@ -19,7 +21,7 @@ public class UserRepository(
 
     public async IAsyncEnumerable<DarkModePreference> GetDarkModePreference()
     {
-        var storedPreference = await  Task.Run(userLocalStorage.GetDarkModePreference);
+        var storedPreference = await Task.Run(userLocalStorage.GetDarkModePreference);
         _darkModePreference.OnNext(
             storedPreference?.ToDomainModel() ?? DarkModePreference.Unspecified
         );
@@ -32,7 +34,11 @@ public class UserRepository(
         try
         {
             var apiUser = await api.SignIn(email, password);
-            await secureStorage.UpsertUserInfo(username: apiUser.Username, email: apiUser.Email, token: apiUser.Token);
+            await secureStorage.UpsertUserInfo(
+                username: apiUser.Username,
+                email: apiUser.Email,
+                token: apiUser.Token
+            );
 
             var domainUser = apiUser.ToDomainModel();
             _userSubject.OnNext(domainUser);
@@ -47,7 +53,9 @@ public class UserRepository(
     {
         if (_userSubject.Value is null)
         {
-            var userInfo = await Task.WhenAll([secureStorage.GetUserEmail(), secureStorage.GetUserEmail()]);
+            var userInfo = await Task.WhenAll(
+                [secureStorage.GetUserEmail(), secureStorage.GetUserEmail()]
+            );
             var email = userInfo[0];
             var username = userInfo[1];
 
@@ -86,7 +94,7 @@ public class UserRepository(
         }
     }
 
-    public async Task UpdateProfile(string username, string email, string? newPassword)
+    public async Task UpdateProfile(string username, string email, string newPassword)
     {
         try
         {
@@ -107,5 +115,6 @@ public class UserRepository(
         _userSubject.OnNext(null);
     }
 
-    public async Task RequestPasswordResetEmail(string email) => await api.RequestPasswordResetEmail(email);
+    public async Task RequestPasswordResetEmail(string email) =>
+        await api.RequestPasswordResetEmail(email);
 }

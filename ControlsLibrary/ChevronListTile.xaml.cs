@@ -22,6 +22,8 @@ public partial class ChevronListTile : StatefulContentView
     {
         Resources.MergedDictionaries.Add(new Styles());
         InitializeComponent();
+
+        // SetBinding(PressedCommandProperty, new Binding { Source = this, Path = nameof(Command) });
     }
 
     public string Text

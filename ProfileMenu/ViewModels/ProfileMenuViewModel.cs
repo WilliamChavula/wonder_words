@@ -64,7 +64,7 @@ public partial class ProfileMenuViewModel : ObservableObject
         IsLoadingData = true;
         await foreach (var user in _userRepository.GetUser())
         {
-            Username = user?.Username;
+            Username = "William"; // user?.Username;
             IsLoadingData = false;
             Email = user?.Email;
         }

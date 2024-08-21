@@ -167,7 +167,7 @@ public class ProfileMenuPage : ContentPage
         var usernameSpan = new Span();
         usernameSpan.SetBinding(
             Span.TextProperty,
-            new Binding { Source = this, Path = "BindingContext.Username" }
+            new Binding { Source = this, Path = "BindingContext.Username", }
         );
         formattedText.Spans.Add(usernameSpan);
 
@@ -214,7 +214,7 @@ public class ProfileMenuPage : ContentPage
             }
         };
 
-        userSignedInViewsContainer.Add(updateProfileLayout, row: 2);
+        userSignedInViewsContainer.Add(updateProfileLayout, row: 1);
 
         var inProgressBtn = new InProgressExpandedElevatedButton
         {

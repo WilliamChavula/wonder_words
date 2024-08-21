@@ -72,7 +72,10 @@ public class ExpandedElevatedButton : ContentView
                 Children = { singInIcon, btnLabel }
             }
         };
-        btnView.SetBinding(ButtonView.TappedCommandProperty, new Binding(nameof(OnTap)));
+        btnView.SetBinding(
+            ButtonView.TappedCommandProperty,
+            new Binding { Source = this, Path = nameof(OnTap) }
+        );
 
         // SignIn Button Type 2
         var btn = new Button

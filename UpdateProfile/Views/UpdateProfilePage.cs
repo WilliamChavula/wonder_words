@@ -1,12 +1,12 @@
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
 using ControlsLibrary.Resources.Styles;
-using ScrollView = Microsoft.Maui.Controls.ScrollView;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using UpdateProfile.Controls;
 using UpdateProfile.ViewModels;
 using L10n = UpdateProfile.Resources.Resources;
+using ScrollView = Microsoft.Maui.Controls.ScrollView;
 
 namespace UpdateProfile.Views;
 
@@ -15,23 +15,25 @@ public class UpdateProfilePage : ContentPage
     public UpdateProfilePage(UpdateProfileViewModel viewModel)
     {
         BindingContext = viewModel;
-        
+
         On<iOS>().SetUseSafeArea(true);
-        
+
         BindingContext = viewModel;
         Resources.MergedDictionaries.Add(new Styles());
 
+#pragma warning disable CA1416 // Validate platform compatibility
         var statusBar = new StatusBarBehavior
         {
-            StatusBarColor = Colors.Black,
-            StatusBarStyle = StatusBarStyle.LightContent
+            StatusBarColor = Colors.White,
+            StatusBarStyle = StatusBarStyle.DarkContent
         };
+#pragma warning restore CA1416 // Validate platform compatibility
         var behavior = new EventToCommandBehavior
         {
             EventName = nameof(Unfocused),
             Command = new Command(Unfocus)
         };
-        
+
         Behaviors.Add(statusBar);
         Behaviors.Add(behavior);
 
@@ -45,7 +47,7 @@ public class UpdateProfilePage : ContentPage
                 Right = (double)Resources["MediumLargeSpacing"],
                 Top = (double)Resources["MediumLargeSpacing"]
             },
-            
+
             Content = new UpdateProfileForm(viewModel)
         };
     }
