@@ -6,11 +6,32 @@ namespace SignUp.ViewModels;
 
 public partial class SignUpViewModel : ObservableObject
 {
-    [ObservableProperty] private Email _email = new(string.Empty);
-    [ObservableProperty] private Username _username = new(string.Empty);
-    [ObservableProperty] private Password _password = new(string.Empty);
-    [ObservableProperty] private PasswordConfirmation _passwordConfirmation = new(string.Empty, true);
-    [ObservableProperty] private SubmissionStatus _submissionStatus = SubmissionStatus.Idle;
+    [ObservableProperty]
+    private Email _email = new(string.Empty);
+
+    [ObservableProperty]
+    private Username _username = new(string.Empty);
+
+    [ObservableProperty]
+    private Password _password = new(string.Empty);
+
+    [ObservableProperty]
+    private PasswordConfirmation _passwordConfirmation = new(string.Empty, true);
+
+    [ObservableProperty]
+    private SubmissionStatus _submissionStatus = SubmissionStatus.Idle;
+
+    [ObservableProperty]
+    private EmailValidationError? _emailError;
+
+    [ObservableProperty]
+    private UsernameValidationError? _usernameError;
+
+    [ObservableProperty]
+    private PasswordValidationError? _passwordError;
+
+    [ObservableProperty]
+    private PasswordConfirmationValidationError? _passwordConfirmationError;
 }
 
 public enum SubmissionStatus

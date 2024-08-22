@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using DomainModels;
+using DomainModels.Delegates;
 using FormFields.Inputs;
 using FormFields.lib;
 using Email = FormFields.Inputs.Email;
@@ -7,7 +8,7 @@ using UserRepo = UserRepository.UserRepository;
 
 namespace SignUp.ViewModels;
 
-public partial class SignUpViewModel(UserRepo userRepository, Func<Task> onSignUpSuccess)
+public partial class SignUpViewModel(UserRepo userRepository, SignUpSuccessDelegate onSignUpSuccess)
 {
     [RelayCommand]
     private void OnEmailChanged(string newValue)
@@ -22,7 +23,12 @@ public partial class SignUpViewModel(UserRepo userRepository, Func<Task> onSignU
     [RelayCommand]
     private void OnEmailUnfocused()
     {
-        Email = new Email(Email.Value, IsPure: false, IsAlreadyRegistered: Email.IsAlreadyRegistered);
+        Email = new Email(
+            Email.Value,
+            IsPure: false,
+            IsAlreadyRegistered: Email.IsAlreadyRegistered
+        );
+        EmailError = Email.IsInputValid ? null : Email.DisplayError;
     }
 
     [RelayCommand]
@@ -33,7 +39,8 @@ public partial class SignUpViewModel(UserRepo userRepository, Func<Task> onSignU
         Username = shouldValidate
             ? new Username(newValue, false)
             {
-                IsAlreadyRegistered = newValue == previousUsername.Value && previousUsername.IsAlreadyRegistered
+                IsAlreadyRegistered =
+                    newValue == previousUsername.Value && previousUsername.IsAlreadyRegistered
             }
             : new Username(newValue);
     }
@@ -41,7 +48,11 @@ public partial class SignUpViewModel(UserRepo userRepository, Func<Task> onSignU
     [RelayCommand]
     private void OnUsernameUnfocused()
     {
-        Username = new Username(Username.Value) { IsAlreadyRegistered = Username.IsAlreadyRegistered };
+        Username = new Username(Username.Value)
+        {
+            IsAlreadyRegistered = Username.IsAlreadyRegistered
+        };
+        UsernameError = Username.IsInputValid ? null : Username.DisplayError;
     }
 
     [RelayCommand]
@@ -56,6 +67,7 @@ public partial class SignUpViewModel(UserRepo userRepository, Func<Task> onSignU
     private void OnPasswordUnfocused()
     {
         Password = new Password(Password.Value, false);
+        PasswordError = Password.IsInputValid ? null : Password.DisplayError;
     }
 
     [RelayCommand]
@@ -75,12 +87,24 @@ public partial class SignUpViewModel(UserRepo userRepository, Func<Task> onSignU
         {
             Password = Password
         };
+        PasswordConfirmationError = PasswordConfirmation.IsInputValid
+            ? null
+            : PasswordConfirmation.DisplayError;
     }
 
     [RelayCommand]
     private async Task OnSubmit()
     {
-        var username = new Username(Username.Value, false) { IsAlreadyRegistered = Username.IsAlreadyRegistered };
+        // Clear any errors that are being displayed
+        PasswordError = null;
+        EmailError = null;
+        UsernameError = null;
+        PasswordConfirmationError = null;
+
+        var username = new Username(Username.Value, false)
+        {
+            IsAlreadyRegistered = Username.IsAlreadyRegistered
+        };
         var email = new Email(Email.Value, false, Email.IsAlreadyRegistered);
         var password = new Password(Password.Value, false);
         var passwordConfirmation = new PasswordConfirmation(PasswordConfirmation.Value, false)
@@ -88,12 +112,7 @@ public partial class SignUpViewModel(UserRepo userRepository, Func<Task> onSignU
             Password = Password
         };
 
-        var isFormValid = FormZ.Validate([
-            username,
-            email,
-            password,
-            passwordConfirmation
-        ]);
+        var isFormValid = FormZ.Validate([username, email, password, passwordConfirmation]);
 
         Username = username;
         Email = email;
@@ -109,22 +128,29 @@ public partial class SignUpViewModel(UserRepo userRepository, Func<Task> onSignU
             }
             catch (Exception error)
             {
-                SubmissionStatus = error is not UsernameAlreadyTakenException
-                                   and not EmailAlreadyRegisteredException
+                SubmissionStatus = error
+                    is not UsernameAlreadyTakenException
+                        and not EmailAlreadyRegisteredException
                     ? SubmissionStatus.Error
                     : SubmissionStatus.Idle;
 
-                Username = error is UsernameAlreadyTakenException
-                    ? new Username(Username.Value, false)
-                    {
-                        IsAlreadyRegistered = true
-                    }
-                    : Username;
+                Username =
+                    error is UsernameAlreadyTakenException
+                        ? new Username(Username.Value, false) { IsAlreadyRegistered = true }
+                        : Username;
 
-                Email = error is EmailAlreadyRegisteredException
-                    ? new Email(Email.Value, false, true)
-                    : Email;
+                Email =
+                    error is EmailAlreadyRegisteredException
+                        ? new Email(Email.Value, false, true)
+                        : Email;
             }
+        }
+        else
+        {
+            PasswordError = password.DisplayError;
+            EmailError = email.DisplayError;
+            UsernameError = username.DisplayError;
+            PasswordConfirmationError = passwordConfirmation.DisplayError;
         }
     }
 

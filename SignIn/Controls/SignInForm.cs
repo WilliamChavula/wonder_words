@@ -46,11 +46,7 @@ internal class SignInForm : ContentView
             }
         };
 
-        var passwordError = new Label
-        {
-            TextColor = (Color)Resources["OnErrorDark"],
-            FontSize = 14
-        };
+        var passwordError = new Label { Style = (Style)Resources["textFieldError"] };
         passwordError.SetBinding(
             Label.TextProperty,
             new Binding
@@ -131,11 +127,7 @@ internal class SignInForm : ContentView
         };
         emailField.Focus();
 
-        var emailFieldError = new Label
-        {
-            TextColor = (Color)Resources["OnErrorDark"],
-            FontSize = 14
-        };
+        var emailFieldError = new Label { Style = (Style)Resources["textFieldError"] };
         emailFieldError.SetBinding(
             Label.TextProperty,
             new Binding

@@ -1,9 +1,12 @@
+using System.Diagnostics;
 using LocalStorage.Models;
 
 namespace QuoteRepository;
 
 public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
 {
+    private readonly LocalStorage.LocalStorage localStorage = localStorage;
+
     public void UpsertQuoteListPage(QuoteListPageCm quoteListPage, bool favoritesOnly)
     {
         var realm = (
@@ -73,7 +76,7 @@ public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
     public QuoteCm? GetQuote(int id)
     {
         var quoteListRealm = localStorage.GetQuoteListPageRealm;
-        // var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
+        var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
 
         var query = quoteListRealm.All<QuoteListPageCm>();
 
@@ -81,7 +84,7 @@ public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
             return null;
 
         var quoteList = query.ToList();
-        // var favoritesList = favoriteRealm.All<QuoteListPageCm>().ToList();
+        var favoritesList = favoriteRealm.All<QuoteListPageCm>().ToList();
 
         var completeList = quoteList
             .SelectMany(page => page.QuotesList)

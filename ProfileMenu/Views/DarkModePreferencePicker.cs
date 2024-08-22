@@ -78,6 +78,11 @@ public class DarkModePreferencePicker : ContentView
             new Binding { Source = this, Path = nameof(PreferenceChanged) }
         );
 
+        radioItems.SetBinding(
+            RadioButtonGroupView.CommandParameterProperty,
+            new Binding { Source = radioItems, Path = "SelectedItem" }
+        );
+
         Content = new VerticalStackLayout
         {
             Children =

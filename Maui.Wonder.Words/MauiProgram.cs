@@ -58,8 +58,8 @@ public static class MauiProgram
             .UseQuotesList()
             .UseQuotesDetail()
             .UseProfileMenu()
-            .UseSignIn();
-        // .UseSignUp()
+            .UseSignIn()
+            .UseSignUp();
         // .UseUpdateProfile();
 
 #if DEBUG

@@ -1,13 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Maui.Behaviors;
 using CommunityToolkit.Maui.Core;
+using ControlsLibrary.Resources.Styles;
 using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
-using ScrollView = Microsoft.Maui.Controls.ScrollView;
-using SignUp.ViewModels;
-using ControlsLibrary.Resources.Styles;
 using SignUp.Controls;
+using SignUp.ViewModels;
 using L10n = SignUp.Resources.Resources;
+using ScrollView = Microsoft.Maui.Controls.ScrollView;
 
 namespace SignUp.Views;
 
@@ -17,9 +17,9 @@ public class SignUpPage : ContentPage
     public SignUpPage(SignUpViewModel viewModel)
     {
         On<iOS>().SetUseSafeArea(true);
-        
-        BindingContext = viewModel;
         Resources.MergedDictionaries.Add(new Styles());
+
+        BindingContext = viewModel;
 
         var statusBar = new StatusBarBehavior
         {
@@ -31,21 +31,25 @@ public class SignUpPage : ContentPage
             EventName = nameof(Unfocused),
             Command = new Command(Unfocus)
         };
-        
+
         Behaviors.Add(statusBar);
         Behaviors.Add(behavior);
         Title = L10n.appBarTitle;
 
-        Content = new ScrollView
+        Content = new Border
         {
-            Padding = new Thickness
+            Stroke = Brush.Transparent,
+            Content = new ScrollView
             {
-                Left = (double)Resources["MediumLargeSpacing"],
-                Right = (double)Resources["MediumLargeSpacing"],
-                Top = (double)Resources["MediumLargeSpacing"]
-            },
-            
-            Content = new SignUpForm(viewModel)
+                Padding = new Thickness
+                {
+                    Left = (double)Resources["MediumLargeSpacing"],
+                    Right = (double)Resources["MediumLargeSpacing"],
+                    Top = (double)Resources["MediumLargeSpacing"]
+                },
+
+                Content = new SignUpForm(viewModel)
+            }
         };
     }
 }

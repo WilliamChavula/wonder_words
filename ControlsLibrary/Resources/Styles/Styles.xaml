@@ -332,6 +332,30 @@
 
         </Style>
 
+        <Style x:Key="textFieldError"
+               TargetType="Label">
+                <Setter Property="TextColor"
+                        Value="{StaticResource OnErrorDark}"/>
+                <Setter Property="FontSize"
+                        Value="14"/>
+        </Style>
+
+        <Style x:Key="MediumSpacer"
+               TargetType="BoxView">
+                <Setter Property="HeightRequest"
+                        Value="{StaticResource MediumLargeSpacing}"/>
+                <Setter Property="BackgroundColor"
+                        Value="Transparent"/>
+        </Style>
+
+        <Style x:Key="ExxxtraSpacer"
+               TargetType="BoxView">
+                <Setter Property="HeightRequest"
+                        Value="{StaticResource XxxLargeSpacing}"/>
+                <Setter Property="BackgroundColor"
+                        Value="Transparent"/>
+        </Style>
+
 
         <Style TargetType="Shell"
                ApplyToDerivedTypes="True">

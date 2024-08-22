@@ -8,31 +8,27 @@ public class ValidationTextConverter<T> : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        ArgumentNullException.ThrowIfNull(value);
-        
-        var error = (T)value;
-
-        if (error is EmailValidationError emailError)
+        if (value is EmailValidationError emailError)
         {
             return emailError switch
             {
                 EmailValidationError.Empty => L10n.emailTextFieldEmptyErrorMessage,
                 _ => L10n.emailTextFieldInvalidErrorMessage
             };
-            
         }
 
-        if (error is UsernameValidationError usernameValidationError)
+        if (value is UsernameValidationError usernameValidationError)
         {
             return usernameValidationError switch
             {
                 UsernameValidationError.Empty => L10n.usernameTextFieldEmptyErrorMessage,
-                UsernameValidationError.AlreadyTaken => L10n.usernameTextFieldAlreadyTakenErrorMessage,
+                UsernameValidationError.AlreadyTaken
+                    => L10n.usernameTextFieldAlreadyTakenErrorMessage,
                 _ => L10n.usernameTextFieldInvalidErrorMessage
             };
         }
 
-        if (error is PasswordValidationError passwordValidationError)
+        if (value is PasswordValidationError passwordValidationError)
         {
             return passwordValidationError switch
             {
@@ -41,19 +37,25 @@ public class ValidationTextConverter<T> : IValueConverter
             };
         }
 
-        if (error is PasswordConfirmationValidationError confirmationValidationError)
+        if (value is PasswordConfirmationValidationError confirmationValidationError)
         {
             return confirmationValidationError switch
             {
-                PasswordConfirmationValidationError.Empty => L10n.passwordConfirmationTextFieldEmptyErrorMessage,
+                PasswordConfirmationValidationError.Empty
+                    => L10n.passwordConfirmationTextFieldEmptyErrorMessage,
                 _ => L10n.passwordConfirmationTextFieldInvalidErrorMessage
             };
         }
 
-        return null;
+        return string.Empty;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? ConvertBack(
+        object? value,
+        Type targetType,
+        object? parameter,
+        CultureInfo culture
+    )
     {
         throw new NotImplementedException();
     }
