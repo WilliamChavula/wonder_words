@@ -360,9 +360,9 @@ internal class SignUpForm : ContentView
         #region Events
 
         viewModel.PropertyChanged += ViewModelOnPropertyChanged;
-        // emailEntry.ReturnCommand = new Command(() => usernameEntry.Focus());
-        // usernameEntry.ReturnCommand = new Command(() => passwordEntry.Focus());
-        // passwordEntry.ReturnCommand = new Command(() => passwordConfirmationEntry.Focus());
+        emailEntry.ReturnCommand = new Command(() => usernameEntry.Focus());
+        usernameEntry.ReturnCommand = new Command(() => passwordEntry.Focus());
+        passwordEntry.ReturnCommand = new Command(() => passwordConfirmationEntry.Focus());
 
         #endregion
 
