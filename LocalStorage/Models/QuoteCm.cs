@@ -2,7 +2,7 @@ using Realms;
 
 namespace LocalStorage.Models;
 
-public partial class QuoteCm : RealmObject
+public class QuoteCm : RealmObject
 {
     [PrimaryKey]
     public int Id { get; set; }
