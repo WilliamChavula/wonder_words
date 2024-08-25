@@ -16,17 +16,31 @@ public class UserRepository(
     public void UpsertDarkModePreference(DarkModePreference preference)
     {
         userLocalStorage.UpsertDarkModePreference(preference.ToCacheModel());
-        _darkModePreference.OnNext(preference);
+        var newPreference = userLocalStorage.GetDarkModePreference();
+
+        if (newPreference is not null)
+            _darkModePreference.OnNext(newPreference.ToDomainModel());
+        // _darkModePreference.OnNext(newPreference);
     }
 
     public async IAsyncEnumerable<DarkModePreference> GetDarkModePreference()
     {
         var storedPreference = await Task.Run(userLocalStorage.GetDarkModePreference);
-        _darkModePreference.OnNext(
-            storedPreference?.ToDomainModel() ?? DarkModePreference.Unspecified
-        );
+
+        var preference = storedPreference?.ToDomainModel() ?? DarkModePreference.Unspecified;
+        _darkModePreference.OnNext(preference);
 
         yield return _darkModePreference.Value;
+    }
+    
+    public DarkModePreference GetDarkModePreferenceSync()
+    {
+        var storedPreference = userLocalStorage.GetDarkModePreference();
+
+        var preference = storedPreference?.ToDomainModel() ?? DarkModePreference.Unspecified;
+        // _darkModePreference.OnNext(preference);
+
+        return preference; //_darkModePreference.Value;
     }
 
     public async Task SignIn(string email, string password)

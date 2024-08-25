@@ -8,9 +8,11 @@ public class UserLocalStorage(LocalStorage.LocalStorage localStorage)
 
         realm.Write(() =>
         {
+            realm.RemoveAll();
             realm.Add(preference);
-            realm.Dispose();
         });
+
+        realm.Dispose();
     }
 
     public DarkModePreferenceCm? GetDarkModePreference()
@@ -23,8 +25,10 @@ public class UserLocalStorage(LocalStorage.LocalStorage localStorage)
 
         var preference = result.FirstOrDefault();
 
+        var dm = new DarkModePreferenceCm { ModePreference = preference!.ModePreference };
+
         realm.Dispose();
 
-        return preference;
+        return dm;
     }
 }

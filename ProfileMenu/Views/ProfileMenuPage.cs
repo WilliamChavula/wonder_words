@@ -261,6 +261,11 @@ public class ProfileMenuPage : ContentPage
             DarkModePreferencePicker.CurrentValueProperty,
             new Binding { Source = this, Path = "BindingContext.DarkModePreference" }
         );
+        
+        themePicker.SetBinding(
+            DarkModePreferencePicker.RadioOptionsProperty,
+            new Binding { Source = this, Path = "BindingContext.DarkModePreferences" }
+        );
         themePicker.SetBinding(
             DarkModePreferencePicker.PreferenceChangedProperty,
             new Binding { Source = this, Path = "BindingContext.DarkModePreferenceChangedCommand" }

@@ -1,6 +1,4 @@
-using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DomainModels;
@@ -19,7 +17,7 @@ public partial class ProfileMenuViewModel : ObservableObject
     private readonly UpdateProfileTapDelegate _onUpdateProfileTap;
 
     [ObservableProperty]
-    private DarkModePreference? _darkModePreference;
+    private DarkModePreference _darkModePreference;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsUserAuthenticated))]
@@ -49,15 +47,30 @@ public partial class ProfileMenuViewModel : ObservableObject
         _onSignUpTap = onSignUpTap;
         _onUpdateProfileTap = onUpdateProfileTap;
 
+        DarkModePreference = _userRepository.GetDarkModePreferenceSync();
+
         GetLatest();
     }
 
     public bool IsUserAuthenticated => Username is not null;
 
+    public ObservableCollection<string> DarkModePreferences { get; } =
+    [
+        "Dark",//DomainModels.DarkModePreference.Dark,
+        "Light", //DomainModels.DarkModePreference.Light,
+        "Unspecified", //DomainModels.DarkModePreference.Unspecified
+    ];
+
     [RelayCommand]
-    private void DarkModePreferenceChanged(DarkModePreference preference)
+    private void DarkModePreferenceChanged(string preference)
     {
-        _userRepository.UpsertDarkModePreference(preference);
+        var choice = preference switch
+        {
+            "Light" => DomainModels.DarkModePreference.Light,
+            "Dark" => DomainModels.DarkModePreference.Dark,
+            _ => DomainModels.DarkModePreference.Unspecified
+        };
+        _userRepository.UpsertDarkModePreference(choice);
     }
 
     private async void GetLatest()
@@ -70,10 +83,10 @@ public partial class ProfileMenuViewModel : ObservableObject
             Email = user?.Email;
         }
 
-        await foreach (var preference in _userRepository.GetDarkModePreference())
-        {
-            DarkModePreference = preference;
-        }
+        // await foreach (var preference in _userRepository.GetDarkModePreference())
+        // {
+        //     DarkModePreference = preference;
+        // }
     }
 
     [RelayCommand]

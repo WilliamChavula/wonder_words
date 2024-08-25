@@ -1,23 +1,28 @@
 using System.Windows.Input;
-using CommunityToolkit.Maui.Markup;
+using CommunityToolkit.Maui.Behaviors;
 using ControlsLibrary.Resources.Styles;
 using DomainModels;
 using Microsoft.Maui.Controls.Shapes;
+using ProfileMenu.Converters;
 using L10n = ProfileMenu.Resources.Resources;
-using RadioButton = UraniumUI.Material.Controls.RadioButton;
-using RadioButtonGroupView = InputKit.Shared.Controls.RadioButtonGroupView;
 
 namespace ProfileMenu.Views;
 
 public class DarkModePreferencePicker : ContentView
 {
-    public DarkModePreference? CurrentValue
+    public DarkModePreference CurrentValue
     {
         get => (DarkModePreference)GetValue(CurrentValueProperty);
         set => SetValue(CurrentValueProperty, value);
     }
 
-    public ICommand? PreferenceChanged
+    public ICollection<string> RadioOptions
+    {
+        get => (ICollection<string>)GetValue(RadioOptionsProperty);
+        set => SetValue(RadioOptionsProperty, value);
+    }
+
+    public ICommand PreferenceChanged
     {
         get => (ICommand)GetValue(PreferenceChangedProperty);
         set => SetValue(PreferenceChangedProperty, value);
@@ -26,6 +31,12 @@ public class DarkModePreferencePicker : ContentView
     public static readonly BindableProperty CurrentValueProperty = BindableProperty.Create(
         nameof(CurrentValue),
         typeof(DarkModePreference),
+        typeof(DarkModePreferencePicker)
+    );
+
+    public static readonly BindableProperty RadioOptionsProperty = BindableProperty.Create(
+        nameof(RadioOptions),
+        typeof(ICollection<string>),
         typeof(DarkModePreferencePicker)
     );
 
@@ -41,47 +52,42 @@ public class DarkModePreferencePicker : ContentView
 
         _ = Resources.TryGetValue("MediumLarge", out var mediumLarge);
 
-        var radioItems = new RadioButtonGroupView
+        var options = new CollectionView
         {
-            Padding = 16,
-            Spacing = 24,
-            Children =
+            ItemTemplate = new DataTemplate(() =>
             {
-                new RadioButton
+                var radioBtn = new RadioButton { GroupName = "ThemeSelectionOptions" };
+                var evtToCmd = new EventToCommandBehavior { EventName = "CheckedChanged" };
+                evtToCmd.SetBinding(EventToCommandBehavior.CommandProperty, new Binding
                 {
-                    Text = L10n.darkModePreferencesAlwaysDarkTileLabel,
-                    Value = DarkModePreference.Dark,
-                    Color = Colors.Black
-                },
-                new RadioButton
-                {
-                    Text = L10n.darkModePreferencesAlwaysLightTileLabel,
-                    Value = DarkModePreference.Light,
-                    Color = Colors.Black
-                },
-                new RadioButton
-                {
-                    Text = L10n.darkModePreferencesUseSystemSettingsTileLabel,
-                    Value = DarkModePreference.Unspecified,
-                    Color = Colors.Black
-                }
-            }
+                    Source = this,
+                    Path = nameof(PreferenceChanged),
+                    Mode = BindingMode.OneWay
+                });
+
+                evtToCmd.SetBinding(EventToCommandBehavior.CommandParameterProperty, ".");
+
+                radioBtn.Behaviors.Add(evtToCmd);
+
+                radioBtn.SetBinding(RadioButton.ContentProperty, ".");
+                radioBtn.SetBinding(
+                    RadioButton.IsCheckedProperty,
+                    new Binding
+                    {
+                        Path = ".", // Bind to the current string item itself
+                        Converter = new DarkModeIsCheckedConverter(),
+                        ConverterParameter = CurrentValue,
+                        Mode = BindingMode.OneWay
+                    }
+                );
+                return radioBtn;
+            })
         };
-
-        radioItems.SetBinding(
-            RadioButtonGroupView.SelectedItemProperty,
-            new Binding { Source = this, Path = nameof(CurrentValue) }
-        );
-
-        radioItems.SetBinding(
-            RadioButtonGroupView.SelectedItemChangedCommandProperty,
-            new Binding { Source = this, Path = nameof(PreferenceChanged) }
-        );
-
-        radioItems.SetBinding(
-            RadioButtonGroupView.CommandParameterProperty,
-            new Binding { Source = radioItems, Path = "SelectedItem" }
-        );
+        options.SetBinding(ItemsView.ItemsSourceProperty, new Binding
+        {
+            Source = this,
+            Path = nameof(RadioOptions)
+        });
 
         Content = new VerticalStackLayout
         {
@@ -104,7 +110,7 @@ public class DarkModePreferencePicker : ContentView
                         VerticalTextAlignment = TextAlignment.Center
                     }
                 },
-                radioItems
+                options
             }
         };
     }
