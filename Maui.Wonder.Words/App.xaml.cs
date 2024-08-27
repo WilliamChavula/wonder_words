@@ -1,4 +1,6 @@
-﻿using QuoteDetails.Views;
+﻿using ForgotMyPassword.Control;
+using ForgotMyPassword.ViewModels;
+using QuoteDetails.Views;
 using SignIn.Views;
 using SignUp.Views;
 
@@ -14,6 +16,7 @@ public partial class App : Application
 
         Routing.RegisterRoute(nameof(SignInPage), typeof(SignInPage));
         Routing.RegisterRoute(nameof(SignUpPage), typeof(SignUpPage));
-        Routing.RegisterRoute("quoteDetails", typeof(QuoteDetailsPage));
+        Routing.RegisterRoute(nameof(QuoteDetailsPage), typeof(QuoteDetailsPage));
+        Routing.RegisterRoute(nameof(ForgotMyPasswordDialog), typeof(ForgotMyPasswordDialog));
     }
 }

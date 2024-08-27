@@ -23,24 +23,14 @@ public class UserRepository(
         // _darkModePreference.OnNext(newPreference);
     }
 
-    public async IAsyncEnumerable<DarkModePreference> GetDarkModePreference()
+    public BehaviorSubject<DarkModePreference> GetDarkModePreference()
     {
-        var storedPreference = await Task.Run(userLocalStorage.GetDarkModePreference);
+        var storedPreference =  userLocalStorage.GetDarkModePreference();
 
         var preference = storedPreference?.ToDomainModel() ?? DarkModePreference.Unspecified;
         _darkModePreference.OnNext(preference);
 
-        yield return _darkModePreference.Value;
-    }
-    
-    public DarkModePreference GetDarkModePreferenceSync()
-    {
-        var storedPreference = userLocalStorage.GetDarkModePreference();
-
-        var preference = storedPreference?.ToDomainModel() ?? DarkModePreference.Unspecified;
-        // _darkModePreference.OnNext(preference);
-
-        return preference; //_darkModePreference.Value;
+        return _darkModePreference;
     }
 
     public async Task SignIn(string email, string password)
@@ -68,7 +58,7 @@ public class UserRepository(
         if (_userSubject.Value is null)
         {
             var userInfo = await Task.WhenAll(
-                [secureStorage.GetUserEmail(), secureStorage.GetUserEmail()]
+                [secureStorage.GetUserEmail(), secureStorage.GetUsername()]
             );
             var email = userInfo[0];
             var username = userInfo[1];

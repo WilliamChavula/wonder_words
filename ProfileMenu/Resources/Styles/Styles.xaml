@@ -1,9 +1,0 @@
-<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:styles="clr-namespace:ControlsLibrary.Resources.Styles;assembly=ControlsLibrary">
-    xmlns:app="clr-namespace:ControlsLibrary.Resources.;assembly=ControlsLibrary">
-    <ResourceDictionary.MergedDictionaries>
-        <styles:Styles />
-    </ResourceDictionary.MergedDictionaries>
-</ResourceDictionary>

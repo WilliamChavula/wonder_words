@@ -1,10 +1,8 @@
-﻿using System.Reflection;
-using CommunityToolkit.Maui;
+﻿using CommunityToolkit.Maui;
 using ControlsLibrary.Extensions;
 using ForgotMyPassword.Extensions;
 using Maui.Wonder.Words.Extensions;
 using Maui.Wonder.Words.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using ProfileMenu.Extensions;
 using QuoteDetails.Extensions;
@@ -54,7 +52,7 @@ public static class MauiProgram
         builder
             .RegisterScreens(NavigationService.GetInstance())
             .UseControlsLibrary()
-            // .UseForgotMyPasswordServices()
+            .UseForgotMyPasswordServices()
             .UseQuotesList()
             .UseQuotesDetail()
             .UseProfileMenu()

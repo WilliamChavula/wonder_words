@@ -9,6 +9,7 @@ using Microsoft.Maui.Controls.PlatformConfiguration;
 using Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;
 using ProfileMenu.ViewModels;
 using UraniumUI.Icons.MaterialSymbols;
+using UraniumUI.Material.Controls;
 using L10n = ProfileMenu.Resources.Resources;
 
 namespace ProfileMenu.Views;
@@ -40,6 +41,7 @@ public class ProfileMenuPage : ContentPage
 #pragma warning restore CA1416 // Validate platform compatibility
 
         #region Activity Indicator
+
         var indicator = new CenteredActivityIndicator();
         indicator.SetBinding(
             IsVisibleProperty,
@@ -52,9 +54,11 @@ public class ProfileMenuPage : ContentPage
             VerticalOptions = LayoutOptions.Center,
             Children = { indicator }
         };
+
         #endregion
 
         #region Not Signed In Controls
+
         var userNotSignedInViewsContainer = new Grid
         {
             ColumnDefinitions = [new ColumnDefinition(GridLength.Star)],
@@ -104,17 +108,19 @@ public class ProfileMenuPage : ContentPage
 
         userNotSignedInViewsContainer.Add(openingTextLabel, row: 1);
 
-        var signUpBtn = new Button
+        var signUpBtn = new ButtonView
         {
             Style = (Style)Resources["textButton"],
-            Text = L10n.signUpButtonLabel,
-            FontAttributes = FontAttributes.Bold,
-            FontFamily = "OpenSansSemibold",
-            HorizontalOptions = LayoutOptions.Center,
-            TextColor = Colors.Black
+            Content = new Label
+            {
+                Text = L10n.signUpButtonLabel,
+                FontAttributes = FontAttributes.Bold,
+                FontFamily = "OpenSansSemibold",
+            },
+            HorizontalOptions = LayoutOptions.Center
         };
         signUpBtn.SetBinding(
-            Button.CommandProperty,
+            ButtonView.TappedCommandProperty,
             new Binding { Source = this, Path = "BindingContext.SignUpTappedCommand" }
         );
 
@@ -138,6 +144,7 @@ public class ProfileMenuPage : ContentPage
 
 
         #region Sign In Controls
+
         var userSignedInViewsContainer = new Grid
         {
             ColumnDefinitions = [new ColumnDefinition(GridLength.Star)],
@@ -256,12 +263,13 @@ public class ProfileMenuPage : ContentPage
         #endregion
 
         #region DarkMode Preference
+
         var themePicker = new DarkModePreferencePicker();
         themePicker.SetBinding(
             DarkModePreferencePicker.CurrentValueProperty,
             new Binding { Source = this, Path = "BindingContext.DarkModePreference" }
         );
-        
+
         themePicker.SetBinding(
             DarkModePreferencePicker.RadioOptionsProperty,
             new Binding { Source = this, Path = "BindingContext.DarkModePreferences" }
@@ -274,6 +282,7 @@ public class ProfileMenuPage : ContentPage
         #endregion
 
         #region Page Layout
+
         var pageViewsContainer = new VerticalStackLayout
         {
             Children =

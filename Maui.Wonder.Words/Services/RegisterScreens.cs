@@ -1,5 +1,4 @@
 using DomainModels.Delegates;
-using ForgotMyPassword.ViewModels;
 using FormFields.Inputs;
 using Maui.Wonder.Words.Interfaces;
 using UpdateProfile.ViewModels;
@@ -33,7 +32,7 @@ public static class RegisterScreensExtension
         Task OnAuthenticationError() =>
             navigationService.GoToAsync($"{RouteConstants.SignInScreen}");
         Task OnQuoteSelected(string quoteId) =>
-            navigationService.GoToAsync($"quoteDetails?quoteId={quoteId}");
+            navigationService.GoToAsync($"{RouteConstants.QuoteDetailsScreen}?quoteId={quoteId}");
         Task OnForgotMyPasswordTap() =>
             navigationService.GoToAsync($"{RouteConstants.ForgotMyPasswordScreen}");
         Task OnCancelTap() => navigationService.GoBackAsync();
@@ -57,7 +56,6 @@ public static class RegisterScreensExtension
         builder.Services.AddSingleton<ForgotMyPasswordTapDelegate>(OnForgotMyPasswordTap);
         builder.Services.AddSingleton<SignUpSuccessDelegate>(OnSignUpSuccess);
         builder.Services.AddSingleton<UpdateProfileSuccessDelegate>(OnUpdateProfileSuccess);
-        builder.Services.AddSingleton<ForgotMyPasswordViewModel>();
         builder.Services.AddSingleton<UpdateProfileViewModel>();
 
         #endregion

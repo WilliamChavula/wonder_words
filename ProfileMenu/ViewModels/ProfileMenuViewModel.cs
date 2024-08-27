@@ -16,23 +16,17 @@ public partial class ProfileMenuViewModel : ObservableObject
     private readonly SignUpTapDelegate _onSignUpTap;
     private readonly UpdateProfileTapDelegate _onUpdateProfileTap;
 
-    [ObservableProperty]
-    private DarkModePreference _darkModePreference;
+    [ObservableProperty] private DarkModePreference _darkModePreference;
 
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsUserAuthenticated))]
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IsUserAuthenticated))]
     private string? _username;
 
-    [ObservableProperty]
-    private string? _email;
+    [ObservableProperty] private string? _email;
 
-    [ObservableProperty]
-    private bool _isSignOutInProgress;
+    [ObservableProperty] private bool _isSignOutInProgress;
 
-    [ObservableProperty]
-    private bool _isLoadingData;
+    [ObservableProperty] private bool _isLoadingData;
 
-    /// <inheritdoc/>
     public ProfileMenuViewModel(
         UserRepositoryImpl userRepository,
         QuoteRepositoryImpl quoteRepository,
@@ -47,18 +41,19 @@ public partial class ProfileMenuViewModel : ObservableObject
         _onSignUpTap = onSignUpTap;
         _onUpdateProfileTap = onUpdateProfileTap;
 
-        DarkModePreference = _userRepository.GetDarkModePreferenceSync();
-
         GetLatest();
+        _userRepository
+            .GetDarkModePreference()
+            .Subscribe(val => DarkModePreference = val);
     }
 
     public bool IsUserAuthenticated => Username is not null;
 
-    public ObservableCollection<string> DarkModePreferences { get; } =
+    public ObservableCollection<string> DarkModePreferences =>
     [
-        "Dark",//DomainModels.DarkModePreference.Dark,
-        "Light", //DomainModels.DarkModePreference.Light,
-        "Unspecified", //DomainModels.DarkModePreference.Unspecified
+        "Dark",
+        "Light",
+        "Unspecified",
     ];
 
     [RelayCommand]
@@ -66,9 +61,9 @@ public partial class ProfileMenuViewModel : ObservableObject
     {
         var choice = preference switch
         {
-            "Light" => DomainModels.DarkModePreference.Light,
-            "Dark" => DomainModels.DarkModePreference.Dark,
-            _ => DomainModels.DarkModePreference.Unspecified
+            "Light" => DarkModePreference.Light,
+            "Dark" => DarkModePreference.Dark,
+            _ => DarkModePreference.Unspecified
         };
         _userRepository.UpsertDarkModePreference(choice);
     }
@@ -82,11 +77,6 @@ public partial class ProfileMenuViewModel : ObservableObject
             IsLoadingData = false;
             Email = user?.Email;
         }
-
-        // await foreach (var preference in _userRepository.GetDarkModePreference())
-        // {
-        //     DarkModePreference = preference;
-        // }
     }
 
     [RelayCommand]
