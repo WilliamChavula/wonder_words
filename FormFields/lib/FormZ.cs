@@ -8,7 +8,7 @@ namespace FormFields.lib;
 /// </summary>
 /// <typeparam name="T"></typeparam>
 /// <typeparam name="TError"></typeparam>
-public abstract record FormZInput<T, TError>(T Value, bool IsPure = true)
+public abstract class FormZInput<T, TError>(T Value, bool IsPure = true)
 {
     public readonly T Value = Value;
 
@@ -33,19 +33,17 @@ public abstract record FormZInput<T, TError>(T Value, bool IsPure = true)
     /// </summary>
     public bool IsValid => Validator(Value) is null;
 
-
     /// <summary>
     /// Whether the FormZInput value is not valid
     /// </summary>
     public bool IsNotValid => !IsValid;
-
 
     /// <summary>
     /// Return a Validation Error if the FormZInput value is not valid
     /// </summary>
     public TError? Error => Validator(Value);
 
-    public TError? DisplayError => Error;
+    public TError? DisplayError => IsPure ? default : Error;
 
     /// <summary>
     /// A function that must return a validation error if the provided
@@ -103,35 +101,40 @@ public static class FormZSubmissionStatusExtenstion
     /// </summary>
     /// <param name="status"></param>
     /// <returns>boolean</returns>
-    public static bool IsInitial(this FormZSubmissionStatus status) => status == FormZSubmissionStatus.Initial;
+    public static bool IsInitial(this FormZSubmissionStatus status) =>
+        status == FormZSubmissionStatus.Initial;
 
     /// <summary>
     /// Indicates whether the form is in the process of being submitted.
     /// </summary>
     /// <param name="status"></param>
     /// <returns>boolean</returns>
-    public static bool IsInProgress(this FormZSubmissionStatus status) => status == FormZSubmissionStatus.InProgress;
+    public static bool IsInProgress(this FormZSubmissionStatus status) =>
+        status == FormZSubmissionStatus.InProgress;
 
     /// <summary>
     /// Indicates whether the form has been submitted successfully.
     /// </summary>
     /// <param name="status"></param>
     /// <returns>boolean</returns>
-    public static bool IsSuccess(this FormZSubmissionStatus status) => status == FormZSubmissionStatus.Success;
+    public static bool IsSuccess(this FormZSubmissionStatus status) =>
+        status == FormZSubmissionStatus.Success;
 
     /// <summary>
     /// Indicates whether the form submission failed.
     /// </summary>
     /// <param name="status"></param>
     /// <returns>boolean</returns>
-    public static bool IsFailure(this FormZSubmissionStatus status) => status == FormZSubmissionStatus.Failure;
+    public static bool IsFailure(this FormZSubmissionStatus status) =>
+        status == FormZSubmissionStatus.Failure;
 
     /// <summary>
     /// Indicates whether the form submission has been canceled.
     /// </summary>
     /// <param name="status"></param>
     /// <returns>boolean</returns>
-    public static bool IsCanceled(this FormZSubmissionStatus status) => status == FormZSubmissionStatus.Canceled;
+    public static bool IsCanceled(this FormZSubmissionStatus status) =>
+        status == FormZSubmissionStatus.Canceled;
 
     /// <summary>
     /// Indicates whether the form is either in progress or has been submitted
@@ -146,16 +149,16 @@ public static class FormZSubmissionStatusExtenstion
         status.IsSuccess() || status.IsInProgress();
 }
 
-public record FormZ
+public static class FormZ
 {
     /// <summary>
     /// Given an IEnumerable of FormZInputs, checks whether all inputs are valid
     /// </summary>
     /// <param name="inputs"></param>
     /// <returns>bool</returns>
-    public static bool Validate(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public static bool Validate(IEnumerable<IInput> inputs)
     {
-        return inputs.All(input => input.IsValid);
+        return inputs.All(input => input.IsInputValid);
     }
 
     /// <summary>
@@ -163,33 +166,33 @@ public record FormZ
     /// </summary>
     /// <param name="inputs"></param>
     /// <returns>bool</returns>
-    public static bool IsPure(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public static bool IsPure(IEnumerable<IInput> inputs)
     {
-        return inputs.All(input => input.IsPure);
+        return inputs.All(input => input.IsInputPure);
     }
 }
 
 public abstract record FormZMixin
 {
-    public bool IsValid(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public bool IsValid(IEnumerable<IInput> inputs)
     {
         return FormZ.Validate(inputs);
     }
 
-    public bool IsNotValid(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public bool IsNotValid(IEnumerable<IInput> inputs)
     {
         return !FormZ.Validate(inputs);
     }
 
-    public bool IsPure(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public bool IsPure(IEnumerable<IInput> inputs)
     {
         return FormZ.IsPure(inputs);
     }
 
-    public bool IsDirty(IEnumerable<FormZInput<dynamic, dynamic>> inputs)
+    public bool IsDirty(IEnumerable<IInput> inputs)
     {
         return !FormZ.IsPure(inputs);
     }
 
-    public abstract IList<FormZInput<dynamic, dynamic>> Inputs { get; }
+    public abstract IList<IInput> Inputs { get; }
 }

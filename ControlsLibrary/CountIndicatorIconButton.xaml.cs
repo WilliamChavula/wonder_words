@@ -4,27 +4,42 @@ namespace ControlsLibrary;
 
 public partial class CountIndicatorIconButton : ContentView
 {
-    public static readonly BindableProperty CountProperty =
-        BindableProperty.Create(nameof(Count), typeof(int), typeof(CountIndicatorIconButton));
+    public static readonly BindableProperty CountProperty = BindableProperty.Create(
+        nameof(Count),
+        typeof(int),
+        typeof(CountIndicatorIconButton)
+    );
 
-    public static readonly BindableProperty IconProperty =
-        BindableProperty.Create(nameof(Icon), typeof(string), typeof(CountIndicatorIconButton));
+    public static readonly BindableProperty IconProperty = BindableProperty.Create(
+        nameof(Icon),
+        typeof(string),
+        typeof(CountIndicatorIconButton)
+    );
 
-    public static readonly BindableProperty TooltipProperty =
-        BindableProperty.Create(nameof(Tooltip), typeof(string), typeof(CountIndicatorIconButton));
+    public static readonly BindableProperty TooltipProperty = BindableProperty.Create(
+        nameof(Tooltip),
+        typeof(string),
+        typeof(CountIndicatorIconButton)
+    );
 
-    public static readonly BindableProperty OnTapProperty =
-        BindableProperty.Create(nameof(OnTap), typeof(ICommand), typeof(CountIndicatorIconButton));
+    public static readonly BindableProperty OnTapProperty = BindableProperty.Create(
+        nameof(OnTap),
+        typeof(ICommand),
+        typeof(CountIndicatorIconButton)
+    );
 
-    public readonly BindableProperty IconColorProperty = BindableProperty.Create(nameof(IconColor), typeof(Color),
-        typeof(CountIndicatorIconButton), propertyChanged:
-        (bindable, _, newValue) =>
+    public static readonly BindableProperty IconColorProperty = BindableProperty.Create(
+        nameof(IconColor),
+        typeof(Color),
+        typeof(CountIndicatorIconButton),
+        propertyChanged: (bindable, _, newValue) =>
         {
             if (bindable is CountIndicatorIconButton btn)
             {
                 btn.IconColor = (Color)newValue;
             }
-        });
+        }
+    );
 
     public CountIndicatorIconButton()
     {

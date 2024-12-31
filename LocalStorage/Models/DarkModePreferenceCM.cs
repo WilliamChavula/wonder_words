@@ -2,7 +2,7 @@ using Realms;
 
 namespace LocalStorage.Models;
 
-public partial class DarkModePreferenceCm : IRealmObject
+public class DarkModePreferenceCm : RealmObject
 {
     private int ThemeMode { get; set; }
 

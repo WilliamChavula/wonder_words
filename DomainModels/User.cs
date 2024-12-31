@@ -1,3 +1,3 @@
 namespace DomainModels;
 
-public class User(string Username, string Email);
+public record User(string Username, string Email);

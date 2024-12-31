@@ -3,20 +3,24 @@ using Realms;
 
 namespace LocalStorage;
 
-public abstract class LocalStorage
+public class LocalStorage
 {
     private const string QuoteListPagesRealmKey = "quote-list-pages.realm";
-    private const string FavoriteQuoteListPagesRealmKey = "favorite-quote-list-pages";
-    private const string DarkModePreferenceRealmKey = "dark-mode-preference";
+    private const string FavoriteQuoteListPagesRealmKey = "favorite-quote-list-pages.realm";
+    private const string DarkModePreferenceRealmKey = "dark-mode-preference.realm";
+    private readonly RealmConfiguration darkModeConfuguration =
+        new(DarkModePreferenceRealmKey) { Schema = new[] { typeof(DarkModePreferenceCm) } };
 
-    public Task<Realm> GetFavoriteQuoteListPageRealm => GetInstance(FavoriteQuoteListPagesRealmKey);
-    public Task<Realm> GetDarkModePreferenceRealm => GetInstance(DarkModePreferenceRealmKey);
-    public Task<Realm> GetQuoteListPageRealm => GetInstance(QuoteListPagesRealmKey);
+    private readonly RealmConfiguration quoteListPagesConfuguration =
+        new(QuoteListPagesRealmKey) { Schema = new[] { typeof(QuoteListPageCm), typeof(QuoteCm) } };
 
-    private static Task<Realm> GetInstance(string realmName)
-    {
-        var config = new RealmConfiguration(realmName);
-
-        return Realm.GetInstanceAsync(config);
-    }
+    private readonly RealmConfiguration favoriteQuoteListPagesConfuguration =
+        new(FavoriteQuoteListPagesRealmKey)
+        {
+            Schema = new[] { typeof(QuoteListPageCm), typeof(QuoteCm) }
+        };
+    public Realm GetFavoriteQuoteListPageRealm =>
+        Realm.GetInstance(favoriteQuoteListPagesConfuguration);
+    public Realm GetDarkModePreferenceRealm => Realm.GetInstance(darkModeConfuguration);
+    public Realm GetQuoteListPageRealm => Realm.GetInstance(quoteListPagesConfuguration);
 }

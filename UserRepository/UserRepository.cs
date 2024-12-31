@@ -4,33 +4,33 @@ using QuotesApi.Models;
 namespace UserRepository;
 
 public class UserRepository(
-    LocalStorage.LocalStorage localStorage,
     QuotesApi.QuotesApi api,
-    IUserSecureStorage? secureStorage,
-    UserLocalStorage? userLocalStorage)
+    IUserSecureStorage secureStorage,
+    UserLocalStorage userLocalStorage
+)
 {
-    private readonly IUserSecureStorage _secureStorage = secureStorage ?? new UserSecureStorage();
-
-    private readonly UserLocalStorage _userLocalStorage =
-        userLocalStorage ?? new UserLocalStorage(localStorage: localStorage);
-
     private readonly BehaviorSubject<User?> _userSubject = new(null);
-    private readonly BehaviorSubject<DarkModePreference> _darkModePreference = new(DarkModePreference.Unspecified);
+    private readonly BehaviorSubject<DarkModePreference> _darkModePreference =
+        new(DarkModePreference.Unspecified);
 
-    public async Task UpsertDarkModePreference(DarkModePreference preference)
+    public void UpsertDarkModePreference(DarkModePreference preference)
     {
-        await _userLocalStorage.UpsertDarkModePreference(preference.ToCacheModel());
-        _darkModePreference.OnNext(preference);
+        userLocalStorage.UpsertDarkModePreference(preference.ToCacheModel());
+        var newPreference = userLocalStorage.GetDarkModePreference();
+
+        if (newPreference is not null)
+            _darkModePreference.OnNext(newPreference.ToDomainModel());
+        // _darkModePreference.OnNext(newPreference);
     }
 
-    public async IAsyncEnumerable<DarkModePreference> GetDarkModePreference()
+    public BehaviorSubject<DarkModePreference> GetDarkModePreference()
     {
-        var storedPreference = await _userLocalStorage.GetDarkModePreference();
-        _darkModePreference.OnNext(
-            storedPreference?.ToDomainModel() ?? DarkModePreference.Unspecified
-        );
+        var storedPreference =  userLocalStorage.GetDarkModePreference();
 
-        yield return _darkModePreference.Value;
+        var preference = storedPreference?.ToDomainModel() ?? DarkModePreference.Unspecified;
+        _darkModePreference.OnNext(preference);
+
+        return _darkModePreference;
     }
 
     public async Task SignIn(string email, string password)
@@ -38,7 +38,11 @@ public class UserRepository(
         try
         {
             var apiUser = await api.SignIn(email, password);
-            await _secureStorage.UpsertUserInfo(username: apiUser.Username, email: apiUser.Email, token: apiUser.Token);
+            await secureStorage.UpsertUserInfo(
+                username: apiUser.Username,
+                email: apiUser.Email,
+                token: apiUser.Token
+            );
 
             var domainUser = apiUser.ToDomainModel();
             _userSubject.OnNext(domainUser);
@@ -53,7 +57,9 @@ public class UserRepository(
     {
         if (_userSubject.Value is null)
         {
-            var userInfo = await Task.WhenAll([_secureStorage.GetUserEmail(), _secureStorage.GetUserEmail()]);
+            var userInfo = await Task.WhenAll(
+                [secureStorage.GetUserEmail(), secureStorage.GetUsername()]
+            );
             var email = userInfo[0];
             var username = userInfo[1];
 
@@ -70,16 +76,16 @@ public class UserRepository(
         yield return _userSubject.Value;
     }
 
-    public Task<string?> GetUserToken() => _secureStorage.GetUserToken();
+    // public Task<string?> GetUserToken() => secureStorage.GetUserToken();
 
     public async Task SignUp(string username, string email, string password)
     {
         try
         {
             var userToken = await api.SignUp(username, email, password);
-            
-            await _secureStorage.UpsertUserInfo(username, email, userToken);
-            
+
+            await secureStorage.UpsertUserInfo(username, email, userToken);
+
             _userSubject.OnNext(new User(Username: username, Email: email));
         }
         catch (Exception ex) when (ex is UsernameAlreadyTakenQuoteException)
@@ -92,15 +98,15 @@ public class UserRepository(
         }
     }
 
-    public async Task UpdateProfile(string username, string email, string? newPassword)
+    public async Task UpdateProfile(string username, string email, string newPassword)
     {
         try
         {
             await api.UpdateProfile(username, email, password: newPassword);
-            await _secureStorage.UpsertUserInfo(username, email);
+            await secureStorage.UpsertUserInfo(username, email);
             _userSubject.OnNext(new User(username, email));
         }
-        catch (Exception exception) when(exception is UsernameAlreadyTakenQuoteException)
+        catch (Exception exception) when (exception is UsernameAlreadyTakenQuoteException)
         {
             throw new UsernameAlreadyTakenException();
         }
@@ -109,9 +115,10 @@ public class UserRepository(
     public async Task SignOut()
     {
         await api.SignOut();
-        await _secureStorage.DeleteUserInfo();
+        await secureStorage.DeleteUserInfo();
         _userSubject.OnNext(null);
     }
 
-    public async Task RequestPasswordResetEmail(string email) => await api.RequestPasswordResetEmail(email);
+    public async Task RequestPasswordResetEmail(string email) =>
+        await api.RequestPasswordResetEmail(email);
 }

@@ -5,13 +5,17 @@ using QuotesApi.Models.Response;
 
 namespace QuoteRepository;
 
-public class QuoteRepository(
-    LocalStorage.LocalStorage localStorage,
-    QuotesApi.QuotesApi quotesApi,
-    QuoteLocalStorage? quoteLocalStorage)
+public class QuoteRepository
 {
-    private readonly QuoteLocalStorage _quoteLocalStorage =
-        quoteLocalStorage ?? new QuoteLocalStorage(localStorage: localStorage);
+    private readonly QuoteLocalStorage? _quoteLocalStorage;
+
+    private readonly QuotesApi.QuotesApi _quotesApi;
+
+    public QuoteRepository(QuotesApi.QuotesApi quotesApi)
+    {
+        _quotesApi = quotesApi;
+        _quoteLocalStorage ??= new QuoteLocalStorage(localStorage: new LocalStorage.LocalStorage());
+    }
 
     public async IAsyncEnumerable<QuoteListPage> GetQuoteListPage(
         int pageNumber,
@@ -38,7 +42,7 @@ public class QuoteRepository(
         else
         {
             var isFilteringByFavorites = favoredByUsername is not null;
-            var cachedPage = await _quoteLocalStorage.GetQuoteListPage(pageNumber, isFilteringByFavorites);
+            var cachedPage = _quoteLocalStorage?.GetQuoteListPage(pageNumber, isFilteringByFavorites);
 
             var isFetchPolicyCacheAndNetwork = fetchPolicy == QuoteListPageFetchPolicy.CacheAndNetwork;
             var isFetchPolicyCachePreferably = fetchPolicy == QuoteListPageFetchPolicy.CachePreferably;
@@ -54,7 +58,7 @@ public class QuoteRepository(
                 favoredByUsername: favoredByUsername,
                 tag: null);
 
-            if (quoteLocalStorage is not null)
+            if (_quoteLocalStorage is not null)
             {
                 yield return quoteListPage;
             }
@@ -78,7 +82,7 @@ public class QuoteRepository(
         QuoteListPageRm? quoteListPage;
         try
         {
-            quoteListPage = await quotesApi.GetQuoteListPage(
+            quoteListPage = await _quotesApi.GetQuoteListPage(
                 page: pageNumber,
                 tag: tag?.ToApiModel(),
                 favoredByUsername: favoredByUsername,
@@ -92,10 +96,10 @@ public class QuoteRepository(
             {
                 var shouldEmptyCache = pageNumber == 1;
                 if (shouldEmptyCache)
-                    await _quoteLocalStorage.ClearQuoteListPageList(favoritesOnly);
+                    _quoteLocalStorage?.ClearQuoteListPageList(favoritesOnly);
 
                 var quoteListCachePage = quoteListPage.ToCacheModel();
-                await _quoteLocalStorage.UpsertQuoteListPage(quoteListCachePage, favoritesOnly);
+                _quoteLocalStorage?.UpsertQuoteListPage(quoteListCachePage, favoritesOnly);
             }
         }
         catch (Exception ex) when (ex is EmptySearchResultQuoteException)
@@ -108,18 +112,18 @@ public class QuoteRepository(
 
     public async Task<Quote> GetQuoteDetails(int id)
     {
-        var cachedQuote = await _quoteLocalStorage.GetQuote(id);
+        var cachedQuote = _quoteLocalStorage?.GetQuote(id);
         if (cachedQuote is not null)
             return cachedQuote.ToDomainModel();
 
-        var apiQuote = await quotesApi.GetQuote(id);
+        var apiQuote = await _quotesApi.GetQuote(id);
 
         return apiQuote.ToDomainModel();
     }
 
     public async Task<Quote> FavoriteQuote(int id)
     {
-        var updatedCacheQuote = await quotesApi
+        var updatedCacheQuote = await _quotesApi
             .FavoriteQuote(id)
             .ToCacheUpdateTask(_quoteLocalStorage, true);
 
@@ -128,7 +132,7 @@ public class QuoteRepository(
 
     public async Task<Quote> UnFavoriteQuote(int id)
     {
-        var updatedCacheQuote = await quotesApi
+        var updatedCacheQuote = await _quotesApi
             .UnFavoriteQuote(id)
             .ToCacheUpdateTask(_quoteLocalStorage, true);
 
@@ -137,7 +141,7 @@ public class QuoteRepository(
 
     public async Task<Quote> UpVoteQuote(int id)
     {
-        var updatedCacheQuote = await quotesApi
+        var updatedCacheQuote = await _quotesApi
             .UpVoteQuote(id)
             .ToCacheUpdateTask(_quoteLocalStorage);
 
@@ -146,7 +150,7 @@ public class QuoteRepository(
 
     public async Task<Quote> DownVoteQuote(int id)
     {
-        var updatedCacheQuote = await quotesApi
+        var updatedCacheQuote = await _quotesApi
             .DownVoteQuote(id)
             .ToCacheUpdateTask(_quoteLocalStorage);
 
@@ -155,7 +159,7 @@ public class QuoteRepository(
 
     public async Task<Quote> UnVoteQuote(int id)
     {
-        var updatedCacheQuote = await quotesApi
+        var updatedCacheQuote = await _quotesApi
             .UnVoteQuote(id)
             .ToCacheUpdateTask(_quoteLocalStorage);
 
@@ -164,14 +168,14 @@ public class QuoteRepository(
 
     public async Task ClearCache()
     {
-        await _quoteLocalStorage.Clear();
+        await _quoteLocalStorage!.Clear();
     }
 }
 
 public static class QuoteRmExtension
 {
     public static async Task<QuoteRm?> ToCacheUpdateTask(this Task<QuoteRm> quoteRmTask,
-        QuoteLocalStorage localStorage,
+        QuoteLocalStorage? localStorage,
         bool shouldInvalidateFavoritesCache = false)
     {
         try
@@ -180,8 +184,10 @@ public static class QuoteRmExtension
             var updatedCacheQuote = updatedApiQuote.ToCacheModel();
 
             await Task.WhenAll([
-                localStorage.UpdateQuote(updatedCacheQuote, !shouldInvalidateFavoritesCache),
-                shouldInvalidateFavoritesCache ? localStorage.ClearQuoteListPageList(true) : Task.CompletedTask
+                Task.Run(() => localStorage?.UpdateQuote(updatedCacheQuote, !shouldInvalidateFavoritesCache)),
+                shouldInvalidateFavoritesCache
+                    ? Task.Run(() => localStorage?.ClearQuoteListPageList(true))
+                    : Task.CompletedTask
             ]);
             return updatedApiQuote;
         }

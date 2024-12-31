@@ -2,10 +2,12 @@ using FormFields.lib;
 
 namespace FormFields.Inputs;
 
-public record OptionalPasswordConfirmation(string Value, bool IsPure)
-    : FormZInput<string, OptionalPasswordConfirmationValidationError?>(Value, IsPure)
+public class OptionalPasswordConfirmation(string Value, bool IsPure)
+    : FormZInput<string, OptionalPasswordConfirmationValidationError?>(Value, IsPure),
+        IInput
 {
     public OptionalPassword Password { get; set; } = new(string.Empty, true);
+
     protected override OptionalPasswordConfirmationValidationError? Validator(string value)
     {
         if (string.IsNullOrEmpty(value))
@@ -23,9 +25,13 @@ public record OptionalPasswordConfirmation(string Value, bool IsPure)
 
         return OptionalPasswordConfirmationValidationError.Invalid;
     }
+
+    public bool IsInputValid => IsValid;
+    public bool IsInputPure => IsPure;
 }
 
-public enum OptionalPasswordConfirmationValidationError {
+public enum OptionalPasswordConfirmationValidationError
+{
     Empty,
     Invalid,
 }

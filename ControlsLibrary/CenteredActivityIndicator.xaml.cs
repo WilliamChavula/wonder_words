@@ -1,6 +1,6 @@
 namespace ControlsLibrary;
 
-public partial class CenteredActivityIndicator : ContentPage
+public partial class CenteredActivityIndicator : ContentView
 {
     public CenteredActivityIndicator()
     {

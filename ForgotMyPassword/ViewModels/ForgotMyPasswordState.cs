@@ -3,29 +3,31 @@ using Email = FormFields.Inputs.Email;
 
 namespace ForgotMyPassword.ViewModels;
 
-public partial class ForgotMyPasswordState : ObservableObject
+public partial class ForgotMyPasswordViewModel
 {
+    [NotifyPropertyChangedFor(nameof(EmailError))]
+    [ObservableProperty] private Email _email = new(string.Empty);
+
     [ObservableProperty]
-    private Email _email  = new(string.Empty);
-    
-    [ObservableProperty]
-    private SubmissionStatus _submissionStatus  = SubmissionStatus.Idle;
-    
+    [NotifyPropertyChangedFor(nameof(IsSubmissionInProgress))]
+    [NotifyPropertyChangedFor(nameof(IsSubmissionStatusError))]
+    private SubmissionStatus _submissionStatus = SubmissionStatus.Idle;
 };
 
-public static class ForgotMyPasswordStateExtension
-{
-    public static ForgotMyPasswordState CopyWith(this ForgotMyPasswordState state, Email? email, SubmissionStatus? status)
-    {
-        return new ForgotMyPasswordState
-        {
-            Email = email ?? state.Email,
-            SubmissionStatus = status ?? state.SubmissionStatus
-        };
-    }
-}
+// public static class ForgotMyPasswordStateExtension
+// {
+//     public static ForgotMyPasswordState CopyWith(this ForgotMyPasswordState state, Email? email, SubmissionStatus? status)
+//     {
+//         return new ForgotMyPasswordState
+//         {
+//             Email = email ?? state.Email,
+//             SubmissionStatus = status ?? state.SubmissionStatus
+//         };
+//     }
+// }
 
-public enum SubmissionStatus {
+public enum SubmissionStatus
+{
     Idle,
     InProgress,
     Success,

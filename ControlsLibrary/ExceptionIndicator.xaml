@@ -6,14 +6,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:icons="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
     xmlns:local="clr-namespace:ControlsLibrary"
-    xmlns:res="clr-namespace:ControlsLibrary.Resources"
+    xmlns:styles="clr-namespace:ControlsLibrary.Resources.Styles"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
     x:Name="ExceptionIndicatorView">
 
     <uranium:StatefulContentView.Resources>
-        <ResourceDictionary Source="Resources/Styles/AppTheme.xaml" />
         <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+        <styles:Styles x:Key="LibStyles" />
     </uranium:StatefulContentView.Resources>
 
     <VerticalStackLayout
@@ -26,23 +26,22 @@
                 <FontImageSource Glyph="{x:Static icons:MaterialOutlined.Error}" Size="48" />
             </Image.Source>
         </Image>
-        <BoxView Height="{StaticResource XxLargeSpacing}" />
+        <BoxView HeightRequest="{StaticResource XxLargeSpacing}" />
         <Label
             x:Name="TitleLabel"
             FontAttributes="Bold"
             FontSize="{StaticResource MediumLarge}"
             HorizontalTextAlignment="Center" />
-        <BoxView Height="16" />
+        <BoxView HeightRequest="16" />
         <Label
             x:Name="MessageLabel"
             FontAttributes="Bold"
             FontSize="{StaticResource MediumLarge}"
             HorizontalTextAlignment="Center" />
-        <BoxView Height="{StaticResource XxxLargeSpacing}" IsVisible="{Binding OnTryAgain, Converter={StaticResource IsNotNullConverter}}" />
+        <BoxView HeightRequest="{StaticResource XxxLargeSpacing}" IsVisible="{Binding TryAgain, Converter={StaticResource IsNotNullConverter}}" />
         <local:ExpandedElevatedButton
             Icon="{x:Static icons:MaterialRounded.Refresh}"
-            IsVisible="{Binding OnTryAgain, Converter={StaticResource IsNotNullConverter}}"
-            OnTap="{Binding OnTryAgain}"
-            TextLabel="{x:Static res:Resources. exceptionIndicatorTryAgainButton}" />
+            IsVisible="{Binding TryAgain, Converter={StaticResource IsNotNullConverter}}"
+            OnTap="{Binding TryAgain}" />
     </VerticalStackLayout>
 </uranium:StatefulContentView>

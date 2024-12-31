@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    x:Class="ControlsLibrary.Resources.Styles.Styles"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Sizes.xaml" />
+        <ResourceDictionary Source="Spacing.xaml" />
+        <material:StyleResource />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  Uranium Colors  -->
+    <Color x:Key="Primary">#6750A4</Color>
+    <Color x:Key="PrimaryDark">#D0BCFF</Color>
+    <Color x:Key="PrimaryContainer">#EADDFF</Color>
+    <Color x:Key="PrimaryContainerDark">#4F378B</Color>
+
+    <Color x:Key="Secondary">#625B71</Color>
+    <Color x:Key="SecondaryDark">#CCC2DC</Color>
+    <Color x:Key="SecondaryContainer">#E8DEF8</Color>
+    <Color x:Key="SecondaryContainerDark">#4A4458</Color>
+
+    <Color x:Key="Tertiary">#7D5260</Color>
+    <Color x:Key="TertiaryDark">#EFB8C8</Color>
+    <Color x:Key="TertiaryContainer">#FFD8E4</Color>
+    <Color x:Key="TertiaryContainerDark">#633B48</Color>
+
+    <Color x:Key="Surface">#FFFBFE</Color>
+    <Color x:Key="SurfaceDark">#1C1B1F</Color>
+
+    <Color x:Key="SurfaceVariant">#E7E0EC</Color>
+    <Color x:Key="SurfaceVariantDark">#49454F</Color>
+
+    <Color x:Key="Background">#FFFBFE</Color>
+    <Color x:Key="BackgroundDark">#1C1B1F</Color>
+
+    <Color x:Key="Error">#B3261E</Color>
+    <Color x:Key="ErrorDark">#F2B8B5</Color>
+    <Color x:Key="ErrorContainer">#F9DEDC</Color>
+    <Color x:Key="ErrorContainerDark">#8C1D18</Color>
+
+    <Color x:Key="OnPrimary">#FFFFFF</Color>
+    <Color x:Key="OnPrimaryDark">#371E73</Color>
+    <Color x:Key="OnPrimaryContainer">#21005E</Color>
+    <Color x:Key="OnPrimaryContainerDark">#EADDFF</Color>
+
+    <Color x:Key="OnSecondary">#FFFFFF</Color>
+    <Color x:Key="OnSecondaryDark">#332D41</Color>
+    <Color x:Key="OnSecondaryContainer">#1E192B</Color>
+    <Color x:Key="OnSecondaryContainerDark">#E8DEF8</Color>
+
+    <Color x:Key="OnTertiary">#FFFFFF</Color>
+    <Color x:Key="OnTertiaryDark">#492532</Color>
+    <Color x:Key="OnTertiaryContainer">#370B1E</Color>
+    <Color x:Key="OnTertiaryContainerDark">#FFD8E4</Color>
+
+    <Color x:Key="OnSurface">#1C1B1F</Color>
+    <Color x:Key="OnSurfaceDark">#E6E1E5</Color>
+
+    <Color x:Key="OnSurfaceVariant">#49454E</Color>
+    <Color x:Key="OnSurfaceVariantDark">#CAC4D0</Color>
+
+    <Color x:Key="OnError">#FFFFFF</Color>
+    <Color x:Key="OnErrorDark">#601410</Color>
+    <Color x:Key="OnErrorContainer">#370B1E</Color>
+    <Color x:Key="OnErrorContainerDark">#F9DEDC</Color>
+
+    <Color x:Key="OnBackground">#1C1B1F</Color>
+    <Color x:Key="OnBackgroundDark">#E6E1E5</Color>
+
+    <Color x:Key="Outline">#79747E</Color>
+    <Color x:Key="OutlineDark">#938F99</Color>
+
+    <Color x:Key="OutlineVariant">#C4C7C5</Color>
+    <Color x:Key="OutlineVariantDark">#444746</Color>
+
+    <Color x:Key="Shadow">#000000</Color>
+    <Color x:Key="ShadowDark">#000000</Color>
+
+    <Color x:Key="SurfaceTint">#6750A4</Color>
+    <Color x:Key="SurfaceTintDark">#D0BCFF</Color>
+
+    <Color x:Key="InverseSurface">#313033</Color>
+    <Color x:Key="InverseSurfaceDark">#E6E1E5</Color>
+    <Color x:Key="InverseOnSurface">#F4EFF4</Color>
+    <Color x:Key="InverseOnSurfaceDark">#313033</Color>
+
+    <Color x:Key="InversePrimary">#D0BCFF</Color>
+    <Color x:Key="InversePrimaryDark">#6750A4</Color>
+
+    <Color x:Key="Scrim">#000000</Color>
+    <Color x:Key="ScrimDark">#000000</Color>
+    <Color x:Key="DisabledText">#ba919191</Color>
+    <Color x:Key="DisabledBackground">#80919191</Color>
+
+    <!--  End Uranium Colors  -->
+
+    <Color x:Key="White">White</Color>
+    <Color x:Key="QuoteSvgColorDark">White</Color>
+    <Color x:Key="UnVotedButtonColorDark">#8AFFFFFF</Color>
+    <Color x:Key="VotedButtonColorDark">White</Color>
+
+    <Color x:Key="Black">Black</Color>
+    <Color x:Key="QuoteSvgColorLight">Black</Color>
+    <Color x:Key="UnVotedButtonColorLight">#8A000000</Color>
+    <Color x:Key="VotedButtonColorLight">Black</Color>
+
+    <Color x:Key="Gray100">#E1E1E1</Color>
+    <Color x:Key="Gray200">#C8C8C8</Color>
+    <Color x:Key="Gray300">#ACACAC</Color>
+    <Color x:Key="Gray400">#919191</Color>
+    <Color x:Key="Gray500">#6E6E6E</Color>
+    <Color x:Key="Gray600">#404040</Color>
+    <Color x:Key="Gray900">#212121</Color>
+    <Color x:Key="Gray950">#141414</Color>
+    <Color x:Key="Gray">#808080</Color>
+    <Color x:Key="OffBlack">#1f1f1f</Color>
+
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}" />
+    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}" />
+    <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}" />
+
+    <SolidColorBrush x:Key="Gray100Brush" Color="{StaticResource Gray100}" />
+    <SolidColorBrush x:Key="Gray200Brush" Color="{StaticResource Gray200}" />
+    <SolidColorBrush x:Key="Gray300Brush" Color="{StaticResource Gray300}" />
+    <SolidColorBrush x:Key="Gray400Brush" Color="{StaticResource Gray400}" />
+    <SolidColorBrush x:Key="Gray500Brush" Color="{StaticResource Gray500}" />
+    <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}" />
+    <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}" />
+    <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}" />
+
+    <SolidColorBrush x:Key="ShadowBrush" Color="{StaticResource Shadow}" />
+
+    <!--#region Style Resources-->
+    <Shadow
+        x:Key="ShadowElevation0"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0"
+        Radius="0"
+        Offset="0,0" />
+    <Shadow
+        x:Key="ShadowElevation1"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.2"
+        Radius="4"
+        Offset="2,2" />
+    <Shadow
+        x:Key="ShadowElevation2"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.4"
+        Radius="8"
+        Offset="4,4" />
+    <Shadow
+        x:Key="ShadowElevation3"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.6"
+        Radius="12"
+        Offset="6,6" />
+    <Shadow
+        x:Key="ShadowElevation4"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.6"
+        Radius="16"
+        Offset="8,8" />
+    <Shadow
+        x:Key="ShadowElevation5"
+        Brush="{StaticResource ShadowBrush}"
+        Opacity="0.8"
+        Radius="20"
+        Offset="10,10" />
+    <!--#endregion-->
+
+    <!--  Shadow Styles  -->
+    <Style
+        x:Key="Elevation0"
+        ApplyToDerivedTypes="True"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation0}" />
+    </Style>
+    <Style
+        x:Key="Elevation1"
+        ApplyToDerivedTypes="True"
+        Class="Elevation1StyleClass"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation1}" />
+    </Style>
+    <Style
+        x:Key="Elevation2"
+        ApplyToDerivedTypes="True"
+        Class="Elevation2StyleClass"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation2}" />
+    </Style>
+    <Style
+        x:Key="Elevation3"
+        ApplyToDerivedTypes="True"
+        Class="Elevation3StyleClass"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation3}" />
+    </Style>
+    <Style
+        x:Key="Elevation4"
+        ApplyToDerivedTypes="True"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation3}" />
+    </Style>
+    <Style
+        x:Key="Elevation5"
+        ApplyToDerivedTypes="True"
+        TargetType="View">
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation3}" />
+    </Style>
+    <!--  End Shadow Styles  -->
+
+
+    <!--  Buttons  -->
+    <Style x:Key="BaseButtonStyle" TargetType="Button">
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="Padding" Value="24,0" />
+    </Style>
+
+    <!--  Elevated Button  -->
+    <Style
+        x:Key="ElevatedButtonStyle"
+        BasedOn="{StaticResource BaseButtonStyle}"
+        CanCascade="True"
+        Class="elevatedButtonStyleClass"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SurfaceDark}, Dark={StaticResource SurfaceTint}}" />
+        <Setter Property="Shadow" Value="{StaticResource ShadowElevation1}" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource OnSurfaceDark}, Dark={StaticResource White}}" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Shadow" Value="{StaticResource ShadowElevation0}" />
+                            <Setter Property="TextColor" Value="{StaticResource DisabledText}" />
+                            <Setter Property="BackgroundColor" Value="{StaticResource DisabledBackground}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Shadow" Value="{StaticResource ShadowElevation0}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!--  End Elevated Button  -->
+
+    <!--  Text Button  -->
+    <Style
+        x:Key="textButton"
+        CanCascade="True"
+        TargetType="material:ButtonView">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Margin" Value="0,2" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.95" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+    <!--  End Text Button  -->
+
+    <!--  End Buttons  -->
+
+    <Style x:Key="divider" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="1" />
+        <Setter Property="Margin" Value="16,8" />
+        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Outline}, Dark={StaticResource OutlineDark}}" />
+
+    </Style>
+
+    <Style x:Key="textFieldError" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource OnErrorDark}" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
+
+    <Style x:Key="MediumSpacer" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="{StaticResource MediumLargeSpacing}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <Style x:Key="ExxxtraSpacer" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="{StaticResource XxxLargeSpacing}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+
+    <Style ApplyToDerivedTypes="True" TargetType="Shell">
+        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
+        <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OnSecondaryDark}}" />
+        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource OnSecondaryDark}}" />
+        <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
+        <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray200}}" />
+        <Setter Property="Shell.NavBarHasShadow" Value="False" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray200}}" />
+    </Style>
+</ResourceDictionary>

@@ -1,4 +1,4 @@
-namespace ForgotMyPassword.Interfaces;
+namespace Maui.Wonder.Words.Interfaces;
 
 public interface INavigationService
 {

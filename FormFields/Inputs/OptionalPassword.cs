@@ -9,8 +9,9 @@ namespace FormFields.Inputs;
 /// </summary>
 /// <param name="Value"></param>
 /// <param name="IsPure"></param>
-public record OptionalPassword(string Value, bool IsPure)
-    : FormZInput<string, OptionalPasswordValidationError?>(Value, IsPure)
+public class OptionalPassword(string Value, bool IsPure)
+    : FormZInput<string, OptionalPasswordValidationError?>(Value, IsPure),
+        IInput
 {
     protected override OptionalPasswordValidationError? Validator(string value)
     {
@@ -20,6 +21,9 @@ public record OptionalPassword(string Value, bool IsPure)
             return null;
         return OptionalPasswordValidationError.InValid;
     }
+
+    public bool IsInputValid => IsValid;
+    public bool IsInputPure => IsPure;
 }
 
 public enum OptionalPasswordValidationError

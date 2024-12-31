@@ -10,12 +10,12 @@
 
     <ContentView.Resources>
         <ResourceDictionary>
-            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter"/>
         </ResourceDictionary>
     </ContentView.Resources>
 
     <Border
-        Height="48"
+        HeightRequest="48"
         BindingContext="{x:Reference ElevatedButtonView}"
         InputTransparent="True">
         <material:ButtonView
@@ -23,10 +23,10 @@
             StyleClass="ElevatedButton"
             TappedCommand="{Binding OnTap}">
             <HorizontalStackLayout Spacing="16">
-                <Label Text="{Binding TextLabel}" />
+                <Label Text="{Binding TextLabel}"/>
                 <Image>
                     <Image.Source>
-                        <FontImageSource Glyph="{Binding Icon}" />
+                        <FontImageSource Glyph="{Binding Icon}"/>
                     </Image.Source>
                 </Image>
             </HorizontalStackLayout>

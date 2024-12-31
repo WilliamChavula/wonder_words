@@ -8,21 +8,22 @@
     xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
     x:Name="ListTileContentView"
     BindingContext="{x:Reference ListTileContentView}"
-    PressedCommand="{Binding Command}">
-    <uranium:StatefulContentView.Resources>
-        <ResourceDictionary Source="Resources/Styles/AppTheme.xaml" />
-    </uranium:StatefulContentView.Resources>
-    <FlexLayout Padding="10" StyleClass="PrimaryContainer">
+    PressedCommand="{Binding Command}"
+    BackgroundColor="Transparent">
+    <FlexLayout Padding="24"
+                AlignItems="Center">
         <Label
             FlexLayout.Grow="1"
             FontSize="{StaticResource MediumLarge}"
-            Text="{Binding Text}" />
-        <Image Width="40" Height="40">
+            Text="{Binding Text}"/>
+        <Image WidthRequest="40"
+               HeightRequest="40">
             <Image.Source>
                 <FontImageSource
                     FontFamily="MaterialOutlined"
+                    Color="{StaticResource OnBackground}"
                     Glyph="{x:Static m:MaterialOutlined.Chevron_right}"
-                    Size="40" />
+                    Size="32"/>
             </Image.Source>
         </Image>
     </FlexLayout>

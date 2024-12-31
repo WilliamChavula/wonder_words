@@ -1,37 +1,60 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using QuotesApi.Models;
 using QuotesApi.Models.Request;
 using QuotesApi.Models.Response;
 
 namespace QuotesApi;
 
-public delegate Task<string?> UserTokenSupplier();
-
 public class QuotesApi
 {
     private const string ErrorCodeJsonKey = "error_code";
     private const string ErrorMessageJsonKey = "message";
 
-    public QuotesApi(UserTokenSupplier userTokenSupplier, HttpClient? httpClient, UrlBuilder? urlBuilder)
+    public QuotesApi(UserTokenSupplier userTokenSupplier, IConfiguration configuration)
     {
-        _urlBuilder = urlBuilder ?? new UrlBuilder();
+        _configuration = configuration;
 
-        _client = httpClient ??
-                  new HttpClient(new RequestInterceptHandler(new HttpClientHandler(), userTokenSupplier));
-        _client.SetupHeaders();
+        var key = _configuration["ApiKeys:quotes-app-token"];
+        ArgumentNullException.ThrowIfNull(
+            key,
+            "ApiKeys:quotes-app-token must be set in launchsettings.json"
+        );
+
+        _urlBuilder = new UrlBuilder();
+
+        _client = new HttpClient(
+            new RequestInterceptHandler(new HttpClientHandler(), userTokenSupplier)
+        )
+        {
+            Timeout = TimeSpan.FromSeconds(30)
+        };
+
+        _client.SetupHeaders(apiKey: key);
     }
 
     private readonly UrlBuilder _urlBuilder;
     private readonly HttpClient _client;
+    private readonly IConfiguration _configuration;
 
-    public async Task<QuoteListPageRm> GetQuoteListPage(int page, string? tag, string? favoredByUsername,
-        string searchTerm = "")
+    public async Task<QuoteListPageRm> GetQuoteListPage(
+        int page,
+        string? tag,
+        string? favoredByUsername,
+        string searchTerm = ""
+    )
     {
         var url = _urlBuilder.BuildGetQuoteListPageUrl(page, tag, favoredByUsername, searchTerm);
+        var serializerOptions = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
 
         var response = await _client.GetFromJsonAsync<QuoteListPageRm>(url);
+        // var response = JsonSerializer.Deserialize<QuoteListPageRm>(await LocalApi.GetAsync(), serializerOptions);
 
         var firstItem = response?.QuoteList.First();
 
@@ -84,22 +107,22 @@ public class QuotesApi
     private async Task<QuoteRm> UpdateQuote(string url)
     {
         using var response = await _client.PutAsync(url, null);
-        var jsonResponse = await response.Content.ReadAsStringAsync();
+        var jsonResponse = await response.Content.ReadFromJsonAsync<Dictionary<string, object>?>();
 
-        var jsonDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse);
-
-        if (jsonDict != null && jsonDict.TryGetValue(ErrorCodeJsonKey, out var code))
+        if (jsonResponse != null && jsonResponse.TryGetValue(ErrorCodeJsonKey, out var code))
         {
-            if ((int)code == 20)
+            var err_code = (JsonElement)code;
+            var error_int = err_code.GetInt32();
+            if (error_int == 20)
             {
                 throw new UserAuthRequiredQuoteException();
             }
         }
 
-        var updatedQuote = JsonSerializer.Deserialize<QuoteRm>(jsonResponse);
-        if (updatedQuote is null)
-            throw new InvalidOperationException();
-
+        var updatedString = await response.Content.ReadAsStringAsync();
+        var updatedQuote =
+            JsonSerializer.Deserialize<QuoteRm>(updatedString)
+            ?? throw new InvalidOperationException();
         return updatedQuote;
     }
 
@@ -108,11 +131,7 @@ public class QuotesApi
         var url = _urlBuilder.BuildSignInUrl();
         var requestJsonBody = new SignInRequestRm
         {
-            Credentials = new UserCredentialsRm
-            {
-                Email = email,
-                Password = password
-            }
+            Credentials = new UserCredentialsRm { Email = email, Password = password }
         };
 
         using var response = await _client.PostAsJsonAsync(url, requestJsonBody);
@@ -157,8 +176,10 @@ public class QuotesApi
         {
             if ((int)code == 32)
             {
-                if (jsonDict[ErrorMessageJsonKey] is string errorMessage &&
-                    errorMessage.Contains("email", StringComparison.CurrentCultureIgnoreCase))
+                if (
+                    jsonDict[ErrorMessageJsonKey] is string errorMessage
+                    && errorMessage.Contains("email", StringComparison.CurrentCultureIgnoreCase)
+                )
                     throw new EmailAlreadyRegisteredQuoteException();
 
                 throw new UsernameAlreadyTakenQuoteException();
@@ -171,7 +192,7 @@ public class QuotesApi
         return (string)jsonDict["User-Token"];
     }
 
-    public async Task UpdateProfile(string username, string email, string? password)
+    public async Task UpdateProfile(string username, string email, string password)
     {
         var url = _urlBuilder.BuildUpdateProfileUrl(username);
         var requestBody = new UpdateUserRequestRm
@@ -185,7 +206,7 @@ public class QuotesApi
         };
 
         using var response = await _client.PutAsJsonAsync(url, requestBody);
-        
+
         var jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse);
 
@@ -203,13 +224,10 @@ public class QuotesApi
     public async Task RequestPasswordResetEmail(string email)
     {
         var url = _urlBuilder.BuildRequestPasswordResetEmailUrl();
-        using var response = await _client.PostAsJsonAsync(url, new PasswordResetEmailRequestRm
-        {
-            User = new UserEmailRm
-            {
-                Email = email
-            }
-        });
+        using var response = await _client.PostAsJsonAsync(
+            url,
+            new PasswordResetEmailRequestRm { User = new UserEmailRm { Email = email } }
+        );
     }
 }
 
@@ -217,10 +235,13 @@ public static class HttpClientExtension
 {
     private const string AppTokenEnvironmentVariableKey = "quotes-app-token";
 
-    public static void SetupHeaders(this HttpClient client)
+    public static void SetupHeaders(this HttpClient client, string apiKey)
     {
-        var appToken = Environment.GetEnvironmentVariable(AppTokenEnvironmentVariableKey);
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue($"Token token={appToken}");
+        // var appToken = Environment.GetEnvironmentVariable(AppTokenEnvironmentVariableKey);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            "Token",
+            $"token=\"{apiKey}\""
+        );
     }
 }
 
@@ -229,14 +250,16 @@ public class RequestInterceptHandler(HttpMessageHandler innerHandler, UserTokenS
 {
     private UserTokenSupplier UserToken { get; } = userToken;
 
-    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
-        CancellationToken cancellationToken)
+    protected override async Task<HttpResponseMessage> SendAsync(
+        HttpRequestMessage request,
+        CancellationToken cancellationToken
+    )
     {
         var token = await UserToken();
-        
-        if(token is not null)
+
+        if (token is not null)
             request.Headers.Add("User-Token", token);
-        
+
         return await base.SendAsync(request, cancellationToken);
     }
 }

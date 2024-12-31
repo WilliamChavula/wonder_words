@@ -31,9 +31,9 @@ public static class ApiQuotesToCache
             FavoriteCount = quoteRm.FavoritesCount,
             UpVoteCount = quoteRm.UpVotesCount,
             DownVoteCount = quoteRm.DownVotesCount,
-            IsFavorite = quoteRm.UserInfo?.IsFavorite,
-            IsUpVoted = quoteRm.UserInfo?.IsUpVoted,
-            IsDownVoted = quoteRm.UserInfo?.IsDownVoted
+            IsFavorite = quoteRm.UserInfo?.IsFavorite ?? false,
+            IsUpVoted = quoteRm.UserInfo?.IsUpVoted ?? false,
+            IsDownVoted = quoteRm.UserInfo?.IsDownVoted ?? false
         };
     }
 }

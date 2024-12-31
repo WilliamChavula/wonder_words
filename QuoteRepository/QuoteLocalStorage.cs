@@ -1,85 +1,114 @@
+using System.Diagnostics;
 using LocalStorage.Models;
 
 namespace QuoteRepository;
 
 public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
 {
-    public async Task UpsertQuoteListPage(QuoteListPageCm quoteListPage, bool favoritesOnly)
-    {
-        var realm = await (favoritesOnly
-            ? localStorage.GetFavoriteQuoteListPageRealm
-            : localStorage.GetQuoteListPageRealm);
+    private readonly LocalStorage.LocalStorage localStorage = localStorage;
 
-        await realm.WriteAsync(() => { realm.Add(quoteListPage); });
+    public void UpsertQuoteListPage(QuoteListPageCm quoteListPage, bool favoritesOnly)
+    {
+        var realm = (
+            favoritesOnly
+                ? localStorage.GetFavoriteQuoteListPageRealm
+                : localStorage.GetQuoteListPageRealm
+        );
+
+        realm.Write(() =>
+        {
+            realm.Add(quoteListPage);
+        });
     }
 
-    public async Task ClearQuoteListPageList(bool favoritesOnly)
+    public void ClearQuoteListPageList(bool favoritesOnly)
     {
-        var realm = await (favoritesOnly
+        var realm = favoritesOnly
             ? localStorage.GetFavoriteQuoteListPageRealm
-            : localStorage.GetQuoteListPageRealm);
+            : localStorage.GetQuoteListPageRealm;
 
-        await realm.WriteAsync(() => { realm.RemoveAll(); });
+        realm.Write(() =>
+        {
+            realm.RemoveAll();
+        });
     }
 
     public async Task Clear()
     {
-        await Task.WhenAll([FavoriteRealmLambda(), QuoteListRealmLambda()]);
+        await Task.WhenAll([OnFavoriteRealmLambda(), OnQuoteListRealmLambda()]);
         return;
 
-        async Task QuoteListRealmLambda()
-        {
-            var quoteListRealm = await localStorage.GetQuoteListPageRealm;
-            await quoteListRealm.WriteAsync(() => { quoteListRealm.RemoveAll(); });
-        }
+        Task OnQuoteListRealmLambda() =>
+            Task.Run(() =>
+            {
+                var quoteListRealm = localStorage.GetQuoteListPageRealm;
+                quoteListRealm.Write(() =>
+                {
+                    quoteListRealm.RemoveAll();
+                });
+            });
 
-        async Task FavoriteRealmLambda()
-        {
-            var favoriteRealm = await localStorage.GetFavoriteQuoteListPageRealm;
-            await favoriteRealm.WriteAsync(() => { favoriteRealm.RemoveAll(); });
-        }
+        Task OnFavoriteRealmLambda() =>
+            Task.Run(() =>
+            {
+                var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
+                favoriteRealm.WriteAsync(() =>
+                {
+                    favoriteRealm.RemoveAll();
+                });
+            });
     }
 
-    public async Task<QuoteListPageCm?> GetQuoteListPage(int pageNumber, bool favoritesOnly)
+    public QuoteListPageCm? GetQuoteListPage(int pageNumber, bool favoritesOnly)
     {
-        var realm = await (favoritesOnly
+        var realm = favoritesOnly
             ? localStorage.GetFavoriteQuoteListPageRealm
-            : localStorage.GetQuoteListPageRealm);
+            : localStorage.GetQuoteListPageRealm;
 
-        return realm.All<QuoteListPageCm>().FirstOrDefault(quote => quote.PageNumber == pageNumber);
+        var query = realm.All<QuoteListPageCm>();
+
+        if (!query.Any())
+            return null;
+
+        return query.FirstOrDefault(quote => quote.PageNumber == pageNumber);
     }
 
-    public async Task<QuoteCm?> GetQuote(int id)
+    public QuoteCm? GetQuote(int id)
     {
-        var quoteListRealm = await localStorage.GetQuoteListPageRealm;
-        var favoriteRealm = await localStorage.GetFavoriteQuoteListPageRealm;
+        var quoteListRealm = localStorage.GetQuoteListPageRealm;
+        var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
 
-        var quoteList = quoteListRealm.All<QuoteListPageCm>().ToList();
+        var query = quoteListRealm.All<QuoteListPageCm>();
+
+        if (!query.Any())
+            return null;
+
+        var quoteList = query.ToList();
         var favoritesList = favoriteRealm.All<QuoteListPageCm>().ToList();
 
-        var completeList = favoritesList
-            .Union(quoteList)
+        var completeList = quoteList
             .SelectMany(page => page.QuotesList)
             .FirstOrDefault(quote => quote.Id == id);
 
         return completeList;
     }
 
-    public async Task UpdateQuote(QuoteCm updatedQuote, bool shouldUpdateFavorites)
+    public void UpdateQuote(QuoteCm updatedQuote, bool shouldUpdateFavorites)
     {
         List<Task> tasks = [];
-        var quoteListRealm = await localStorage.GetQuoteListPageRealm;
-        var favoriteRealm = await localStorage.GetFavoriteQuoteListPageRealm;
+        var quoteListRealm = localStorage.GetQuoteListPageRealm;
+        var favoriteRealm = localStorage.GetFavoriteQuoteListPageRealm;
 
         var pageList = quoteListRealm.All<QuoteListPageCm>();
 
-        var outdatedPage = pageList.First(page => page.QuotesList.Any(quote => quote.Id == updatedQuote.Id));
+        var outdatedPage = pageList.First(page =>
+            page.QuotesList.Any(quote => quote.Id == updatedQuote.Id)
+        );
 
         var quoteUpdateTask = quoteListRealm.WriteAsync(() =>
         {
             var outdatedList = outdatedPage
-                .QuotesList
-                .Select(quote => quote.Id == updatedQuote.Id ? updatedQuote : quote)
+                .QuotesList.Select(quote => quote.Id == updatedQuote.Id ? updatedQuote : quote)
                 .ToList();
 
             outdatedPage.QuotesList.Clear();
@@ -95,19 +124,22 @@ public class QuoteLocalStorage(LocalStorage.LocalStorage localStorage)
 
         if (shouldUpdateFavorites)
         {
-            tasks.Add(favoriteRealm.WriteAsync(() =>
-            {
-                var outdatedList = outdatedPage
-                    .QuotesList
-                    .Select(quote => quote.Id == updatedQuote.Id ? updatedQuote : quote)
-                    .ToList();
+            tasks.Add(
+                favoriteRealm.WriteAsync(() =>
+                {
+                    var outdatedList = outdatedPage
+                        .QuotesList.Select(quote =>
+                            quote.Id == updatedQuote.Id ? updatedQuote : quote
+                        )
+                        .ToList();
 
-                outdatedPage.QuotesList.Clear();
-                outdatedPage.QuotesList.AddAll(outdatedList);
-            }));
+                    outdatedPage.QuotesList.Clear();
+                    outdatedPage.QuotesList.AddAll(outdatedList);
+                })
+            );
         }
 
-        await Task.WhenAll(tasks);
+        Task.WhenAll(tasks);
     }
 }
 

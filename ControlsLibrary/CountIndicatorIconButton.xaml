@@ -1,26 +1,32 @@
-<?xml version="1.0" encoding="utf-8" ?>
-
-<ContentView
-    x:Class="ControlsLibrary.CountIndicatorIconButton"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
-    x:Name="IconButton">
+<?xml version="1.0" encoding="utf-8"?>
+<ContentView x:Class="ControlsLibrary.CountIndicatorIconButton"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             x:Name="IconButton">
     <ContentView.Resources>
-        <ResourceDictionary Source="Resources/Styles/Sizes.xaml" />
+        <ResourceDictionary Source="Resources/Styles/Sizes.xaml"/>
     </ContentView.Resources>
-    <material:ButtonView
-        Padding="10"
-        BindingContext="{x:Reference IconButton}"
-        TappedCommand="{Binding OnTap}"
-        ToolTipProperties.Text="{Binding Tooltip}">
-        <VerticalStackLayout VerticalOptions="Center">
-            <Image>
-                <Image.Source>
-                    <FontImageSource Glyph="{Binding Icon}" Color="{Binding IconColor}" />
-                </Image.Source>
-            </Image>
-            <Label FontSize="{StaticResource Small}" Text="{Binding Count}" />
-        </VerticalStackLayout>
-    </material:ButtonView>
+    <VerticalStackLayout HorizontalOptions="Center"
+                         Spacing="0"
+                         BackgroundColor="Transparent"
+                         BindingContext="{x:Reference IconButton}"
+                         ToolTipProperties.Text="{Binding Tooltip}">
+        <ImageButton BackgroundColor="Transparent"
+                     Margin="0"
+                     Padding="8"
+                     WidthRequest="24"
+                     HeightRequest="24"
+                     Command="{Binding OnTap}">
+            <ImageButton.Source>
+                <FontImageSource Glyph="{Binding Icon}"
+                                 Color="Black"
+                                 FontFamily="MaterialIconsRegular"
+                                 Size="16"/>
+            </ImageButton.Source>
+        </ImageButton>
+        <Label FontSize="{StaticResource Small}"
+               HorizontalTextAlignment="Center"
+               Text="{Binding Count}"/>
+    </VerticalStackLayout>
 </ContentView>

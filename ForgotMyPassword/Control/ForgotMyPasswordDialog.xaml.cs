@@ -1,3 +1,5 @@
+using ForgotMyPassword.ViewModels;
+
 namespace ForgotMyPassword.Control;
 
 public partial class ForgotMyPasswordDialog : ContentPage
