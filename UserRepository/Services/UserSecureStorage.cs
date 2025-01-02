@@ -6,14 +6,14 @@ public class UserSecureStorage : IUserSecureStorage
     private const string UsernameKey = "wonder-words-username";
     private const string EmailKey = "wonder-words-email";
 
-    private readonly ISecureStorage _secureStorage = SecureStorage.Default;
+    private readonly IPreferences _secureStorage = Preferences.Default;
 
     public Task UpsertUserInfo(string username, string email, string? token)
     {
         return Task.WhenAll([
-            _secureStorage.SetAsync(key: EmailKey, value: email),
-            _secureStorage.SetAsync(key: UsernameKey, value: username),
-            token is not null ? _secureStorage.SetAsync(key: TokenKey, value: token) : Task.CompletedTask
+            Task.Run(() => _secureStorage.Set(key: EmailKey, value: email)),
+            Task.Run(() => _secureStorage.Set(key: UsernameKey, value: username)),
+            token is not null ? Task.Run(() => _secureStorage.Set(key: TokenKey, value: token)) : Task.CompletedTask
         ]);
     }
 
@@ -28,16 +28,16 @@ public class UserSecureStorage : IUserSecureStorage
 
     public Task<string?> GetUserToken()
     {
-        return _secureStorage.GetAsync(key: UsernameKey);
+        return Task.Run(() => _secureStorage.Get<string?>(key: TokenKey, defaultValue: null));
     }
 
     public Task<string?> GetUserEmail()
     {
-        return _secureStorage.GetAsync(key: EmailKey);
+        return Task.Run(() => _secureStorage.Get<string?>(key: EmailKey, null));
     }
 
     public Task<string?> GetUsername()
     {
-        return _secureStorage.GetAsync(key: UsernameKey);
+        return Task.Run(() => _secureStorage.Get<string?>(key: UsernameKey, null));
     }
 }
