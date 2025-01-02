@@ -39,7 +39,7 @@ public class QuoteDetailsPage : ContentPage
         var fntSource = new FontImageSource
         {
             FontFamily = "MaterialIconsRegular",
-            Size = 24,
+            Size = 48,
             Color = Colors.Black
         };
 
@@ -59,9 +59,9 @@ public class QuoteDetailsPage : ContentPage
 
         var favoriteImgBtn = new ImageButton
         {
-            Padding = new Thickness(8),
-            HeightRequest = 16,
-            WidthRequest = 16,
+            //Padding = new Thickness(8),
+            HeightRequest = 24,
+            WidthRequest = 24,
             Source = fntSource,
             BackgroundColor = Colors.Transparent
         };
@@ -169,7 +169,7 @@ public class QuoteDetailsPage : ContentPage
 
         var goBackImgBtn = new ImageButton
         {
-            Padding = new Thickness(4),
+            // Padding = new Thickness(4),
             Margin = new Thickness(0),
             HeightRequest = 28,
             WidthRequest = 28,
@@ -186,7 +186,7 @@ public class QuoteDetailsPage : ContentPage
 
         var shareBtn = new ImageButton
         {
-            Padding = new Thickness(8),
+            // Padding = new Thickness(8),
             Margin = new Thickness(0),
             HeightRequest = 22,
             WidthRequest = 22,
@@ -202,6 +202,7 @@ public class QuoteDetailsPage : ContentPage
 
         var actionItems = new Grid
         {
+            VerticalOptions = LayoutOptions.Center,
             ColumnDefinitions =
             [
                 new ColumnDefinition(GridLength.Star),

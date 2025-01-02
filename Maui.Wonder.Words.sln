@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maui.Wonder.Words", "Maui.Wonder.Words\Maui.Wonder.Words.csproj", "{8FBA269A-EFF4-4CA5-9771-6543699B5D3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModels", "DomainModels\DomainModels.csproj", "{18D5B672-BA0E-4036-B79B-9385B12DED64}"
@@ -98,6 +101,9 @@ Global
 		{C700FA09-D197-40AE-9F3B-4C94AC731304}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C700FA09-D197-40AE-9F3B-4C94AC731304}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C700FA09-D197-40AE-9F3B-4C94AC731304}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{96336639-F943-4C22-861F-EA23AD35D3AE} = {D82B7530-8865-46B0-9539-82E6AC1EA5BA}

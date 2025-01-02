@@ -87,6 +87,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="appsettings.json" />
       <None Remove="GoogleService-Info.plist" />
       <None Remove="google-services.json" />
     </ItemGroup>
@@ -96,8 +97,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="appsettings.json" />
-      <EmbeddedResource Include="appsettings.json" />
+      <EmbeddedResource Include="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

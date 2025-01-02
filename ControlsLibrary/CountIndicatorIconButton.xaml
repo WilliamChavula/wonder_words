@@ -14,7 +14,7 @@
                          ToolTipProperties.Text="{Binding Tooltip}">
         <ImageButton BackgroundColor="Transparent"
                      Margin="0"
-                     Padding="8"
+                     
                      WidthRequest="24"
                      HeightRequest="24"
                      Command="{Binding OnTap}">
