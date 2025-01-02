@@ -42,6 +42,14 @@
       <CodesignKey>iPhone Developer</CodesignKey>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
+      <CodesignResourceRules>Platforms\iOS\Entitlements.plist</CodesignResourceRules>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
+      <CodesignResourceRules>Platforms\iOS\Entitlements.plist</CodesignResourceRules>
+    </PropertyGroup>
+
     <ItemGroup>
         <!-- App Icon -->
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -94,10 +102,14 @@
 
     <ItemGroup>
       <None Remove=".env" />
+      <None Remove="Platforms\iOS\Entitlements.plist" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Include="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="Platforms\iOS\Entitlements.plist">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </EmbeddedResource>
     </ItemGroup>
