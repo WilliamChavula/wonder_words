@@ -1,1 +1,5 @@
-{}
+{
+  "maui.configuration.javaSdkPreferredPath": "/Library/Java/JavaVirtualMachines/microsoft-21.jdk/Contents/Home",
+  "java.home": "/Library/Java/JavaVirtualMachines/microsoft-21.jdk/Contents/Home",
+  "editor.fontFamily": "Cascadia Code, Menlo, Monaco, 'Courier New', monospace"
+}
