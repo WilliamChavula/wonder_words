@@ -103,7 +103,7 @@ public partial class SignInViewModel : ObservableObject
                 await userRepository.SignIn(email.Value, password.Value);
                 SubmissionStatus = SubmissionStatus.Success;
 
-                // Todo: Navigate to previous page
+                await onSignInSuccess();
             }
             catch (Exception e)
             {
@@ -123,8 +123,8 @@ public partial class SignInViewModel : ObservableObject
     [RelayCommand]
     private async Task OnSignUpTap() => await onSignUpTap();
 
-    [RelayCommand]
-    private async Task OnSignInSuccess() => await onSignInSuccess();
+    // [RelayCommand]
+    // private async Task OnSignInSuccessful() => await onSignInSuccess();
 
     [RelayCommand]
     private async Task OnForgotPasswordTap() => await onForgotMyPasswordTap();
