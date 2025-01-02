@@ -134,23 +134,25 @@ public class QuotesApi
             Credentials = new UserCredentialsRm { Email = email, Password = password }
         };
 
-        using var response = await _client.PostAsJsonAsync(url, requestJsonBody);
+        var jsonString = JsonSerializer.Serialize(requestJsonBody);
+        HttpContent content = new StringContent(jsonString, System.Text.Encoding.UTF8, "application/json");
+
+        using var response = await _client.PostAsync(url, content);
 
         var jsonResponse = await response.Content.ReadAsStringAsync();
         var jsonDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse);
 
         if (jsonDict is not null && jsonDict.TryGetValue(ErrorCodeJsonKey, out var code))
         {
-            if ((int)code == 21)
+            var err_code = (JsonElement)code;
+            var error_int = err_code.GetInt32();
+            if (error_int == 21)
             {
-                throw new InvalidCredentialsQuoteException();
+                throw new UserAuthRequiredQuoteException();
             }
         }
 
-        var user = JsonSerializer.Deserialize<UserRm>(jsonResponse);
-        if (user is null)
-            throw new InvalidOperationException();
-
+        var user = JsonSerializer.Deserialize<UserRm>(jsonResponse) ?? throw new InvalidOperationException();
         return user;
     }
 
@@ -174,10 +176,13 @@ public class QuotesApi
 
         if (jsonDict is not null && jsonDict.TryGetValue(ErrorCodeJsonKey, out var code))
         {
-            if ((int)code == 32)
+            var err_code = (JsonElement)code;
+            var error_int = err_code.GetInt32();
+  
+            if (error_int == 32)
             {
                 if (
-                    jsonDict[ErrorMessageJsonKey] is string errorMessage
+                    ((JsonElement)jsonDict[ErrorCodeJsonKey]).GetString() is string errorMessage
                     && errorMessage.Contains("email", StringComparison.CurrentCultureIgnoreCase)
                 )
                     throw new EmailAlreadyRegisteredQuoteException();
@@ -188,8 +193,9 @@ public class QuotesApi
 
         if (jsonDict is null)
             throw new InvalidOperationException();
+        
 
-        return (string)jsonDict["User-Token"];
+        return ((JsonElement)jsonDict["User-Token"]).GetString()!;
     }
 
     public async Task UpdateProfile(string username, string email, string password)
@@ -211,8 +217,13 @@ public class QuotesApi
         var jsonDict = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonResponse);
 
         if (jsonDict is not null && jsonDict.TryGetValue(ErrorCodeJsonKey, out var code))
-            if ((int)code == 32)
+        {
+            var err_code = (JsonElement)code;
+
+            if (err_code.GetInt32() == 32)
                 throw new UsernameAlreadyTakenQuoteException();
+            
+        }
     }
 
     public async Task SignOut()
